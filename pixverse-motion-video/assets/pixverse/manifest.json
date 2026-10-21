@@ -1,0 +1,33 @@
+{
+  "hero": "stills/home.jpg",
+  "gallery": [
+    "stills/phone1.jpg",
+    "stills/phone2.jpg",
+    "stills/phone3.jpg"
+  ],
+  "pricing": "stills/pricing.jpg",
+  "styles": [
+    "stills/tile1.jpg",
+    "stills/tile2.jpg",
+    "stills/tile3.jpg",
+    "stills/tile4.jpg",
+    "stills/tile5.jpg",
+    "stills/tile6.jpg"
+  ],
+  "generator": {
+    "dir": "generator_frames",
+    "count": 126,
+    "fps": 30,
+    "hold": true
+  },
+  "result": {
+    "dir": "result_frames",
+    "count": 135,
+    "fps": 30
+  },
+  "human": {
+    "dir": "human_frames",
+    "count": 360,
+    "fps": 30
+  }
+}

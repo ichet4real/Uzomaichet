@@ -91,7 +91,8 @@ function img(key, i) {
 function media(src, localT) {
   if (!src) return null;
   if (typeof src === 'string') return src;
-  const n = Math.floor(localT * src.fps) % src.count;
+  const f = Math.max(0, Math.floor(localT * src.fps));
+  const n = src.hold ? Math.min(src.count - 1, f) : f % src.count;
   return `${src.dir}/f${String(n + 1).padStart(4, '0')}.jpg`;
 }
 function browser(src, url, w, h, extra = '', localT = 0, kb = true) {
@@ -146,7 +147,7 @@ SCENES.push([0, 2.88, (t) => {
     letters += `<span style="display:inline-block;opacity:${clamp(p * 1.5)};transform:translateY(${(1 - p) * 120}px) rotate(${(1 - p) * 12}deg)">${c}</span>`;
   });
   return `
-    ${hero ? `<img class="abs" src="${media(hero, t)}" style="inset:0;width:100%;height:100%;object-fit:cover;opacity:.18;filter:blur(6px) saturate(1.3);transform:scale(${1.1 + t * .02})">` : ''}
+    ${hero ? `<img class="abs" src="${media(hero, t)}" style="inset:0;width:100%;height:100%;object-fit:cover;opacity:.14;filter:blur(12px) saturate(1.3);transform:scale(${1.1 + t * .02})">` : ''}
     <div class="abs center label" style="top:190px;${rise(t, .05, .5, 30)}">Top AI video tools</div>
     <div class="abs" style="left:${nx}px;top:540px;transform:translate(-50%,-50%) scale(${ns * lerp(.3, 1, nIn)});opacity:${clamp(nIn * 2)}">
       <div class="abs" style="left:50%;top:50%;width:${520 * eo(ring)}px;height:${520 * eo(ring)}px;transform:translate(-50%,-50%);border-radius:50%;border:4px solid rgba(34,211,238,${.8 * (1 - ring) + .15});box-shadow:0 0 60px rgba(34,211,238,.35)"></div>
@@ -239,14 +240,14 @@ SCENES.push([14.4, 24.24, (t) => {
   const pricing = img('pricing');
   // price countdown
   const cd = eio(P(t, tPay - .1, tSub + .3));
-  const price = (lerp(29.99, 0, cd)).toFixed(2);
+  const price = (lerp(10, 0, cd)).toFixed(2);
   const strike = eo(P(t, tSub, tSub + .35));
   const freeP = back(P(t, tSub + .45, tSub + .9));
   const cardX = lerp(960, 520, split);
   const left = pricing && split > 0
-    ? browser(pricing, 'app.pixverse.ai', 760, 520, `left:${lerp(1920, 140, split)}px;top:250px;opacity:${split}`, t - 19.3)
+    ? browser(pricing, 'app.pixverse.ai/subscribe', 860, 513, `left:${lerp(1920, 110, split)}px;top:250px;opacity:${split}`, t - 19.3)
     : '';
-  const card = `<div class="card abs" style="left:${cardX - 330}px;top:${lerp(300, 330, split)}px;width:660px;height:420px;opacity:${pricing ? 1 - split : 1};${pop(t, 14.55, .5, 60, .8)}
+  const card = `<div class="abs" style="left:0;top:0;opacity:${pricing ? 1 - clamp(split * 2) : 1}"><div class="card abs" style="left:${cardX - 330}px;top:${lerp(300, 330, split)}px;width:660px;height:420px;${pop(t, 14.55, .5, 60, .8)}
       display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
       <div style="font-size:30px;letter-spacing:.2em;color:#a5b4fc;font-weight:700">SUBSCRIPTION</div>
       <div style="position:relative;font-size:150px;font-weight:900;font-variant-numeric:tabular-nums">$${price}
@@ -254,8 +255,8 @@ SCENES.push([14.4, 24.24, (t) => {
       <div style="font-size:30px;color:#94a3b8">per month</div>
       <div class="abs" style="right:-40px;top:-46px;transform:rotate(12deg) scale(${lerp(2, 1, freeP)});opacity:${clamp(freeP * 2)}">
         <div style="padding:18px 34px;border-radius:22px;background:linear-gradient(135deg,#22d3ee,#a78bfa);font-size:52px;font-weight:900;color:#07060d;box-shadow:0 0 60px rgba(34,211,238,.5)">FREE TO START</div></div>
-    </div>`;
-  const checks = [['No upfront cost', tExp - .3], ['Experiment freely', tExp + .5], ['Learn as you go', cue('video', tExp) + .1]];
+    </div></div>`;
+  const checks = [['No upfront cost', 19.95], ['Experiment freely', tExp + .5], ['Learn as you go', cue('video', tExp) + .1]];
   let list = '';
   checks.forEach(([txt, at], i) => {
     list += `<div style="display:flex;align-items:center;gap:22px;margin-bottom:34px;${rise(t, at, .45, 30)}">
@@ -292,22 +293,26 @@ SCENES.push([24.24, 32.4, (t) => {
         opacity:${clamp(p * 2) * (1 - phaseB)};transform:scale(${lerp(.6, 1, p) * lerp(1, .8, phaseB)}) translateY(${-phaseB * 60}px);box-shadow:0 20px 50px rgba(0,0,0,.5)">
         ${src ? `<img class="shot" src="${src}" style="filter:hue-rotate(${hue}deg)">` : `<div style="width:100%;height:100%;background:linear-gradient(135deg,${g});filter:hue-rotate(${hue}deg)"></div>`}
         ${shimmer}
-        <div class="abs" style="left:18px;bottom:16px;font-size:34px;font-weight:800;text-shadow:0 2px 12px rgba(0,0,0,.6)">${n}</div></div>`;
+        ${src ? '' : `<div class="abs" style="left:18px;bottom:16px;font-size:34px;font-weight:800;text-shadow:0 2px 12px rgba(0,0,0,.6)">${n}</div>`}</div>`;
   });
-  const fxChips = ['✦ Glow', '✸ Explode', '◎ Zoom', '∿ Morph'].map((c, i) => {
-    const at = tFx + i * .15;
-    return `<span style="display:inline-block;margin:0 10px;padding:12px 26px;border-radius:30px;background:rgba(124,58,237,.3);border:2px solid #a78bfa;font-size:32px;font-weight:700;${pop(t, at, .4, 20, .6)}">${c}</span>`;
+  const chipList = img('styles') ? ['Ad Magic', 'Cinematic Narrative', 'Stylistic Art', 'Viral Case', 'Animal Theatre', 'Effects Rendering'] : ['✦ Glow', '✸ Explode', '◎ Zoom', '∿ Morph'];
+  const fxChips = chipList.map((c, i) => {
+    const at = tFx + i * .12;
+    return `<span style="display:inline-block;margin:0 6px;padding:10px 22px;border-radius:30px;background:rgba(124,58,237,.3);border:2px solid #a78bfa;font-size:27px;font-weight:700;${pop(t, at, .4, 20, .6)}">${c}</span>`;
   }).join('');
   // Phase B: idea -> video
-  const prompt = 'A cat surfing a giant wave at sunset';
-  const typed = Math.floor(prompt.length * P(t, tTurn + .1, tTurn + 1.4));
+  const genSrc = img('generator');
+  const prompt = genSrc ? 'Generate a video of a woman walking along the road with her handbag' : 'A cat surfing a giant wave at sunset';
+  const typed = Math.floor(prompt.length * P(t, tTurn + .1, genSrc ? tTurn + 2.3 : tTurn + 1.4));
   const caret = Math.floor(t * 2.5) % 2 ? '|' : '';
   const gen = P(t, tShortV - .5, tShortV - .3);
   const vid = back(P(t, tShortV - .2, tShortV + .35));
-  const genSrc = img('generator');
   const outSrc = media(img('result'), t - tShortV);
   const genBox = genSrc
-    ? browser(genSrc, 'app.pixverse.ai', 820, 470, 'left:0;top:0', t - tTurn)
+    ? `<div style="position:relative;width:820px;height:560px">${browser(genSrc, 'app.pixverse.ai/creation', 820, 430, 'left:0;top:0', t - tTurn, false)}
+        <div class="card abs" style="left:30px;right:30px;top:372px;padding:18px 26px;background:rgba(14,12,24,.95);border-color:rgba(167,139,250,.55);box-shadow:0 20px 50px rgba(0,0,0,.6)">
+          <div style="font-size:21px;letter-spacing:.16em;font-weight:800;color:#a5b4fc;margin-bottom:6px">PROMPT</div>
+          <div style="font-size:33px;font-weight:600;line-height:1.3;min-height:86px">${esc(prompt.slice(0, typed))}<span style="color:#22d3ee">${caret}</span></div></div></div>`
     : `<div class="card" style="width:820px;padding:34px 38px">
         <div style="display:flex;align-items:center;gap:16px;font-size:30px;color:#a5b4fc;font-weight:700;letter-spacing:.12em">
           <svg width="40" height="40" viewBox="0 0 40 40"><path d="M20 4a11 11 0 0 0-6 20v5h12v-5A11 11 0 0 0 20 4z" fill="#fde047"/><rect x="14" y="31" width="12" height="4" rx="2" fill="#fde047"/></svg>YOUR IDEA</div>
@@ -326,8 +331,8 @@ SCENES.push([24.24, 32.4, (t) => {
     <div class="abs center" style="top:848px;opacity:${1 - clamp(phaseB * 3)}">${fxChips}</div>
     <div class="abs center" style="top:70px;opacity:${clamp(phaseB * 2.5 - 1.5)}"><span style="font-size:66px;font-weight:900">Simple idea <span class="grad">→ short video</span></span></div>
     <div class="abs" style="left:${lerp(-900, 140, phaseB)}px;top:270px;opacity:${phaseB * (1 - .85 * sw)};filter:blur(${sw * 6}px)">${genBox}</div>
-    <svg class="abs" style="left:1000px;top:440px;opacity:${arrowP}" width="200" height="80"><path d="M10 40 H${10 + 160 * arrowP}" stroke="#22d3ee" stroke-width="8" stroke-linecap="round"/><path d="M${150 * arrowP + 10} 18 L${172 * arrowP + 10} 40 L${150 * arrowP + 10} 62" stroke="#22d3ee" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <div class="phone abs" style="left:1290px;top:200px;width:330px;height:586px;opacity:${clamp(vid * 2) * (1 - .85 * sw)};filter:blur(${sw * 6}px);transform:scale(${lerp(.5, 1, vid)});box-shadow:0 0 70px rgba(34,211,238,.4)">
+    <svg class="abs" style="left:1010px;top:450px;opacity:${arrowP}" width="200" height="80"><path d="M10 40 H${10 + 160 * arrowP}" stroke="#22d3ee" stroke-width="8" stroke-linecap="round"/><path d="M${150 * arrowP + 10} 18 L${172 * arrowP + 10} 40 L${150 * arrowP + 10} 62" stroke="#22d3ee" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="phone abs" style="left:1260px;top:${outSrc ? 300 : 200}px;width:${outSrc ? 500 : 330}px;height:${outSrc ? 400 : 586}px;border-radius:${outSrc ? 26 : 44}px;opacity:${clamp(vid * 2) * (1 - .85 * sw)};filter:blur(${sw * 6}px);transform:scale(${lerp(.5, 1, vid)});box-shadow:0 0 70px rgba(34,211,238,.4)">
       ${outSrc ? `<img class="shot" src="${outSrc}">` : `<div style="width:100%;height:100%;background:linear-gradient(180deg,#f97316 0%,#db2777 45%,#1e3a8a 70%,#0ea5e9 100%);position:relative">
         <div class="abs" style="left:50%;top:30%;width:120px;height:120px;border-radius:50%;background:#fde68a;transform:translate(-50%,-50%);box-shadow:0 0 80px #fde68a"></div>
         <div class="abs" style="left:-20%;right:-20%;top:${62 + Math.sin(t * 3) * 3}%;height:140px;border-radius:50%;background:rgba(255,255,255,.35)"></div></div>`}
@@ -375,7 +380,7 @@ SCENES.push([33.76, 40.4, (t) => {
   // right side: sample human clip with scanning line, or podium in phase B
   const human = media(img('human'), t - 33.76);
   const scan = (t * .6) % 1;
-  const sample = `<div class="abs" style="left:1230px;top:190px;width:520px;height:600px;border-radius:26px;overflow:hidden;border:2px solid rgba(245,158,11,.6);opacity:${clamp(P(t, tReal, tReal + .4)) * (1 - phaseB)};
+  const sample = `<div class="abs" style="left:1170px;top:230px;width:${human ? 620 : 520}px;height:${human ? 477 : 600}px;border-radius:26px;overflow:hidden;border:2px solid rgba(245,158,11,.6);opacity:${clamp(P(t, tReal, tReal + .4)) * (1 - phaseB)};
         transform:scale(${lerp(.85, 1, eo(P(t, tReal, tReal + .5)))})">
       ${human ? `<img class="shot" src="${human}">` : `<div style="width:100%;height:100%;background:linear-gradient(180deg,#1e1b4b,#0f172a);position:relative">
          <svg class="abs" style="left:110px;top:90px" width="300" height="440" viewBox="0 0 300 440" fill="none" stroke="#fcd34d" stroke-width="10" stroke-linecap="round">

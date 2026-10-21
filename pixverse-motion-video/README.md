@@ -5,12 +5,14 @@ A 43.7s, 1920×1080 motion graphics video for the "#5 PixVerse" voiceover, timed
 - `assets/voiceover.mp3`, `assets/transcript.srt` — the supplied audio and transcript
 - `src/scene.html` — all animation (8 scenes + word-by-word captions), driven by `render(t)`
 - `src/render.mjs` — renders every frame with headless Chromium and muxes the audio with ffmpeg
-- `out/pixverse-motion-draft.mp4` — current render
+- `src/prepare_assets.sh` — cuts the PixVerse recordings/screenshots into stills and frame sequences
+- `out/pixverse-motion-v2.mp4` — current render (with real PixVerse footage)
 
 ## Render
 
 ```
-node src/render.mjs --out out/pixverse-motion-draft.mp4   # full video (~2 min)
+src/prepare_assets.sh                                    # once, after changing recordings/crops
+node src/render.mjs --out out/pixverse-motion-v2.mp4      # full video (~2 min)
 node src/render.mjs --stills 2.6,13.8,33                   # preview stills in out/stills/
 ```
 
