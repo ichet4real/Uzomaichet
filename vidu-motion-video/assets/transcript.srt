@@ -1,0 +1,110 @@
+1
+00:00:00,000 --> 00:00:04,240
+At number three, we have Vidu AI, a tool
+worth checking out if you want to turn
+
+2
+00:00:04,240 --> 00:00:06,320
+still images into moving videos.
+
+3
+00:00:06,320 --> 00:00:10,000
+Imagine having a picture of a character, a
+model, or even a product,
+
+4
+00:00:10,000 --> 00:00:13,120
+and wanting to bring it to life without
+filming anything yourself.
+
+5
+00:00:13,120 --> 00:00:16,640
+That's where image to video AI can make a
+real difference.
+
+6
+00:00:16,640 --> 00:00:20,830
+Vidu offers workflows for animating images
+and generating video from text
+
+7
+00:00:20,830 --> 00:00:21,520
+prompts.
+
+8
+00:00:21,520 --> 00:00:23,600
+Depending on the model and features
+available,
+
+9
+00:00:23,600 --> 00:00:26,960
+it can also help creators work with
+reference images to maintain a more
+
+10
+00:00:26,960 --> 00:00:28,800
+consistent look across scenes.
+
+11
+00:00:28,800 --> 00:00:33,280
+When it comes to subscription plans, they
+offer annual plans at 47% off and
+
+12
+00:00:33,280 --> 00:00:35,280
+monthly plans at 40% off,
+
+13
+00:00:35,280 --> 00:00:38,400
+starting at $10 per month and 800 credits.
+
+14
+00:00:38,400 --> 00:00:42,080
+So, here's a tip. If you're comparing AI
+video generators,
+
+15
+00:00:42,080 --> 00:00:45,200
+don't just look at their most impressive
+demonstration videos.
+
+16
+00:00:45,200 --> 00:00:49,330
+Just simply upload a similar image, use a
+similar prompt, and compare the
+
+17
+00:00:49,330 --> 00:00:50,400
+results yourself.
+
+18
+00:00:50,400 --> 00:00:53,930
+Pay attention to movement image quality,
+how well the tool follows your
+
+19
+00:00:53,930 --> 00:00:54,640
+instructions,
+
+20
+00:00:54,640 --> 00:00:57,440
+and how many credits each generation
+consumes.
+
+21
+00:00:57,440 --> 00:01:01,600
+Vidu is worth testing, especially if image
+to video is important to your
+
+22
+00:01:01,600 --> 00:01:02,160
+workflow.
+
+23
+00:01:02,160 --> 00:01:05,920
+But can it beat the next two tools for
+realistic video creation?
+
+24
+00:01:05,920 --> 00:01:07,181
+Let's find out.

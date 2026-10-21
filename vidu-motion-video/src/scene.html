@@ -1,0 +1,471 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; padding: 0; background: #07060d; }
+  * { box-sizing: border-box; }
+  #stage {
+    position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    font-family: "Inter Display", "Inter", sans-serif; color: #fff; background: #07060d;
+  }
+  .abs { position: absolute; }
+  .grad { background: linear-gradient(90deg, #c4b5fd 0%, #a78bfa 30%, #22d3ee 100%);
+          -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .gradpink { background: linear-gradient(90deg, #f472b6, #a78bfa);
+          -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .card { background: rgba(255,255,255,.055); border: 1.5px solid rgba(255,255,255,.12); border-radius: 28px; }
+  .label { font-size: 26px; letter-spacing: .32em; text-transform: uppercase; font-weight: 600; color: #a5b4fc; }
+  .center { left: 0; right: 0; text-align: center; }
+  .shot { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .browser { border-radius: 18px; overflow: hidden; background: #111018;
+             border: 1.5px solid rgba(255,255,255,.14); box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 60px rgba(124,58,237,.25); }
+  .browser .bar { height: 38px; background: #1a1825; display: flex; align-items: center; gap: 9px; padding: 0 16px; }
+  .browser .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .browser .url { margin-left: 16px; height: 22px; flex: 1; max-width: 420px; border-radius: 11px; background: #262335;
+                  font-size: 14px; color: #9ca3af; display: flex; align-items: center; padding-left: 12px; }
+  .frame { border-radius: 24px; overflow: hidden; border: 2px solid rgba(255,255,255,.14); background: #111018;
+           box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 50px rgba(124,58,237,.25); }
+  .tag { display: inline-block; padding: 8px 16px; border-radius: 12px; font-size: 22px; font-weight: 800; letter-spacing: .14em;
+         background: rgba(7,6,13,.72); border: 2px solid rgba(255,255,255,.2); }
+  .chip { display: inline-flex; align-items: center; gap: 18px; padding: 18px 30px; border-radius: 22px; font-size: 40px; font-weight: 800;
+          background: rgba(255,255,255,.06); border: 2px solid rgba(255,255,255,.14); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="bg" class="abs" style="inset:0"></div>
+  <div id="scene" class="abs" style="inset:0"></div>
+  <div id="fade" class="abs" style="inset:0;background:#000;pointer-events:none"></div>
+</div>
+<script>
+// ---------- helpers ----------
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const P = (t, a, b) => clamp((t - a) / (b - a));
+const eo = x => 1 - Math.pow(1 - x, 3);
+const eio = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const back = x => { const c1 = 1.9, c3 = c1 + 1; return x <= 0 ? 0 : 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const lerp = (a, b, x) => a + (b - a) * x;
+const rnd = s => { const x = Math.sin(s * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+
+let SEG = [], WORDS = [], FPS = 30;
+
+// Spread each subtitle segment's duration across its words, weighted by length (used for timing only; no captions are drawn).
+function buildWords() {
+  WORDS = [];
+  SEG.forEach((s, si) => {
+    const ws = s.text.replace(/\s+/g, ' ').trim().split(' ');
+    const wt = ws.map(w => w.length + 2);
+    const tot = wt.reduce((a, b) => a + b, 0);
+    let acc = s.start;
+    ws.forEach((w, i) => {
+      const d = (s.end - s.start) * wt[i] / tot;
+      WORDS.push({ w, s: acc, e: acc + d, seg: si });
+      acc += d;
+    });
+  });
+}
+// Time when a given word is spoken (first match at or after `after`).
+function cue(word, after = 0) {
+  const k = word.toLowerCase();
+  const f = WORDS.find(x => x.s >= after - 0.01 && x.w.toLowerCase().replace(/[^a-z0-9']/g, '').startsWith(k));
+  return f ? f.s : after;
+}
+function pop(t, at, dur = .45, dy = 40, s0 = .85) {
+  const p = P(t, at, at + dur), b = back(p);
+  return `opacity:${eo(clamp(p * 1.6))};transform:translateY(${(1 - b) * dy}px) scale(${lerp(s0, 1, b)});`;
+}
+function rise(t, at, dur = .5, dy = 60) {
+  const p = eo(P(t, at, at + dur));
+  return `opacity:${p};transform:translateY(${(1 - p) * dy}px);`;
+}
+
+// ---------- Vidu media ----------
+const A = '../assets/vidu/';
+const SEQ = {
+  desk:    { dir: A + 'desk_frames',    count: 385, fps: 24 },  // Vidu demo: character on a desk
+  storm:   { dir: A + 'storm_frames',   count: 385, fps: 24 },  // Vidu demo: couple on a stormy cliff
+  remix:   { dir: A + 'remix_frames',   count: 549, fps: 30 },  // vidu.com Remix page (cowboy)
+  cowboy:  { dir: A + 'cowboy_frames',  count: 549, fps: 30 },  // the cowboy video itself, cropped
+  pricing: { dir: A + 'pricing_frames', count: 681, fps: 30 },  // vidu.com/pricing recording
+  create:  { dir: A + 'create_frames',  count: 281, fps: 4 },   // Create page: upload + prompt typing
+};
+const STILL = n => A + 'stills/' + n;
+// frame of a sequence at clip time `ct` (seconds); holds the last frame unless loop
+function fr(name, ct, loop = false) {
+  const s = SEQ[name];
+  let f = Math.max(0, Math.floor(ct * s.fps));
+  f = loop ? f % s.count : Math.min(s.count - 1, f);
+  return `${s.dir}/f${String(f + 1).padStart(4, '0')}.jpg`;
+}
+function browser(src, url, w, h, extra = '', inner = '') {
+  return `<div class="browser abs" style="width:${w}px;height:${h}px;${extra}">
+    <div class="bar"><div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#febc2e"></div><div class="dot" style="background:#28c840"></div>
+    <div class="url">${url}</div></div>
+    <div style="position:relative;height:${h - 38}px;overflow:hidden"><img class="shot" src="${src}" style="object-position:50% 0">${inner}</div></div>`;
+}
+const check = (sz = 56, c = '#22d3ee') => `<svg width="${sz}" height="${sz}" viewBox="0 0 56 56"><circle cx="28" cy="28" r="26" fill="${c}"/><path d="M16 29l8 8 16-17" stroke="#07060d" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const arrow = (p, w = 200) => `<svg width="${w}" height="80"><path d="M10 40 H${10 + (w - 40) * p}" stroke="#22d3ee" stroke-width="8" stroke-linecap="round"/><path d="M${(w - 50) * p + 10} 18 L${(w - 28) * p + 10} 40 L${(w - 50) * p + 10} 62" stroke="#22d3ee" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+// ---------- background ----------
+function renderBg(t, tint = 0) {
+  const b = (x, y, r, c) => `radial-gradient(circle ${r}px at ${x}px ${y}px, ${c}, transparent 70%)`;
+  const x1 = 400 + Math.sin(t * .35) * 220, y1 = 300 + Math.cos(t * .27) * 140;
+  const x2 = 1500 + Math.cos(t * .3) * 240, y2 = 760 + Math.sin(t * .22) * 160;
+  const x3 = 1000 + Math.sin(t * .2 + 2) * 400, y3 = 540 + Math.cos(t * .4) * 100;
+  const purple = tint ? `rgba(239,68,68,${.45 * tint})` : 'rgba(124,58,237,.42)';
+  const bg = `background:${b(x1, y1, 760, purple)},${b(x2, y2, 700, 'rgba(34,211,238,.22)')},${b(x3, y3, 600, 'rgba(236,72,153,.13)')},#07060d;`;
+  const off = (t * 40) % 80;
+  const grid = `<div class="abs" style="left:-50%;right:-50%;bottom:-120px;height:620px;transform:perspective(600px) rotateX(62deg);
+    background-image:linear-gradient(rgba(167,139,250,.16) 2px, transparent 2px),linear-gradient(90deg, rgba(167,139,250,.16) 2px, transparent 2px);
+    background-size:80px 80px;background-position:0 ${off}px;-webkit-mask-image:linear-gradient(to top, rgba(0,0,0,.9), transparent 85%);"></div>`;
+  let parts = '';
+  for (let i = 0; i < 46; i++) {
+    const px = rnd(i) * 1920, sp = 18 + rnd(i + 9) * 40;
+    const py = (1080 - ((rnd(i + 3) * 1200 + t * sp) % 1200));
+    const sz = 2 + rnd(i + 5) * 4, op = .25 + rnd(i + 7) * .5;
+    parts += `<div class="abs" style="left:${px}px;top:${py}px;width:${sz}px;height:${sz}px;border-radius:50%;background:${i % 3 ? '#a78bfa' : '#22d3ee'};opacity:${op};box-shadow:0 0 ${sz * 3}px currentColor"></div>`;
+  }
+  return { style: bg, html: grid + parts };
+}
+
+// ---------- scenes: [start, end, fn(t)] ----------
+const SCENES = [];
+
+// 1. "At number three, we have Vidu AI, a tool worth checking out…"
+SCENES.push([0, 4.24, (t) => {
+  const move = eio(P(t, .55, 1.05));
+  const nx = lerp(960, 560, move), ns = lerp(1, .78, move);
+  const nIn = back(P(t, .1, .7)), ring = P(t, .2, 1.2);
+  const tV = cue('vidu', 1), tWorth = cue('worth', 2);
+  let letters = '';
+  'Vidu'.split('').forEach((c, i) => {
+    const p = back(P(t, tV - .3 + i * .05, tV + .15 + i * .05));
+    letters += `<span style="display:inline-block;opacity:${clamp(p * 1.5)};transform:translateY(${(1 - p) * 120}px) rotate(${(1 - p) * 12}deg)">${c}</span>`;
+  });
+  const ai = back(P(t, tV + .2, tV + .6));
+  return `
+    <img class="abs" src="${STILL('hero.jpg')}" style="inset:0;width:100%;height:100%;object-fit:cover;opacity:.2;filter:blur(10px) saturate(1.2);transform:scale(${1.1 + t * .02})">
+    <div class="abs center label" style="top:190px;${rise(t, .05, .5, 30)}">Top AI video tools</div>
+    <div class="abs" style="left:${nx}px;top:540px;transform:translate(-50%,-50%) scale(${ns * lerp(.3, 1, nIn)});opacity:${clamp(nIn * 2)}">
+      <div class="abs" style="left:50%;top:50%;width:${520 * eo(ring)}px;height:${520 * eo(ring)}px;transform:translate(-50%,-50%);border-radius:50%;border:4px solid rgba(34,211,238,${.8 * (1 - ring) + .15});box-shadow:0 0 60px rgba(34,211,238,.35)"></div>
+      <div class="grad" style="font-size:400px;font-weight:900;line-height:1;letter-spacing:-.04em;filter:drop-shadow(0 0 40px rgba(167,139,250,.6))">#3</div>
+    </div>
+    <div class="abs" style="left:860px;top:390px;font-size:220px;font-weight:900;letter-spacing:-.03em;line-height:1;white-space:nowrap">${letters}<span class="grad" style="display:inline-block;margin-left:40px;opacity:${clamp(ai * 1.5)};transform:scale(${lerp(.4, 1, ai)})">AI</span></div>
+    <div class="abs" style="left:872px;top:640px;${rise(t, tV + .5, .4, 20)}">
+      <span style="font-size:30px;font-weight:700;letter-spacing:.25em;padding:12px 26px;border-radius:40px;border:2px solid #22d3ee;color:#67e8f9">IMAGE-TO-VIDEO AI</span></div>
+    <div class="abs" style="left:872px;top:730px;${pop(t, tWorth, .45, 20, .7)}">
+      <span style="display:inline-flex;align-items:center;gap:14px;font-size:36px;font-weight:800">${check(44)} Worth checking out</span></div>`;
+}]);
+
+// 2. "…turn still images into moving videos."
+SCENES.push([4.24, 6.32, (t) => {
+  const tMove = cue('moving', 4.3);
+  const lp = back(P(t, 4.3, 4.75)), rp = back(P(t, tMove - .25, tMove + .2));
+  const ar = eo(P(t, tMove - .45, tMove - .1));
+  const playing = t >= tMove - .2;
+  return `
+    <div class="abs center" style="top:110px"><span style="font-size:84px;font-weight:900">
+      <span style="${rise(t, 4.25, .35, 20)};display:inline-block">Still images</span>
+      <span class="grad" style="display:inline-block;${pop(t, tMove - .25, .4, 30, .7)}">→ moving videos</span></span></div>
+    <div class="frame abs" style="left:110px;top:330px;width:740px;height:416px;opacity:${clamp(lp * 2)};transform:scale(${lerp(.7, 1, lp)})">
+      <img class="shot" src="${STILL('desk-first.jpg')}" style="filter:saturate(.75)">
+      <div class="abs" style="left:20px;top:18px"><span class="tag">📷 STILL IMAGE</span></div></div>
+    <div class="abs" style="left:860px;top:498px;opacity:${ar}">${arrow(ar, 200)}</div>
+    <div class="frame abs" style="left:1070px;top:330px;width:740px;height:416px;opacity:${clamp(rp * 2)};transform:scale(${lerp(.7, 1, rp)});box-shadow:0 0 80px rgba(34,211,238,.45)">
+      <img class="shot" src="${playing ? fr('desk', t - (tMove - .2)) : STILL('desk-first.jpg')}">
+      <div class="abs" style="left:20px;top:18px"><span class="tag" style="border-color:#22d3ee;color:#67e8f9">▶ MOVING VIDEO</span></div></div>`;
+}]);
+
+// 3. "Imagine having a picture of a character, a model, or even a product… bring it to life without filming"
+SCENES.push([6.32, 13.12, (t) => {
+  const tBring = cue('bring', 10), tFilm = cue('without', 11);
+  const live = t >= tBring;
+  const lt = t - tBring;
+  const cards = [
+    { k: 'character', name: 'Character', src: live ? fr('desk', 1.2 + lt) : fr('desk', 1.2), pos: '58% 50%', z: 1 },
+    { k: 'model', name: 'Model', src: live ? fr('cowboy', 0.4 + lt) : fr('cowboy', .4), pos: '50% 30%', z: 1 },
+    { k: 'product', name: 'Product', src: live ? fr('desk', 13.6 + lt * .8) : fr('desk', 13.6), pos: '50% 50%', z: 1.9, org: '60% 48%' },
+  ];
+  let html = '';
+  cards.forEach((c, i) => {
+    const at = cue(c.k, 6.3) - .15;
+    const p = back(P(t, at, at + .5));
+    const x = 380 + i * 420, glow = live ? Math.sin(clamp(lt / .6) * Math.PI) : 0;
+    const kb = live ? 1 + lt * .03 : 1;
+    html += `<div class="frame abs" style="left:${x}px;top:250px;width:360px;height:540px;opacity:${clamp(p * 2)};
+        transform:translateY(${(1 - p) * 120}px) rotate(${(i - 1) * 3 * (1 - eo(clamp(lt)))}deg);
+        border-color:${live ? '#22d3ee' : 'rgba(255,255,255,.14)'};box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 ${30 + glow * 90}px rgba(34,211,238,${.2 + glow * .5})">
+      <img class="shot" src="${c.src}" style="object-position:${c.pos};transform:scale(${c.z * kb});transform-origin:${c.org || '50% 50%'};filter:saturate(${live ? 1.05 : .8})">
+      <div class="abs" style="left:16px;top:16px"><span class="tag" style="${live ? 'border-color:#22d3ee;color:#67e8f9' : ''}">${live ? '▶ ALIVE' : '📷 PHOTO'}</span></div>
+      <div class="abs" style="left:0;right:0;bottom:0;padding:22px 20px 18px;background:linear-gradient(transparent,rgba(7,6,13,.9));font-size:40px;font-weight:900">${c.name}</div></div>`;
+  });
+  const nf = back(P(t, tFilm, tFilm + .45)), x = eo(P(t, tFilm + .25, tFilm + .55));
+  return `
+    <div class="abs center" style="top:90px;opacity:${1 - clamp((t - tBring) * 4)}"><div style="${rise(t, 6.35, .45, 30)}"><span style="font-size:68px;font-weight:900">Imagine a picture of a…</span></div></div>
+    <div class="abs center" style="top:90px;opacity:${clamp((t - tBring) * 4)}"><span style="font-size:68px;font-weight:900">…brought <span class="grad">to life</span></span></div>
+    ${html}
+    <div class="abs center" style="top:850px;opacity:${clamp(nf * 2)};transform:scale(${lerp(.6, 1, nf)})">
+      <span class="chip" style="border-color:#f472b6;background:rgba(244,114,182,.12)">
+        <span style="position:relative;display:inline-block;width:64px;height:48px">
+          <svg width="64" height="48" viewBox="0 0 64 48"><rect x="2" y="8" width="42" height="34" rx="8" fill="none" stroke="#fbcfe8" stroke-width="5"/><path d="M44 20l16-9v26l-16-9z" fill="none" stroke="#fbcfe8" stroke-width="5" stroke-linejoin="round"/></svg>
+          <svg class="abs" style="left:0;top:0" width="64" height="48"><path d="M4 4 L${4 + 56 * x} ${4 + 40 * x}" stroke="#fb7185" stroke-width="7" stroke-linecap="round"/></svg></span>
+        No filming needed</span></div>`;
+}]);
+
+// 4. "That's where image to video AI can make a real difference."
+SCENES.push([13.12, 16.64, (t) => {
+  const tImg = cue('image', 13.1), tDiff = cue('difference', 15);
+  const fp = back(P(t, 13.2, 13.75));
+  const sw = eo(P(t, tDiff, tDiff + .5));
+  return `
+    <div class="abs center" style="top:70px;${pop(t, tImg - .15, .5, 40, .8)}">
+      <span style="font-size:96px;font-weight:900;letter-spacing:-.01em">Image <span class="grad">→</span> Video <span class="grad">AI</span></span></div>
+    <div class="frame abs" style="left:430px;top:230px;width:1060px;height:596px;opacity:${clamp(fp * 2)};transform:scale(${lerp(.8, 1, fp)});box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 80px rgba(124,58,237,.45)">
+      <img class="shot" src="${fr('storm', t - 13.2)}" style="transform:scale(${1.02 + (t - 13.2) * .02})">
+      <div class="abs" style="left:20px;top:18px"><span class="tag">MADE WITH VIDU</span></div></div>
+    <div class="abs center" style="top:868px;${pop(t, tDiff - .2, .45, 30, .7)}">
+      <span style="position:relative;display:inline-block;font-size:60px;font-weight:900">A <span class="grad">real difference</span>
+        <span class="abs" style="left:0;bottom:-8px;height:9px;width:${sw * 100}%;border-radius:5px;background:linear-gradient(90deg,#a78bfa,#22d3ee)"></span></span></div>`;
+}]);
+
+// 5. "Vidu offers workflows for animating images and generating video from text prompts."
+SCENES.push([16.64, 21.52, (t) => {
+  const tAnim = cue('animating', 17), tText = cue('text', 19.5);
+  const bp = eo(P(t, 16.7, 17.3));
+  const s = 1150 / 1358, L = 90, T = 230 + 38;
+  const box = (y1, y2, at, c) => {
+    const p = P(t, at, at + .35); if (p <= 0) return '';
+    const pulse = .6 + .4 * Math.sin((t - at) * 6);
+    return `<div class="abs" style="left:${L + 336 * s}px;top:${T + y1 * s}px;width:${192 * s}px;height:${(y2 - y1) * s}px;border:4px solid ${c};border-radius:12px;
+       opacity:${p};box-shadow:0 0 ${30 * pulse}px ${c}, inset 0 0 20px ${c}55;transform:scale(${lerp(1.3, 1, eo(p))})"></div>`;
+  };
+  const chip = (txt, sub, at, c) => `<div style="margin-bottom:36px;${pop(t, at, .45, 30, .7)}">
+      <div class="chip" style="border-color:${c};box-shadow:0 0 40px ${c}44;width:520px">${txt}</div>
+      <div style="font-size:30px;color:#cbd5e1;margin:14px 0 0 8px">${sub}</div></div>`;
+  return `
+    <div class="abs" style="left:90px;top:80px;${rise(t, 16.7, .45, 30)}"><span style="font-size:70px;font-weight:900">Vidu <span class="grad">workflows</span></span></div>
+    <div class="abs" style="left:0;top:0;opacity:${bp};transform:translateX(${(1 - bp) * -120}px)">
+      ${browser(STILL('create.jpg'), 'vidu.com/create', 1150, 582, `left:${L}px;top:230px`)}</div>
+    ${box(195, 235, tAnim - .1, '#22d3ee')}${box(240, 278, tText - .1, '#f472b6')}
+    <div class="abs" style="left:1300px;top:300px">
+      ${chip('🖼️ Image → Video', 'Animate a still picture', tAnim - .1, '#22d3ee')}
+      ${chip('✍️ Text → Video', 'Generate from a prompt', tText - .1, '#f472b6')}</div>`;
+}]);
+
+// 6. "Depending on the model… reference images to maintain a more consistent look across scenes."
+SCENES.push([21.52, 28.8, (t) => {
+  const tRef = cue('reference', 23.6), tCon = cue('consistent', 26.9);
+  const phB = eio(P(t, tRef - .15, tRef + .35));
+  const bp = eo(P(t, 21.6, 22.2));
+  // Phase A: the real Vidu Remix page — prompt asks to keep the reference face
+  const hl = P(t, 22.6, 23);
+  const s = 1100 / 1272;
+  const pageA = `<div class="abs" style="left:0;top:0;opacity:${bp * (1 - phB)};transform:translateX(${-phB * 200}px) scale(${lerp(1, .9, phB)})">
+      ${browser(fr('remix', t - 21.6), 'vidu.com/feed-detail', 1100, 560, 'left:90px;top:250px',
+        `<div class="abs" style="left:${862 * s}px;top:${248 * s}px;width:${300 * s}px;height:${270 * s}px;border:4px solid #f472b6;border-radius:12px;opacity:${hl};box-shadow:0 0 30px #f472b6"></div>`)}</div>
+    <div class="abs" style="left:1260px;top:300px;width:580px;opacity:${(1 - phB)}">
+      <div style="${rise(t, 22.4, .5, 30)}" class="label">The prompt says</div>
+      <div style="margin-top:22px;font-size:46px;font-weight:800;line-height:1.3;${rise(t, 22.7, .5, 30)}">“Preserve the person's <span class="gradpink">recognizable face</span>, hairstyle and identity”</div>
+      <div style="margin-top:36px;${pop(t, 23.2, .45, 20, .7)}"><span class="chip" style="font-size:32px;padding:14px 24px">@image1 = reference</span></div></div>`;
+  // Phase B: one reference image -> several consistent scenes
+  const refP = back(P(t, tRef - .05, tRef + .4));
+  const ar = eo(P(t, tRef + .3, tRef + .7));
+  let scenes = '';
+  [0.3, 7.0, 13.5].forEach((off, i) => {
+    const at = tRef + .55 + i * .22;
+    const p = back(P(t, at, at + .45));
+    const ok = back(P(t, tCon - .1 + i * .12, tCon + .3 + i * .12));
+    scenes += `<div class="frame abs" style="left:${860 + i * 330}px;top:300px;width:300px;height:500px;opacity:${clamp(p * 2)};transform:translateY(${(1 - p) * 80}px);
+        border-color:${ok > 0 ? '#22d3ee' : 'rgba(255,255,255,.14)'}">
+      <img class="shot" src="${fr('cowboy', off + Math.max(0, t - at), true)}">
+      <div class="abs" style="left:14px;top:14px"><span class="tag" style="font-size:18px">SCENE ${i + 1}</span></div>
+      <div class="abs" style="left:50%;bottom:20px;transform:translateX(-50%) scale(${ok});opacity:${clamp(ok * 2)};white-space:nowrap">
+        <span style="display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border-radius:30px;background:rgba(7,6,13,.85);border:2px solid #22d3ee;font-size:24px;font-weight:800">${check(30)} Same face</span></div></div>`;
+  });
+  const pageB = `<div class="abs" style="left:0;top:0;opacity:${phB}">
+    <div class="abs" style="left:110px;top:330px;width:440px;height:440px;border-radius:28px;overflow:hidden;border:4px solid #f472b6;box-shadow:0 0 60px rgba(244,114,182,.4);opacity:${clamp(refP * 2)};transform:scale(${lerp(.6, 1, refP)})">
+      <img class="shot" src="${STILL('cowboy-face.jpg')}">
+      <div class="abs" style="left:16px;top:16px"><span class="tag" style="border-color:#f472b6;color:#fbcfe8">REFERENCE IMAGE</span></div></div>
+    <div class="abs" style="left:610px;top:510px;opacity:${ar}">${arrow(ar, 220)}</div>
+    ${scenes}</div>`;
+  return `
+    <div class="abs" style="left:90px;top:90px;opacity:${1 - clamp(phB * 2)}"><div style="${rise(t, 21.6, .45, 30)}"><span style="font-size:66px;font-weight:900">Work with <span class="gradpink">reference images</span></span></div></div>
+    <div class="abs center" style="top:110px;opacity:${clamp(phB * 2 - 1)}"><span style="font-size:70px;font-weight:900">A <span class="grad">consistent look</span> across scenes</span></div>
+    ${pageA}${pageB}`;
+}]);
+
+// 7. Pricing: 47% annual, 40% monthly, from $10/month and 800 credits
+SCENES.push([28.8, 38.4, (t) => {
+  const t47 = cue('47', 30), t40 = cue('40', 33), tStart = cue('starting', 35), t800 = cue('800', 36);
+  const bp = eo(P(t, 28.9, 29.5));
+  const card = (lbl, big, sub, at, c) => {
+    const p = back(P(t, at, at + .5));
+    return `<div class="card" style="margin-bottom:28px;padding:24px 34px;border-color:${c};box-shadow:0 0 40px ${c}33;opacity:${clamp(p * 2)};transform:translateX(${(1 - p) * 120}px) scale(${lerp(.8, 1, p)})">
+      <div style="font-size:24px;letter-spacing:.22em;font-weight:800;color:${c}">${lbl}</div>
+      <div style="display:flex;align-items:baseline;gap:18px"><span style="font-size:96px;font-weight:900;line-height:1.05">${big}</span><span style="font-size:32px;color:#cbd5e1;font-weight:700">${sub}</span></div></div>`;
+  };
+  const n47 = Math.round(47 * eo(P(t, t47 - .15, t47 + .45))), n40 = Math.round(40 * eo(P(t, t40 - .15, t40 + .45)));
+  const n10 = Math.round(10 * eo(P(t, tStart - .15, tStart + .45))), n800 = Math.round(800 * eo(P(t, tStart - .15, t800 + .5)));
+  return `
+    <div class="abs" style="left:90px;top:80px;${rise(t, 28.9, .45, 30)}"><span style="font-size:70px;font-weight:900">Subscription <span class="grad">plans</span></span></div>
+    <div class="abs" style="left:0;top:0;opacity:${bp};transform:translateY(${(1 - bp) * 80}px)">
+      ${browser(fr('pricing', t - 28.9), 'vidu.com/pricing', 1060, 540, 'left:90px;top:250px')}</div>
+    <div class="abs" style="left:1220px;top:210px;width:620px">
+      ${card('ANNUAL PLANS', `${n47}% <span class="grad">OFF</span>`, 'up to', t47 - .15, '#22d3ee')}
+      ${card('MONTHLY PLANS', `${n40}% <span class="gradpink">OFF</span>`, 'up to', t40 - .15, '#f472b6')}
+      ${card('STARTING AT', `$${n10}<span style="font-size:44px;color:#cbd5e1">/mo</span>`, `<span style="color:#fff;font-size:44px;font-weight:900">${n800}</span> credits`, tStart - .15, '#a78bfa')}</div>`;
+}]);
+
+// 8. "So, here's a tip… don't just look at their most impressive demonstration videos."
+SCENES.push([38.4, 45.2, (t) => {
+  const tTip = cue('tip', 38.4), tCmp = cue('comparing', 39.5), tDont = cue("don't", 42), tDemo = cue('demonstration', 43.5);
+  const phB = eio(P(t, tDont - .3, tDont + .2));
+  const bulb = back(P(t, 38.45, 38.95));
+  const glow = .6 + .4 * Math.sin(t * 5);
+  let tiles = '';
+  [['storm', 0.5, '50% 50%'], ['desk', 6, '50% 50%'], ['cowboy', 3, '50% 25%']].forEach(([n, off, pos], i) => {
+    const at = tDont + i * .18;
+    const p = back(P(t, at, at + .5));
+    const sh = P(t, at + .4, at + 1.4);
+    tiles += `<div class="frame abs" style="left:${170 + i * 540}px;top:330px;width:500px;height:400px;opacity:${clamp(p * 2)};transform:translateY(${(1 - p) * 100}px) rotate(${(i - 1) * 2.5}deg);box-shadow:0 0 70px rgba(250,204,21,.25)">
+      <img class="shot" src="${fr(n, off + Math.max(0, t - at), true)}" style="object-position:${pos}">
+      ${sh > 0 && sh < 1 ? `<div class="abs" style="inset:0;background:linear-gradient(110deg,transparent ${sh * 140 - 40}%,rgba(255,255,255,.45) ${sh * 140 - 20}%,transparent ${sh * 140}%)"></div>` : ''}
+      <div class="abs" style="left:16px;top:16px"><span class="tag" style="border-color:#facc15;color:#fde68a">★ SHOWCASE DEMO</span></div></div>`;
+  });
+  const st = back(P(t, tDemo + .1, tDemo + .55));
+  return `
+    <div class="abs" style="inset:0;opacity:${1 - phB};transform:scale(${lerp(1, .8, phB)})">
+      <div class="abs" style="left:960px;top:330px;transform:translate(-50%,-50%) scale(${bulb});opacity:${clamp(bulb * 2)}">
+        <svg width="200" height="240" viewBox="0 0 40 48" style="filter:drop-shadow(0 0 ${30 * glow}px #fde047)"><path d="M20 3a14 14 0 0 0-8 25.5V34h16v-5.5A14 14 0 0 0 20 3z" fill="#fde047"/><rect x="13" y="37" width="14" height="4" rx="2" fill="#fde047"/><rect x="15" y="43" width="10" height="3" rx="1.5" fill="#fde047"/></svg></div>
+      <div class="abs center" style="top:500px;${pop(t, tTip - .1, .45, 40, .7)}"><span class="grad" style="font-size:150px;font-weight:900;letter-spacing:.02em">PRO TIP</span></div>
+      <div class="abs center" style="top:700px;${rise(t, tCmp - .1, .45, 30)}"><span style="font-size:56px;font-weight:800">Comparing <span class="grad">AI video generators?</span></span></div></div>
+    <div class="abs center" style="top:110px;opacity:${phB}"><span style="font-size:66px;font-weight:900">Don't judge by the <span style="color:#fde68a">best demos</span> alone</span></div>
+    <div class="abs" style="left:0;top:0;opacity:${phB}">${tiles}</div>
+    ${t > tDemo ? `<div class="abs" style="left:960px;top:540px;transform:translate(-50%,-50%) rotate(${lerp(-14, -5, st)}deg) scale(${lerp(2.4, 1, st)});opacity:${clamp(st * 2)}">
+      <div style="display:flex;align-items:center;gap:26px;padding:24px 50px;border:7px solid #fb7185;border-radius:24px;background:rgba(7,6,13,.88);box-shadow:0 0 80px rgba(251,113,133,.45)">
+        <svg width="80" height="80" viewBox="0 0 80 80"><circle cx="40" cy="40" r="36" fill="#fb7185"/><path d="M26 26l28 28M54 26L26 54" stroke="#07060d" stroke-width="9" stroke-linecap="round"/></svg>
+        <span style="font-size:84px;font-weight:900;color:#ffe4e6;white-space:nowrap">DEMOS AREN'T ENOUGH</span></div></div>` : ''}`;
+}]);
+
+// 9. "Just simply upload a similar image, use a similar prompt, and compare the results yourself."
+SCENES.push([45.2, 50.4, (t) => {
+  const tUp = cue('upload', 45.2), tPr = cue('prompt', 46.5), tCmp = cue('compare', 48);
+  const bp = eo(P(t, 45.25, 45.8));
+  const speed = 13;  // 70s of real screen recording, fast-forwarded
+  const steps = [['Upload a similar image', tUp], ['Use a similar prompt', tPr], ['Compare the results', tCmp]];
+  let list = '';
+  steps.forEach(([txt, at], i) => {
+    const next = i < 2 ? steps[i + 1][1] : 99;
+    const on = t >= at - .1 && t < next - .1, done = t >= next - .1;
+    list += `<div style="display:flex;align-items:center;gap:24px;margin-bottom:34px;${rise(t, at - .2, .4, 30)}">
+      <div style="width:72px;height:72px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:900;
+        background:${on ? 'linear-gradient(135deg,#7c3aed,#22d3ee)' : done ? 'rgba(34,211,238,.2)' : 'rgba(255,255,255,.08)'};border:3px solid ${on || done ? '#22d3ee' : 'rgba(255,255,255,.2)'};
+        box-shadow:${on ? '0 0 40px rgba(34,211,238,.6)' : 'none'}">${done ? '✓' : i + 1}</div>
+      <span style="font-size:42px;font-weight:800;color:${on ? '#fff' : '#cbd5e1'}">${txt}</span></div>`;
+  });
+  const vs = back(P(t, tCmp + .1, tCmp + .55));
+  return `
+    <div class="abs" style="left:90px;top:80px;${rise(t, 45.25, .45, 30)}"><span style="font-size:66px;font-weight:900">Test it <span class="grad">yourself</span></span></div>
+    <div class="abs" style="left:0;top:0;opacity:${bp};transform:translateX(${(1 - bp) * -120}px)">
+      ${browser(fr('create', (t - 45.25) * speed), 'vidu.com/create', 1060, 540, 'left:90px;top:250px',
+        `<div class="abs" style="right:16px;top:14px"><span class="tag" style="border-color:#22d3ee;color:#67e8f9">▶▶ SPED UP</span></div>`)}</div>
+    <div class="abs" style="left:1220px;top:260px">${list}</div>
+    <div class="abs" style="left:1230px;top:690px;opacity:${clamp(vs * 2)};transform:scale(${lerp(.6, 1, vs)});display:flex;align-items:center;gap:18px">
+      <div class="frame" style="position:relative;width:280px;height:158px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05)">
+        <span style="font-size:30px;font-weight:800;color:#94a3b8">Other tool</span></div>
+      <span style="font-size:44px;font-weight:900" class="gradpink">VS</span>
+      <div class="frame" style="position:relative;width:280px;height:158px;border-color:#22d3ee">
+        <img class="shot" src="${fr('desk', 8 + Math.max(0, t - tCmp), true)}">
+        <div class="abs" style="left:10px;top:10px"><span class="tag" style="font-size:16px">VIDU</span></div></div></div>`;
+}]);
+
+// 10. "Pay attention to movement, image quality, how well the tool follows your instructions, and how many credits…"
+SCENES.push([50.4, 57.44, (t) => {
+  const items = [
+    { k: 'movement', after: 50.4, name: 'Movement', icon: '🏃', html: lt => `<img class="shot" src="${fr('storm', 3 + lt, true)}">` },
+    { k: 'image', after: 50.6, name: 'Image quality', icon: '🔍', html: lt => `<img class="shot" src="${fr('desk', 12 + lt, true)}" style="transform:scale(${1.4 + lt * .05});transform-origin:42% 55%">
+        <div class="abs" style="left:${40 + Math.sin(lt * 1.3) * 18}%;top:${30 + Math.cos(lt) * 10}%;width:130px;height:130px;border-radius:50%;border:6px solid #fff;box-shadow:0 0 30px rgba(0,0,0,.6), inset 0 0 30px rgba(255,255,255,.3)"></div>` },
+    { k: 'follows', after: 51.5, name: 'Follows instructions', icon: '📝', html: lt => `<img class="shot" src="${STILL('prompt.jpg')}" style="object-position:50% ${Math.min(100, lt * 12)}%">` },
+    { k: 'credits', after: 54.5, name: 'Credits per generation', icon: '🪙', html: lt => `<img class="shot" src="${STILL('credits.jpg')}" style="object-position:3% 50%">` },
+  ];
+  let html = '';
+  items.forEach((it, i) => {
+    const at = cue(it.k, it.after) - .15;
+    const p = back(P(t, at, at + .5));
+    const lt = Math.max(0, t - at);
+    const on = t >= at && t < (i < 3 ? cue(items[i + 1].k, items[i + 1].after) - .15 : 99);
+    html += `<div class="card abs" style="left:${90 + i * 440}px;top:270px;width:420px;height:560px;padding:18px;opacity:${clamp(p * 2)};
+        transform:translateY(${(1 - p) * 100}px) scale(${on ? 1.03 : 1});border-color:${on ? '#22d3ee' : 'rgba(255,255,255,.12)'};box-shadow:${on ? '0 0 50px rgba(34,211,238,.35)' : 'none'}">
+      <div style="position:relative;height:380px;border-radius:18px;overflow:hidden;background:#111018">${it.html(lt)}</div>
+      <div style="display:flex;align-items:center;gap:14px;margin-top:26px">
+        <span style="font-size:44px">${it.icon}</span><span style="font-size:36px;font-weight:800;line-height:1.15">${it.name}</span></div>
+      <div class="abs" style="right:18px;top:18px;transform:scale(${back(P(t, at + .3, at + .7))})">${check(52)}</div></div>`;
+  });
+  return `<div class="abs center" style="top:90px;${rise(t, 50.45, .45, 30)}"><span style="font-size:72px;font-weight:900">What to <span class="grad">compare</span></span></div>${html}`;
+}]);
+
+// 11. "Vidu is worth testing, especially if image to video is important to your workflow."
+SCENES.push([57.44, 62.16, (t) => {
+  const tWorth = cue('worth', 57.4), tEsp = cue('especially', 58.5);
+  const bp = eo(P(t, 57.5, 58.1));
+  const sp = back(P(t, tWorth - .05, tWorth + .4));
+  const shrink = eio(P(t, tEsp - .1, tEsp + .4));
+  return `
+    <div class="abs" style="left:0;top:0;opacity:${bp};transform:scale(${lerp(1.08, 1, bp) * (1 + (t - 57.5) * .01)});filter:brightness(${lerp(1, .55, eo(P(t, tWorth, tWorth + .4)))})">
+      ${browser(STILL('hero.jpg'), 'vidu.com', 1240, 731, 'left:340px;top:150px')}</div>
+    ${t > tWorth - .05 ? `<div class="abs" style="left:960px;top:${lerp(500, 400, shrink)}px;transform:translate(-50%,-50%) rotate(${lerp(-14, -4, sp)}deg) scale(${lerp(2.4, 1, sp) * lerp(1, .85, shrink)});opacity:${clamp(sp * 2)}">
+      <div style="display:flex;align-items:center;gap:28px;padding:26px 54px;border:7px solid #22d3ee;border-radius:24px;background:rgba(7,6,13,.88);box-shadow:0 0 80px rgba(34,211,238,.45)">
+        ${check(84)}<span style="font-size:110px;font-weight:900;letter-spacing:.02em;color:#e0f2fe;white-space:nowrap">WORTH TESTING</span></div></div>` : ''}
+    <div class="abs center" style="top:620px;${pop(t, tEsp + .05, .5, 40, .7)}">
+      <span class="chip" style="font-size:46px;background:rgba(7,6,13,.88);border-color:#a78bfa;box-shadow:0 0 50px rgba(167,139,250,.4)">
+        Best if <span class="grad">image → video</span> is key to your workflow</span></div>`;
+}]);
+
+// 12. "But can it beat the next two tools for realistic video creation? Let's find out."
+SCENES.push([62.16, 99, (t) => {
+  const tReal = cue('realistic', 63.5), tFind = cue("let's", 65.8);
+  const p = back(P(t, 62.2, 62.7));
+  const glow = P(t, tFind, tFind + .6);
+  const card = (n, i) => {
+    const q = back(P(t, 62.6 + i * .25, 63.1 + i * .25));
+    return `<div class="card abs" style="left:${560 + i * 440}px;top:330px;width:360px;height:380px;opacity:${clamp(q * 2)};transform:translateY(${(1 - q) * 100}px) rotate(${(i ? 4 : -4)}deg);
+        display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 ${40 + glow * 60}px rgba(34,211,238,${.15 + glow * .4})">
+      <div class="grad" style="font-size:190px;font-weight:900;line-height:1;filter:blur(${lerp(10, 0, glow)}px)">${n}</div>
+      <div style="font-size:90px;font-weight:900;color:#64748b;opacity:${1 - glow}">?</div></div>`;
+  };
+  return `
+    <div class="abs center" style="top:120px;opacity:${clamp(p * 2)};transform:scale(${lerp(.7, 1, p)})"><span style="font-size:80px;font-weight:900">Can Vidu beat the <span class="grad">next two?</span></span></div>
+    ${card('#2', 0)}${card('#1', 1)}
+    <div class="abs center" style="top:770px;${pop(t, tReal - .1, .45, 30, .7)}">
+      <span class="chip" style="font-size:38px;border-color:#fbbf24;color:#fde68a">🎬 Realistic video creation</span></div>
+    <div class="abs center" style="top:900px;${rise(t, tFind - .1, .4, 30)}"><span style="font-size:64px;font-weight:900;filter:drop-shadow(0 0 ${glow * 30}px rgba(34,211,238,.8))">Let's find out <span class="grad">→</span></span></div>`;
+}]);
+
+// ---------- main ----------
+window.init = (seg, _assets, fps) => { SEG = seg; FPS = fps || 30; buildWords(); };
+window.render = (t) => {
+  const bg = renderBg(t);
+  const bgEl = document.getElementById('bg');
+  bgEl.setAttribute('style', 'inset:0;' + bg.style);
+  bgEl.innerHTML = bg.html;
+  let out = '';
+  SCENES.forEach(([a, b, fn], i) => {
+    const pad = .3;
+    if (t < a - .05 || t > b + pad) return;
+    const inP = i === 0 ? 1 : eo(P(t, a + .02, a + .32));
+    const outP = i === SCENES.length - 1 ? 0 : eio(P(t, b - .12, b + .16));
+    if (outP >= 1) return;
+    const sc = lerp(1.06, 1, inP) * lerp(1, .94, outP);
+    const blur = (1 - inP) * 10 + outP * 10;
+    out += `<div class="abs" style="inset:0;opacity:${inP * (1 - outP)};transform:scale(${sc});filter:${blur > .1 ? `blur(${blur}px)` : 'none'}">${fn(t)}</div>`;
+  });
+  document.getElementById('scene').innerHTML = out;
+  const fadeIn = 1 - P(t, 0, .25), fadeOut = P(t, window.DURATION - .45, window.DURATION);
+  document.getElementById('fade').style.opacity = Math.max(fadeIn, fadeOut);
+  const imgs = [...document.images].filter(i => !i.complete);
+  return Promise.all(imgs.map(i => new Promise(r => { i.onload = i.onerror = r; })));
+};
+</script>
+</body>
+</html>
