@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hailuo AI Motion Graphics</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+  <canvas id="bg" width="1920" height="1080"></canvas>
+  <div id="redtint"></div>
+
+  <div id="world">
+
+    <!-- 1. Number 2 is Hailuo AI -->
+    <section class="scene" id="s1">
+      <div id="s1-rank">#2</div>
+      <div id="s1-brand">
+        <div class="row">
+          <svg id="s1-logo" viewBox="-60 -60 120 120"><defs>
+            <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5eead4"/><stop offset=".5" stop-color="#818cf8"/><stop offset="1" stop-color="#f472b6"/></linearGradient></defs>
+            <path id="s1-spiral" fill="none" stroke="url(#lg1)" stroke-width="9" stroke-linecap="round"/>
+          </svg>
+          <div class="wm"><span>H</span><span>a</span><span>i</span><span>l</span><span>u</span><span>o</span><span class="ai grad-text">AI</span></div>
+        </div>
+        <div class="tag">AI VIDEO GENERATOR</div>
+      </div>
+    </section>
+
+    <!-- 2. Seriously impressive -->
+    <section class="scene" id="s2">
+      <div class="kicker" id="s2-kick">TEXT &#8594; VIDEO</div>
+      <div class="title" id="s2-head">Seriously <span class="grad-text">impressive</span></div>
+      <div class="glass" id="s2-win">
+        <div class="win-bar"><i></i><i></i><i></i><div class="tabs"><span class="tab on">Text to Video</span><span class="tab">Image to Video</span></div></div>
+        <div class="win-body">
+          <div class="panel-left">
+            <div class="label">PROMPT</div>
+            <div class="prompt"><span id="s2-type"></span><b class="caret" id="s2-caret"></b></div>
+            <div class="chips"><span>1080p</span><span>6s</span><span>Cinematic</span></div>
+            <div id="s2-btn">Generate</div>
+          </div>
+          <div class="panel-right">
+            <div id="s2-preview">
+              <canvas id="s2-canvas" width="900" height="506"></canvas>
+              <div id="s2-live" class="h"><b>&#9679;</b> PLAYING</div>
+              <div id="s2-skel"><div id="s2-pct">0%</div><div class="bar"><i id="s2-bar"></i></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. People, movement, realistic scenes -->
+    <section class="scene" id="s3">
+      <div class="kicker" id="s3-kick">WHERE HAILUO SHINES</div>
+      <div class="title" id="s3-title">Particularly good at&#8230;</div>
+      <div class="cards">
+        <div class="card glass" id="s3-c1"><canvas id="s3-k1" width="434" height="300"></canvas><div class="cap">People</div></div>
+        <div class="card glass" id="s3-c2"><canvas id="s3-k2" width="434" height="300"></canvas><div class="cap">Movement</div></div>
+        <div class="card glass" id="s3-c3"><canvas id="s3-k3" width="434" height="300"></canvas><div class="cap grad-text">Realistic Scenes</div></div>
+      </div>
+      <div class="slot" id="s3-sl1" style="left:207px;top:330px"></div>
+      <div class="slot" id="s3-sl2" style="left:725px;top:330px"></div>
+      <div class="slot" id="s3-sl3" style="left:1243px;top:330px"></div>
+    </section>
+
+    <!-- 4a. Free option, one-time credits -->
+    <section class="scene" id="s4a">
+      <div id="s4-ticket"><div class="big">FREE</div><div class="small">OPTION</div></div>
+      <div id="s4-coins">
+        <div class="coin" style="left:20px;top:150px">C</div>
+        <div class="coin" style="left:150px;top:60px">C</div>
+        <div class="coin" style="left:280px;top:140px">C</div>
+        <div class="coin" style="left:380px;top:30px">C</div>
+      </div>
+      <div id="s4-label"><span class="once">ONE-TIME</span><br>Free credits</div>
+    </section>
+
+    <!-- 4b. Try before paid plans -->
+    <section class="scene" id="s4b">
+      <div class="title" id="s4b-title">Try it <span class="grad-text">before</span> you pay</div>
+      <div class="node glass" id="s4-n1">
+        <div class="ic" style="background:rgba(94,234,212,.15)"><svg width="54" height="54" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="#5eead4"/></svg></div>
+        <div class="t">Free trial</div><div class="s">Test with free credits</div>
+      </div>
+      <svg id="s4-arrow" viewBox="0 0 340 80"><path id="s4-arrowp" d="M10 40 H300" stroke="#818cf8" stroke-width="10" stroke-linecap="round" fill="none"/><path id="s4-arrowh" d="M285 15 L320 40 L285 65" stroke="#f472b6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      <div class="node glass gborder" id="s4-n2">
+        <div class="ic" style="background:rgba(244,114,182,.15)"><svg width="58" height="58" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f472b6"/></svg></div>
+        <div class="t">Paid plans</div><div class="s">Upgrade when ready</div>
+      </div>
+    </section>
+
+    <!-- 5. Monthly pricing -->
+    <section class="scene" id="s5">
+      <div class="price-card glass ghost" id="s5-ghostL"><div class="gl" style="width:40%"></div><div class="gl" style="width:70%;height:90px"></div><div class="gl"></div><div class="gl" style="width:80%"></div></div>
+      <div class="price-card glass ghost" id="s5-ghostR"><div class="gl" style="width:40%"></div><div class="gl" style="width:70%;height:90px"></div><div class="gl"></div><div class="gl" style="width:80%"></div></div>
+      <div class="price-card glass gborder" id="s5-main">
+        <span class="pill">MONTHLY PLAN</span>
+        <div id="s5-from">Starting from</div>
+        <div id="s5-price"><div id="s5-num">$0.00</div><div id="s5-per">/ month</div></div>
+        <div class="divider"></div>
+        <div id="s5-cred"><div class="ic">C</div><div id="s5-cnum">0</div><div id="s5-clab">credits</div></div>
+        <div id="s5-cbar"><i></i></div>
+      </div>
+    </section>
+
+    <!-- 6. Yearly 47% discount -->
+    <section class="scene" id="s6">
+      <div class="glass" id="s6-toggle"><div id="s6-knob"></div><div class="opt o1" id="s6-o1">Monthly</div><div class="opt o2" id="s6-o2">Yearly</div></div>
+      <div id="s6-bars">
+        <div class="brow" id="s6-b1"><div class="bl"><span>Billed monthly</span><span>100%</span></div><div class="bt"><i></i></div></div>
+        <div class="brow" id="s6-b2"><div class="bl"><span>Billed yearly</span><span class="grad-text" style="font-weight:900">53%</span></div><div class="bt"><i></i></div></div>
+      </div>
+      <div id="s6-stamp"><div class="p">47%</div><div class="o">OFF</div></div>
+      <div id="s6-save">&#8593; You save more</div>
+    </section>
+
+    <!-- 7. The downside -->
+    <section class="scene" id="s7">
+      <div id="s7-but">But&#8230;</div>
+      <svg id="s7-warn" viewBox="0 0 100 100"><path d="M50 8 L95 88 H5 Z" fill="none" stroke="#f43f5e" stroke-width="7" stroke-linejoin="round"/><rect x="46" y="36" width="8" height="28" rx="4" fill="#f43f5e"/><circle cx="50" cy="75" r="5" fill="#f43f5e"/></svg>
+      <div id="s7-down">THE DOWNSIDE</div>
+    </section>
+
+    <!-- 8a. Like every AI video platform -->
+    <section class="scene" id="s8a">
+      <div class="title" id="s8-title">Like almost every AI video platform</div>
+      <div id="s8-tiles">
+        <div class="tile glass"><div class="scr"><svg width="56" height="56" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="#64748b"/></svg></div><div class="ln"></div><div class="ln s"></div><div class="cr"><i></i>credits</div></div>
+        <div class="tile glass"><div class="scr"><svg width="56" height="56" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="#64748b"/></svg></div><div class="ln"></div><div class="ln s"></div><div class="cr"><i></i>credits</div></div>
+        <div class="tile glass gborder hero" id="s8-hero"><div class="scr"><svg width="56" height="56" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="#fff"/></svg></div><div class="nm">Hailuo AI</div><div class="ln s"></div><div class="cr"><i></i>credits</div></div>
+        <div class="tile glass"><div class="scr"><svg width="56" height="56" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="#64748b"/></svg></div><div class="ln"></div><div class="ln s"></div><div class="cr"><i></i>credits</div></div>
+        <div class="tile glass"><div class="scr"><svg width="56" height="56" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="#64748b"/></svg></div><div class="ln"></div><div class="ln s"></div><div class="cr"><i></i>credits</div></div>
+      </div>
+    </section>
+
+    <!-- 8b. Credits depend on plan -->
+    <section class="scene" id="s8b">
+      <div class="title" id="s8b-title">Your <span class="grad-text">plan</span> decides your credits</div>
+      <div id="s8-tiers">
+        <div class="tier glass"><div class="tn">Free</div><div class="ts">Starter credits</div>
+          <div class="mrow gen"><div class="ml"><span>Generations</span></div><div class="mt"><i data-w="22"></i></div></div>
+          <div class="mrow crd"><div class="ml"><span>Credits</span></div><div class="mt"><i data-w="18"></i></div></div></div>
+        <div class="tier glass"><div class="tn">Paid</div><div class="ts">Monthly credits</div>
+          <div class="mrow gen"><div class="ml"><span>Generations</span></div><div class="mt"><i data-w="58"></i></div></div>
+          <div class="mrow crd"><div class="ml"><span>Credits</span></div><div class="mt"><i data-w="55"></i></div></div></div>
+        <div class="tier glass gborder"><div class="tn grad-text">Higher tier</div><div class="ts">More of everything</div>
+          <div class="mrow gen"><div class="ml"><span>Generations</span></div><div class="mt"><i data-w="100"></i></div></div>
+          <div class="mrow crd"><div class="ml"><span>Credits</span></div><div class="mt"><i data-w="96"></i></div></div></div>
+      </div>
+    </section>
+
+    <!-- 9. Lots of videos -> credit efficiency -->
+    <section class="scene" id="s9">
+      <div class="title" id="s9-t1">Generating <span class="grad-text">every day?</span></div>
+      <div class="title h" id="s9-t2">Think <span style="color:var(--gold)">credit efficiency</span></div>
+      <div id="s9-grid"></div>
+      <div id="s9-count">Videos today: <b id="s9-n">0</b></div>
+      <div class="glass" id="s9-meter"><div class="ml">CREDITS LEFT</div><div id="s9-pct">100%</div><div id="s9-batt"><div id="s9-fill"></div></div></div>
+    </section>
+
+    <!-- 10. The interesting part -->
+    <section class="scene" id="s10">
+      <div id="s10-rays"></div>
+      <svg id="s10-gift" viewBox="0 0 100 100"><defs><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5eead4"/><stop offset=".5" stop-color="#818cf8"/><stop offset="1" stop-color="#f472b6"/></linearGradient></defs>
+        <rect x="14" y="44" width="72" height="48" rx="8" fill="url(#lg2)"/><rect x="8" y="30" width="84" height="18" rx="6" fill="#a5b4fc"/>
+        <rect x="45" y="30" width="10" height="62" fill="#fbbf24"/><path d="M50 30 C36 10 18 20 30 30 M50 30 C64 10 82 20 70 30" stroke="#fbbf24" stroke-width="7" fill="none" stroke-linecap="round"/></svg>
+      <div id="s10-a">But here's the</div>
+      <div id="s10-b" class="grad-text">interesting part</div>
+    </section>
+
+    <!-- 11. New users: 3,000 free credits -->
+    <section class="scene" id="s11">
+      <div class="glass" id="s11-new"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4.5" fill="#0b0b14"/><path d="M3 21c1-5 5-7 9-7s8 2 9 7z" fill="#0b0b14"/></svg></div>NEW USER BONUS</div>
+      <div id="s11-num" class="grad-text">0</div>
+      <div id="s11-free">FREE CREDITS</div>
+      <div id="s11-cta">Start creating AI videos &#8594;</div>
+      <div id="s11-phone"><div id="s11-screen"><div class="notch"></div>
+        <div class="app"><div class="icon"><svg width="110" height="110" viewBox="-60 -60 120 120"><path id="s11-spiral" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/></svg></div>
+          <div class="nm">MiniMax</div><div class="sb">Download &amp; claim credits</div></div>
+        <div id="s11-get"><span id="s11-gtxt">GET</span><svg id="s11-ring" viewBox="0 0 40 40" class="h"><circle cx="20" cy="20" r="16" stroke="rgba(255,255,255,.25)" stroke-width="4" fill="none"/><circle id="s11-arc" cx="20" cy="20" r="16" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="100.5" transform="rotate(-90 20 20)"/></svg></div>
+      </div></div>
+    </section>
+
+    <!-- 12. Conclusion -->
+    <section class="scene" id="s12">
+      <div class="kicker" id="s12-kick">IN CONCLUSION</div>
+      <div class="title" id="s12-title">The verdict on <span class="grad-text">Hailuo AI</span></div>
+      <div id="s12-list">
+        <div class="chk" id="s12-l1"><div class="bx"><svg width="40" height="40" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" stroke="#34d399" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Impressive AI videos</div>
+        <div class="chk" id="s12-l2"><div class="bx"><svg width="40" height="40" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" stroke="#34d399" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Without spending a fortune</div>
+      </div>
+      <div id="s12-seal"><div class="ring"></div><div class="core"><div class="a">ABSOLUTELY</div><div class="b">WORTH<br>TRYING</div></div></div>
+      <div id="s12-chips">
+        <div class="chip">People &amp; motion</div><div class="chip">Free credits</div><div class="chip">From $10.50/mo</div><div class="chip">47% off yearly</div><div class="chip">+3,000 new-user credits</div>
+      </div>
+    </section>
+
+    <!-- 13. Reveal number one -->
+    <section class="scene" id="s13">
+      <div id="s13-rays"></div>
+      <div class="kicker" id="s13-kick">UP NEXT</div>
+      <div id="s13-one">#1</div>
+      <div id="s13-q">THE NUMBER ONE PICK</div>
+    </section>
+
+  </div>
+
+  <canvas id="fx" width="1920" height="1080"></canvas>
+  <div id="flash"></div>
+  <div id="hud">
+    <div id="progress"><i></i></div>
+    <div id="badge" class="glass"><span class="num">#2</span><span>HAILUO AI</span></div>
+  </div>
+  <div id="captions"><div class="cap"></div></div>
+  <div id="vignette"></div>
+</div>
+
+<script src="../node_modules/gsap/dist/gsap.min.js"></script>
+<script src="timing.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

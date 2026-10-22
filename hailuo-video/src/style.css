@@ -1,0 +1,305 @@
+:root {
+  --bg: #05060b;
+  --c1: #5eead4;
+  --c2: #818cf8;
+  --c3: #f472b6;
+  --gold: #fbbf24;
+  --red: #f43f5e;
+  --green: #34d399;
+  --ink: #f8fafc;
+  --mute: #94a3b8;
+  --card: rgba(255, 255, 255, 0.055);
+  --line: rgba(255, 255, 255, 0.13);
+  --grad: linear-gradient(95deg, var(--c1) 0%, var(--c2) 50%, var(--c3) 100%);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+body { font-family: "Inter", sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+#bg, #fx { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+#fx { z-index: 40; pointer-events: none; }
+#world { position: absolute; inset: 0; z-index: 10; }
+#redtint {
+  position: absolute; inset: 0; z-index: 5; opacity: 0;
+  background: radial-gradient(ellipse at 50% 45%, rgba(244, 63, 94, 0.32), rgba(80, 0, 20, 0.55) 70%);
+}
+#flash { position: absolute; inset: 0; z-index: 45; background: #fff; opacity: 0; mix-blend-mode: screen; }
+#vignette {
+  position: absolute; inset: 0; z-index: 50; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+.scene { position: absolute; inset: 0; visibility: hidden; opacity: 0; }
+.abs { position: absolute; }
+.h { visibility: hidden; opacity: 0; }
+.grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.display { font-family: "Inter Display", "Inter", sans-serif; letter-spacing: -0.03em; }
+
+.kicker {
+  position: absolute; left: 0; right: 0; text-align: center;
+  font: 700 26px "Inter", sans-serif; letter-spacing: 0.32em; color: var(--c1);
+}
+.title {
+  position: absolute; left: 0; right: 0; text-align: center;
+  font: 900 92px "Inter Display", sans-serif; letter-spacing: -0.035em; line-height: 1.02;
+}
+.glass {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025));
+  border: 1.5px solid var(--line); border-radius: 28px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+}
+.gborder { position: relative; }
+.gborder::before {
+  content: ""; position: absolute; inset: -2px; border-radius: inherit; padding: 2px;
+  background: var(--grad);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+
+/* HUD */
+#hud { position: absolute; inset: 0; z-index: 60; pointer-events: none; }
+#progress { position: absolute; left: 0; top: 0; height: 5px; width: 100%; background: rgba(255,255,255,0.06); }
+#progress i { display: block; height: 100%; width: 0; background: var(--grad); box-shadow: 0 0 18px var(--c2); }
+#badge {
+  position: absolute; left: 56px; top: 44px; display: flex; align-items: center; gap: 16px;
+  padding: 12px 24px 12px 14px; border-radius: 999px; font: 800 24px "Inter", sans-serif; letter-spacing: 0.12em;
+}
+#badge .num {
+  display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%;
+  background: var(--grad); color: #0b0b14; font: 900 24px "Inter Display", sans-serif; letter-spacing: 0;
+}
+
+/* Captions */
+#captions { position: absolute; left: 0; right: 0; bottom: 64px; z-index: 55; display: flex; justify-content: center; }
+#captions .cap {
+  display: flex; gap: 20px; padding: 16px 36px; border-radius: 22px;
+  background: rgba(5, 6, 12, 0.62); border: 1px solid rgba(255,255,255,0.09);
+  font: 800 50px "Inter Display", sans-serif; letter-spacing: -0.01em; white-space: nowrap;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+}
+#captions .cap:empty { display: none; }
+#captions .wd { display: inline-block; color: rgba(255,255,255,0.92); transition: none; }
+#captions .wd.on { color: transparent; background: var(--grad); -webkit-background-clip: text; background-clip: text; transform: scale(1.07); }
+#captions .wd.key { color: var(--gold); }
+#captions .wd.key.on { color: transparent; }
+
+/* Scene 1 */
+#s1-rank {
+  position: absolute; left: 960px; top: 540px; font: 900 400px "Inter Display", sans-serif; letter-spacing: -0.06em;
+  line-height: 1; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 60px rgba(129, 140, 248, 0.55));
+}
+#s1-brand { position: absolute; left: 760px; top: 540px; }
+#s1-brand .row { display: flex; align-items: center; gap: 30px; }
+#s1-logo { width: 170px; height: 170px; }
+#s1-brand .wm { font: 900 190px "Inter Display", sans-serif; letter-spacing: -0.05em; line-height: 1; display: flex; }
+#s1-brand .wm span { display: inline-block; }
+#s1-brand .wm .ai { margin-left: 36px; }
+#s1-brand .tag { margin: 18px 0 0 204px; font: 700 30px "Inter", sans-serif; letter-spacing: 0.45em; color: var(--mute); }
+
+/* Scene 2 */
+#s2-kick { top: 92px; }
+#s2-head { top: 120px; font-size: 84px; }
+#s2-win { position: absolute; left: 230px; top: 250px; width: 1460px; height: 610px; overflow: hidden; }
+.win-bar { height: 62px; display: flex; align-items: center; gap: 12px; padding: 0 26px; border-bottom: 1px solid var(--line); }
+.win-bar i { width: 14px; height: 14px; border-radius: 50%; background: #334155; }
+.win-bar i:nth-child(1) { background: #fb7185; } .win-bar i:nth-child(2) { background: #fbbf24; } .win-bar i:nth-child(3) { background: #34d399; }
+.win-bar .tabs { margin-left: 28px; display: flex; gap: 10px; }
+.win-bar .tab { font: 600 19px "Inter"; color: var(--mute); padding: 8px 18px; border-radius: 10px; }
+.win-bar .tab.on { color: var(--ink); background: rgba(255,255,255,0.08); }
+.win-body { display: flex; gap: 30px; padding: 30px; height: calc(100% - 62px); }
+.panel-left { width: 470px; display: flex; flex-direction: column; gap: 22px; }
+.label { font: 700 17px "Inter"; letter-spacing: 0.25em; color: var(--mute); }
+.prompt {
+  height: 230px; padding: 22px; border-radius: 18px; background: rgba(0,0,0,0.35); border: 1px solid var(--line);
+  font: 500 27px/1.45 "JetBrains Mono", monospace; color: #e2e8f0;
+}
+.caret { display: inline-block; width: 3px; height: 30px; background: var(--c1); vertical-align: -5px; margin-left: 3px; }
+.chips { display: flex; gap: 12px; }
+.chips span { font: 600 19px "Inter"; padding: 9px 16px; border-radius: 999px; border: 1px solid var(--line); color: #cbd5e1; }
+#s2-btn {
+  margin-top: auto; height: 76px; border-radius: 18px; display: grid; place-items: center;
+  background: var(--grad); color: #0b0b14; font: 800 28px "Inter Display"; letter-spacing: 0.02em;
+  box-shadow: 0 12px 40px rgba(129,140,248,0.45);
+}
+.panel-right { flex: 1; }
+#s2-preview { position: relative; width: 900px; height: 506px; border-radius: 20px; overflow: hidden; background: #0b0d18; border: 1px solid var(--line); }
+#s2-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+#s2-skel { position: absolute; inset: 0; display: grid; place-content: center; gap: 22px; justify-items: center;
+  background: linear-gradient(110deg, #0e1222 30%, #1a2040 50%, #0e1222 70%); background-size: 300% 100%; }
+#s2-pct { font: 800 72px "Inter Display"; }
+#s2-skel .bar { width: 420px; height: 10px; border-radius: 99px; background: rgba(255,255,255,0.1); overflow: hidden; }
+#s2-bar { display: block; height: 100%; width: 0; background: var(--grad); }
+#s2-live { position: absolute; left: 22px; top: 20px; font: 800 17px "Inter"; letter-spacing: 0.2em; padding: 8px 14px; border-radius: 10px; background: rgba(0,0,0,0.5); }
+#s2-live b { color: var(--c1); }
+
+/* Scene 3 */
+#s3-kick { top: 118px; }
+#s3-title { top: 160px; }
+.cards { position: absolute; left: 0; right: 0; top: 330px; display: flex; justify-content: center; gap: 48px; }
+.card { position: relative; width: 470px; height: 450px; padding: 18px; }
+.card canvas { width: 434px; height: 300px; border-radius: 18px; display: block; background: #0b0f1e; }
+.card .cap { margin-top: 26px; text-align: center; font: 900 50px "Inter Display"; letter-spacing: -0.02em; }
+.slot { position: absolute; width: 470px; height: 450px; border-radius: 28px; border: 2.5px dashed rgba(255,255,255,0.18); }
+
+/* Scene 4 */
+#s4-ticket {
+  position: absolute; left: 330px; top: 300px; width: 640px; height: 330px; border-radius: 34px;
+  background: linear-gradient(135deg, #5eead4, #818cf8 55%, #f472b6); color: #0b0b14;
+  display: grid; place-content: center; text-align: center; box-shadow: 0 30px 90px rgba(129,140,248,0.5);
+}
+#s4-ticket::before, #s4-ticket::after { content: ""; position: absolute; top: 50%; width: 70px; height: 70px; margin-top: -35px; border-radius: 50%; background: var(--bg); }
+#s4-ticket::before { left: -35px; } #s4-ticket::after { right: -35px; }
+#s4-ticket .big { font: 900 200px/0.9 "Inter Display"; letter-spacing: -0.05em; }
+#s4-ticket .small { font: 800 30px "Inter"; letter-spacing: 0.3em; margin-top: 10px; }
+#s4-coins { position: absolute; left: 1090px; top: 270px; width: 520px; height: 300px; }
+.coin {
+  position: absolute; width: 130px; height: 130px; border-radius: 50%; display: grid; place-items: center;
+  background: radial-gradient(circle at 35% 30%, #fde68a, #f59e0b 60%, #b45309); border: 5px solid #fcd34d;
+  font: 900 56px "Inter Display"; color: #78350f; box-shadow: 0 14px 30px rgba(0,0,0,0.4), inset 0 -6px 0 rgba(0,0,0,0.15);
+}
+#s4-label { position: absolute; left: 1060px; top: 600px; width: 620px; font: 900 64px/1.05 "Inter Display"; letter-spacing: -0.03em; }
+#s4-label .once { display: inline-block; font: 800 26px "Inter"; letter-spacing: 0.15em; color: #0b0b14; background: var(--gold); padding: 8px 16px; border-radius: 10px; margin-bottom: 16px; }
+#s4b-title { top: 150px; }
+.node {
+  position: absolute; top: 380px; width: 520px; height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+}
+.node .ic { width: 96px; height: 96px; border-radius: 26px; display: grid; place-items: center; }
+.node .t { font: 900 54px "Inter Display"; letter-spacing: -0.02em; }
+.node .s { font: 600 24px "Inter"; color: var(--mute); }
+#s4-n1 { left: 250px; } #s4-n2 { left: 1150px; }
+#s4-arrow { position: absolute; left: 790px; top: 470px; width: 340px; height: 80px; overflow: visible; }
+
+/* Scene 5 */
+.price-card { position: absolute; top: 170px; width: 640px; height: 640px; padding: 50px 56px; }
+#s5-main { left: 640px; }
+#s5-ghostL { left: 120px; transform: scale(0.86); }
+#s5-ghostR { left: 1160px; transform: scale(0.86); }
+.ghost .gl { height: 26px; border-radius: 10px; background: rgba(255,255,255,0.08); margin-bottom: 26px; }
+.pill { display: inline-block; font: 800 22px "Inter"; letter-spacing: 0.25em; padding: 10px 20px; border-radius: 999px; background: rgba(94,234,212,0.12); color: var(--c1); border: 1px solid rgba(94,234,212,0.35); }
+#s5-from { margin-top: 42px; font: 600 30px "Inter"; color: var(--mute); }
+#s5-price { margin-top: 6px; display: flex; align-items: flex-end; gap: 14px; }
+#s5-num { font: 900 144px/0.9 "Inter Display"; letter-spacing: -0.05em; }
+#s5-per { font: 700 34px "Inter"; color: var(--mute); padding-bottom: 14px; white-space: nowrap; }
+.divider { height: 1px; background: var(--line); margin: 40px 0 34px; }
+#s5-cred { display: flex; align-items: center; gap: 20px; }
+#s5-cred .ic { width: 64px; height: 64px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fde68a, #f59e0b 60%, #b45309); display: grid; place-items: center; font: 900 30px "Inter Display"; color: #78350f; }
+#s5-cnum { font: 900 64px "Inter Display"; letter-spacing: -0.03em; }
+#s5-clab { font: 700 34px "Inter"; color: var(--mute); }
+#s5-cbar { margin-top: 26px; height: 16px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; }
+#s5-cbar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #fcd34d, #f59e0b); }
+
+/* Scene 6 */
+#s6-toggle { position: absolute; left: 660px; top: 140px; width: 600px; height: 104px; border-radius: 999px; padding: 10px; }
+#s6-knob { position: absolute; left: 10px; top: 10px; width: 290px; height: 84px; border-radius: 999px; background: var(--grad); box-shadow: 0 8px 30px rgba(129,140,248,0.5); }
+#s6-toggle .opt { position: absolute; top: 0; height: 104px; width: 300px; display: grid; place-items: center; font: 800 34px "Inter Display"; }
+#s6-toggle .o1 { left: 0; } #s6-toggle .o2 { left: 300px; }
+#s6-bars { position: absolute; left: 200px; top: 380px; width: 820px; }
+.brow { margin-bottom: 46px; }
+.brow .bl { display: flex; justify-content: space-between; font: 700 32px "Inter"; margin-bottom: 14px; color: #cbd5e1; }
+.brow .bt { height: 64px; border-radius: 18px; background: rgba(255,255,255,0.06); overflow: hidden; }
+.brow .bt i { display: block; height: 100%; width: 0; border-radius: 18px; }
+#s6-b1 i { background: linear-gradient(90deg, #64748b, #94a3b8); }
+#s6-b2 i { background: var(--grad); }
+#s6-stamp {
+  position: absolute; left: 1150px; top: 330px; width: 560px; height: 340px; border-radius: 40px;
+  display: grid; place-content: center; text-align: center; border: 8px solid var(--green); color: var(--green);
+  background: rgba(52,211,153,0.08); box-shadow: 0 0 80px rgba(52,211,153,0.35), inset 0 0 50px rgba(52,211,153,0.15);
+}
+#s6-stamp .p { font: 900 190px/0.9 "Inter Display"; letter-spacing: -0.05em; }
+#s6-stamp .o { font: 900 50px "Inter Display"; letter-spacing: 0.3em; margin-top: 6px; }
+#s6-save { position: absolute; left: 0; right: 0; top: 735px; text-align: center; font: 900 76px "Inter Display"; letter-spacing: -0.02em; color: var(--green); }
+
+/* Scene 7 */
+#s7-but { position: absolute; left: 0; right: 0; top: 230px; text-align: center; font: 900 150px "Inter Display"; letter-spacing: -0.04em; color: #fff; }
+#s7-warn { position: absolute; left: 860px; top: 270px; width: 200px; height: 200px; }
+#s7-down { position: absolute; left: 0; right: 0; top: 500px; text-align: center; font: 900 190px "Inter Display"; letter-spacing: -0.04em; color: #fff; }
+
+/* Scene 8 */
+#s8-title { top: 150px; font-size: 80px; }
+#s8-tiles { position: absolute; left: 0; right: 0; top: 340px; display: flex; justify-content: center; gap: 34px; }
+.tile { width: 250px; height: 300px; padding: 22px; display: flex; flex-direction: column; gap: 16px; }
+.tile .scr { height: 140px; border-radius: 16px; background: linear-gradient(135deg, #1e293b, #0f172a); display: grid; place-items: center; }
+.tile .ln { height: 16px; border-radius: 8px; background: rgba(255,255,255,0.1); }
+.tile .ln.s { width: 60%; }
+.tile .cr { margin-top: auto; display: flex; align-items: center; gap: 10px; font: 700 20px "Inter"; color: var(--gold); }
+.tile .cr i { width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fde68a, #f59e0b 60%, #b45309); }
+.tile.hero .scr { background: linear-gradient(135deg, #134e4a, #312e81 60%, #831843); }
+.tile .nm { font: 800 24px "Inter Display"; }
+#s8b-title { top: 140px; font-size: 80px; }
+#s8-tiers { position: absolute; left: 0; right: 0; top: 340px; display: flex; justify-content: center; gap: 44px; }
+.tier { width: 400px; height: 380px; padding: 34px; display: flex; flex-direction: column; }
+.tier .tn { font: 900 40px "Inter Display"; }
+.tier .ts { font: 600 22px "Inter"; color: var(--mute); margin-top: 6px; }
+.tier .mrow { margin-top: 34px; }
+.tier .ml { display: flex; justify-content: space-between; font: 700 22px "Inter"; color: #cbd5e1; margin-bottom: 10px; }
+.tier .mt { height: 26px; border-radius: 99px; background: rgba(255,255,255,0.07); overflow: hidden; }
+.tier .mt i { display: block; height: 100%; width: 0; border-radius: 99px; }
+.tier .gen i { background: var(--grad); }
+.tier .crd i { background: linear-gradient(90deg, #fcd34d, #f59e0b); }
+
+/* Scene 9 */
+#s9-t1 { top: 140px; font-size: 80px; }
+#s9-t2 { top: 140px; font-size: 80px; }
+#s9-grid { position: absolute; left: 180px; top: 320px; width: 860px; display: grid; grid-template-columns: repeat(4, 196px); gap: 18px; }
+.thumb { height: 112px; border-radius: 14px; position: relative; overflow: hidden; border: 1px solid var(--line); }
+.thumb::after { content: ""; position: absolute; left: 50%; top: 50%; margin: -14px 0 0 -10px; border-left: 24px solid rgba(255,255,255,0.85); border-top: 14px solid transparent; border-bottom: 14px solid transparent; }
+#s9-count { position: absolute; left: 180px; top: 740px; font: 800 36px "Inter"; color: #cbd5e1; }
+#s9-count b { font: 900 44px "Inter Display"; color: #fff; }
+#s9-meter { position: absolute; left: 1150px; top: 330px; width: 600px; height: 400px; padding: 40px; }
+#s9-meter .ml { font: 700 24px "Inter"; letter-spacing: 0.2em; color: var(--mute); }
+#s9-pct { font: 900 130px/1 "Inter Display"; letter-spacing: -0.04em; margin: 18px 0 26px; }
+#s9-batt { position: relative; height: 92px; border-radius: 20px; border: 4px solid rgba(255,255,255,0.35); padding: 8px; }
+#s9-batt::after { content: ""; position: absolute; right: -20px; top: 26px; width: 12px; height: 32px; border-radius: 0 6px 6px 0; background: rgba(255,255,255,0.35); }
+#s9-fill { height: 100%; border-radius: 12px; width: 100%; }
+
+/* Scene 10 */
+#s10-rays { position: absolute; left: 960px; top: 470px; width: 1600px; height: 1600px; margin: -800px 0 0 -800px; opacity: 0.5;
+  background: repeating-conic-gradient(from 0deg, rgba(129,140,248,0.18) 0deg 8deg, transparent 8deg 20deg);
+  -webkit-mask: radial-gradient(circle, #000 0%, transparent 62%); mask: radial-gradient(circle, #000 0%, transparent 62%); }
+#s10-gift { position: absolute; left: 860px; top: 170px; width: 200px; height: 200px; }
+#s10-a { position: absolute; left: 0; right: 0; top: 420px; text-align: center; font: 800 70px "Inter Display"; color: #e2e8f0; }
+#s10-b { position: absolute; left: 0; right: 0; top: 510px; text-align: center; font: 900 170px "Inter Display"; letter-spacing: -0.045em; }
+
+/* Scene 11 */
+#s11-new { position: absolute; left: 220px; top: 190px; display: flex; align-items: center; gap: 18px; padding: 16px 30px 16px 18px; border-radius: 999px; font: 800 32px "Inter"; letter-spacing: 0.18em; }
+#s11-new .ic { width: 58px; height: 58px; border-radius: 50%; background: var(--grad); display: grid; place-items: center; }
+#s11-num { position: absolute; left: 210px; top: 318px; font: 900 260px/1 "Inter Display"; letter-spacing: -0.06em; }
+#s11-free { position: absolute; left: 226px; top: 588px; font: 900 64px "Inter Display"; letter-spacing: 0.08em; color: var(--gold); }
+#s11-cta { position: absolute; left: 226px; top: 704px; padding: 22px 36px; border-radius: 20px; background: var(--grad); color: #0b0b14; font: 800 36px "Inter Display"; box-shadow: 0 16px 50px rgba(129,140,248,0.45); }
+#s11-phone { position: absolute; left: 1220px; top: 150px; width: 400px; height: 700px; border-radius: 56px; padding: 18px; background: #0b0d16; border: 3px solid rgba(255,255,255,0.18); box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 80px rgba(129,140,248,0.25); }
+#s11-screen { width: 100%; height: 100%; border-radius: 42px; background: linear-gradient(180deg, #111527, #0a0c17); overflow: hidden; padding: 70px 30px 30px; position: relative; }
+#s11-screen .notch { position: absolute; left: 50%; top: 16px; width: 110px; height: 30px; margin-left: -55px; border-radius: 20px; background: #000; }
+.app { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 60px; }
+.app .icon { width: 170px; height: 170px; border-radius: 44px; background: linear-gradient(135deg, #f472b6, #818cf8 50%, #5eead4); display: grid; place-items: center; box-shadow: 0 20px 50px rgba(129,140,248,0.4); }
+.app .nm { font: 900 44px "Inter Display"; margin-top: 10px; }
+.app .sb { font: 600 21px "Inter"; color: var(--mute); }
+#s11-get { margin: 40px auto 0; width: 220px; height: 74px; border-radius: 999px; background: #2563eb; display: grid; place-items: center; font: 800 28px "Inter Display"; position: relative; }
+#s11-ring { position: absolute; left: 50%; top: 50%; width: 80px; height: 80px; margin: -40px 0 0 -40px; }
+
+/* Scene 12 */
+#s12-kick { top: 118px; }
+#s12-title { top: 160px; font-size: 84px; }
+#s12-list { position: absolute; left: 200px; top: 360px; }
+.chk { display: flex; align-items: center; gap: 26px; margin-bottom: 40px; font: 900 56px "Inter Display"; letter-spacing: -0.02em; }
+.chk .bx { width: 72px; height: 72px; border-radius: 20px; background: rgba(52,211,153,0.15); border: 3px solid var(--green); display: grid; place-items: center; }
+#s12-seal { position: absolute; left: 1210px; top: 300px; width: 470px; height: 470px; }
+#s12-seal .ring { position: absolute; inset: 0; border-radius: 50%; background: repeating-conic-gradient(var(--c2) 0deg 6deg, transparent 6deg 12deg); -webkit-mask: radial-gradient(circle, transparent 62%, #000 63%, #000 70%, transparent 71%); mask: radial-gradient(circle, transparent 62%, #000 63%, #000 70%, transparent 71%); }
+#s12-seal .core { position: absolute; inset: 70px; border-radius: 50%; background: var(--grad); display: grid; place-content: center; text-align: center; color: #0b0b14; box-shadow: 0 0 90px rgba(129,140,248,0.6); }
+#s12-seal .core .a { font: 800 26px "Inter"; letter-spacing: 0.2em; }
+#s12-seal .core .b { font: 900 64px/0.95 "Inter Display"; letter-spacing: -0.03em; margin-top: 8px; }
+#s12-chips { position: absolute; left: 0; right: 0; top: 790px; display: flex; justify-content: center; gap: 18px; }
+.chip { padding: 14px 24px; border-radius: 999px; font: 700 26px "Inter"; background: rgba(255,255,255,0.07); border: 1px solid var(--line); }
+
+/* Scene 13 */
+#s13-rays { position: absolute; left: 960px; top: 470px; width: 1800px; height: 1800px; margin: -900px 0 0 -900px;
+  background: repeating-conic-gradient(from 0deg, rgba(251,191,36,0.16) 0deg 6deg, transparent 6deg 18deg);
+  -webkit-mask: radial-gradient(circle, #000 0%, transparent 60%); mask: radial-gradient(circle, #000 0%, transparent 60%); }
+#s13-kick { top: 150px; color: var(--gold); font-size: 34px; }
+#s13-one { position: absolute; left: 960px; top: 500px; font: 900 460px/1 "Inter Display"; letter-spacing: -0.06em;
+  background: linear-gradient(180deg, #fde68a, #f59e0b 60%, #b45309); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 70px rgba(251,191,36,0.55)); }
+#s13-q { position: absolute; left: 0; right: 0; top: 760px; text-align: center; font: 800 44px "Inter Display"; letter-spacing: 0.3em; color: #e2e8f0; }
