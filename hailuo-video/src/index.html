@@ -27,54 +27,31 @@
       </div>
     </section>
 
-    <!-- 2. Seriously impressive -->
+    <!-- 2. Seriously impressive (generator recording -> sample clip) -->
     <section class="scene" id="s2">
-      <div class="kicker" id="s2-kick">TEXT &#8594; VIDEO</div>
+      <div class="kicker" id="s2-kick">TEXT &#8594; VIDEO ON HAILUOAI.VIDEO</div>
       <div class="title" id="s2-head">Seriously <span class="grad-text">impressive</span></div>
-      <div class="glass" id="s2-win">
-        <div class="win-bar"><i></i><i></i><i></i><div class="tabs"><span class="tab on">Text to Video</span><span class="tab">Image to Video</span></div></div>
-        <div class="win-body">
-          <div class="panel-left">
-            <div class="label">PROMPT</div>
-            <div class="prompt"><span id="s2-type"></span><b class="caret" id="s2-caret"></b></div>
-            <div class="chips"><span>1080p</span><span>6s</span><span>Cinematic</span></div>
-            <div id="s2-btn">Generate</div>
-          </div>
-          <div class="panel-right">
-            <div id="s2-preview">
-              <canvas id="s2-canvas" width="900" height="506"></canvas>
-              <div id="s2-live" class="h"><b>&#9679;</b> PLAYING</div>
-              <div id="s2-skel"><div id="s2-pct">0%</div><div class="bar"><i id="s2-bar"></i></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="browser" id="s2-br" style="left:310px;top:190px;width:1300px" data-w="1300" data-h="613"><div class="bbar"><i></i><i></i><i></i><div class="url"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0110 0v3h1a1 1 0 011 1v9a1 1 0 01-1 1H6a1 1 0 01-1-1v-9a1 1 0 011-1zm2 0h6V7a3 3 0 00-6 0z" fill="#94a3b8"/></svg><span>hailuoai.video</span></div></div><div class="vp" style="height:613px"><div class="content"><img class="seq" data-seq="gen" alt=""></div></div></div>
+      <div id="s2-hero" class="clip"><img class="seq" data-seq="hero" alt=""><div class="made">Made with Hailuo AI</div></div>
     </section>
 
     <!-- 3. People, movement, realistic scenes -->
     <section class="scene" id="s3">
       <div class="kicker" id="s3-kick">WHERE HAILUO SHINES</div>
       <div class="title" id="s3-title">Particularly good at&#8230;</div>
+      <div class="browser" id="s3-br" style="left:410px;top:300px;width:1100px" data-w="1100" data-h="519"><div class="bbar"><i></i><i></i><i></i><div class="url"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0110 0v3h1a1 1 0 011 1v9a1 1 0 01-1 1H6a1 1 0 01-1-1v-9a1 1 0 011-1zm2 0h6V7a3 3 0 00-6 0z" fill="#94a3b8"/></svg><span>hailuoai.video &#8212; Trending</span></div></div><div class="vp" style="height:519px"><div class="content"><img class="seq" data-seq="gallery" alt=""></div></div></div>
       <div class="cards">
-        <div class="card glass" id="s3-c1"><canvas id="s3-k1" width="434" height="300"></canvas><div class="cap">People</div></div>
-        <div class="card glass" id="s3-c2"><canvas id="s3-k2" width="434" height="300"></canvas><div class="cap">Movement</div></div>
-        <div class="card glass" id="s3-c3"><canvas id="s3-k3" width="434" height="300"></canvas><div class="cap grad-text">Realistic Scenes</div></div>
+        <div class="card glass" id="s3-c1"><div class="art"><img class="seq" data-seq="people" alt=""></div><div class="cap">People</div></div>
+        <div class="card glass" id="s3-c2"><div class="art"><img class="seq" data-seq="movement" alt=""></div><div class="cap">Movement</div></div>
+        <div class="card glass" id="s3-c3"><div class="art"><img class="seq" data-seq="realistic" alt=""></div><div class="cap grad-text">Realistic Scenes</div></div>
       </div>
-      <div class="slot" id="s3-sl1" style="left:207px;top:330px"></div>
-      <div class="slot" id="s3-sl2" style="left:725px;top:330px"></div>
-      <div class="slot" id="s3-sl3" style="left:1243px;top:330px"></div>
     </section>
 
-    <!-- 4a. Free option, one-time credits -->
+    <!-- 4a. Free option, one-time credits (pricing page) -->
     <section class="scene" id="s4a">
+      <div class="browser" id="s4-br" style="left:110px;top:190px;width:1040px" data-w="1040" data-h="491"><div class="bbar"><i></i><i></i><i></i><div class="url"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0110 0v3h1a1 1 0 011 1v9a1 1 0 01-1 1H6a1 1 0 01-1-1v-9a1 1 0 011-1zm2 0h6V7a3 3 0 00-6 0z" fill="#94a3b8"/></svg><span>hailuoai.video/subscribe</span></div></div><div class="vp" style="height:491px"><div class="content"><img src="../media/pricing.jpg" alt=""><div class="hl teal" id="s4-hl1" style="left:285px;top:140px;width:322px;height:448px"></div><div class="hl gold" id="s4-hl2" style="left:300px;top:430px;width:205px;height:36px"></div></div></div></div>
       <div id="s4-ticket"><div class="big">FREE</div><div class="small">OPTION</div></div>
-      <div id="s4-coins">
-        <div class="coin" style="left:20px;top:150px">C</div>
-        <div class="coin" style="left:150px;top:60px">C</div>
-        <div class="coin" style="left:280px;top:140px">C</div>
-        <div class="coin" style="left:380px;top:30px">C</div>
-      </div>
-      <div id="s4-label"><span class="once">ONE-TIME</span><br>Free credits</div>
+      <div id="s4-label"><span class="once">ONE-TIME</span><br>Free credits<br><span class="sub">to try it out</span></div>
     </section>
 
     <!-- 4b. Try before paid plans -->
@@ -91,10 +68,9 @@
       </div>
     </section>
 
-    <!-- 5. Monthly pricing -->
+    <!-- 5. Monthly pricing (pricing page + counter card) -->
     <section class="scene" id="s5">
-      <div class="price-card glass ghost" id="s5-ghostL"><div class="gl" style="width:40%"></div><div class="gl" style="width:70%;height:90px"></div><div class="gl"></div><div class="gl" style="width:80%"></div></div>
-      <div class="price-card glass ghost" id="s5-ghostR"><div class="gl" style="width:40%"></div><div class="gl" style="width:70%;height:90px"></div><div class="gl"></div><div class="gl" style="width:80%"></div></div>
+      <div class="browser" id="s5-br" style="left:110px;top:190px;width:1040px" data-w="1040" data-h="491"><div class="bbar"><i></i><i></i><i></i><div class="url"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0110 0v3h1a1 1 0 011 1v9a1 1 0 01-1 1H6a1 1 0 01-1-1v-9a1 1 0 011-1zm2 0h6V7a3 3 0 00-6 0z" fill="#94a3b8"/></svg><span>hailuoai.video/subscribe</span></div></div><div class="vp" style="height:491px"><div class="content"><img src="../media/pricing.jpg" alt=""><div class="hl teal" id="s5-hl0" style="left:620px;top:140px;width:326px;height:448px"></div><div class="hl " id="s5-hl1" style="left:628px;top:222px;width:160px;height:58px"></div><div class="hl gold" id="s5-hl2" style="left:638px;top:378px;width:162px;height:40px"></div></div></div></div>
       <div class="price-card glass gborder" id="s5-main">
         <span class="pill">MONTHLY PLAN</span>
         <div id="s5-from">Starting from</div>
@@ -105,14 +81,10 @@
       </div>
     </section>
 
-    <!-- 6. Yearly 47% discount -->
+    <!-- 6. Yearly 47% discount (pricing page toggle) -->
     <section class="scene" id="s6">
-      <div class="glass" id="s6-toggle"><div id="s6-knob"></div><div class="opt o1" id="s6-o1">Monthly</div><div class="opt o2" id="s6-o2">Yearly</div></div>
-      <div id="s6-bars">
-        <div class="brow" id="s6-b1"><div class="bl"><span>Billed monthly</span><span>100%</span></div><div class="bt"><i></i></div></div>
-        <div class="brow" id="s6-b2"><div class="bl"><span>Billed yearly</span><span class="grad-text" style="font-weight:900">53%</span></div><div class="bt"><i></i></div></div>
-      </div>
-      <div id="s6-stamp"><div class="p">47%</div><div class="o">OFF</div></div>
+      <div class="browser" id="s6-br" style="left:110px;top:190px;width:1040px" data-w="1040" data-h="491"><div class="bbar"><i></i><i></i><i></i><div class="url"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0110 0v3h1a1 1 0 011 1v9a1 1 0 01-1 1H6a1 1 0 01-1-1v-9a1 1 0 011-1zm2 0h6V7a3 3 0 00-6 0z" fill="#94a3b8"/></svg><span>hailuoai.video/subscribe</span></div></div><div class="vp" style="height:491px"><div class="content"><img src="../media/pricing.jpg" alt=""><div class="hl teal" id="s6-hl1" style="left:46px;top:72px;width:283px;height:50px"></div><div class="hl gold" id="s6-hl2" style="left:118px;top:80px;width:70px;height:34px"></div></div></div></div>
+      <div id="s6-stamp"><div class="p">47%</div><div class="o">OFF YEARLY</div></div>
       <div id="s6-save">&#8593; You save more</div>
     </section>
 
@@ -135,20 +107,10 @@
       </div>
     </section>
 
-    <!-- 8b. Credits depend on plan -->
+    <!-- 8b. Credits depend on plan (pricing page) -->
     <section class="scene" id="s8b">
       <div class="title" id="s8b-title">Your <span class="grad-text">plan</span> decides your credits</div>
-      <div id="s8-tiers">
-        <div class="tier glass"><div class="tn">Free</div><div class="ts">Starter credits</div>
-          <div class="mrow gen"><div class="ml"><span>Generations</span></div><div class="mt"><i data-w="22"></i></div></div>
-          <div class="mrow crd"><div class="ml"><span>Credits</span></div><div class="mt"><i data-w="18"></i></div></div></div>
-        <div class="tier glass"><div class="tn">Paid</div><div class="ts">Monthly credits</div>
-          <div class="mrow gen"><div class="ml"><span>Generations</span></div><div class="mt"><i data-w="58"></i></div></div>
-          <div class="mrow crd"><div class="ml"><span>Credits</span></div><div class="mt"><i data-w="55"></i></div></div></div>
-        <div class="tier glass gborder"><div class="tn grad-text">Higher tier</div><div class="ts">More of everything</div>
-          <div class="mrow gen"><div class="ml"><span>Generations</span></div><div class="mt"><i data-w="100"></i></div></div>
-          <div class="mrow crd"><div class="ml"><span>Credits</span></div><div class="mt"><i data-w="96"></i></div></div></div>
-      </div>
+      <div class="browser" id="s8-br" style="left:360px;top:250px;width:1200px" data-w="1200" data-h="566"><div class="bbar"><i></i><i></i><i></i><div class="url"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0110 0v3h1a1 1 0 011 1v9a1 1 0 01-1 1H6a1 1 0 01-1-1v-9a1 1 0 011-1zm2 0h6V7a3 3 0 00-6 0z" fill="#94a3b8"/></svg><span>hailuoai.video/subscribe</span></div></div><div class="vp" style="height:566px"><div class="content"><img src="../media/pricing.jpg" alt=""><div class="hl teal" id="s8-hl0" style="left:300px;top:376px;width:140px;height:42px"></div><div class="hl teal" id="s8-hl1" style="left:636px;top:376px;width:168px;height:42px"></div><div class="hl " id="s8-hl2" style="left:974px;top:376px;width:168px;height:42px"></div></div></div></div>
     </section>
 
     <!-- 9. Lots of videos -> credit efficiency -->
@@ -170,17 +132,18 @@
       <div id="s10-b" class="grad-text">interesting part</div>
     </section>
 
-    <!-- 11. New users: 3,000 free credits -->
+    <!-- 11. New users: MiniMax Design, 3,000 free credits (banner screenshot) -->
     <section class="scene" id="s11">
+      <div id="s11-shot"><div class="inner"><img src="../media/banner.png" alt=""><div class="hl gold" id="s11-hl1" style="left:392px;top:40px;width:205px;height:30px"></div><div class="hl gold" id="s11-hl2" style="left:612px;top:40px;width:178px;height:30px"></div></div></div>
       <div class="glass" id="s11-new"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4.5" fill="#0b0b14"/><path d="M3 21c1-5 5-7 9-7s8 2 9 7z" fill="#0b0b14"/></svg></div>NEW USER BONUS</div>
       <div id="s11-num" class="grad-text">0</div>
       <div id="s11-free">FREE CREDITS</div>
-      <div id="s11-cta">Start creating AI videos &#8594;</div>
-      <div id="s11-phone"><div id="s11-screen"><div class="notch"></div>
-        <div class="app"><div class="icon"><svg width="110" height="110" viewBox="-60 -60 120 120"><path id="s11-spiral" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round"/></svg></div>
-          <div class="nm">MiniMax</div><div class="sb">Download &amp; claim credits</div></div>
+      <div class="glass" id="s11-card">
+        <div class="row"><div class="icon"><svg width="74" height="74" viewBox="-60 -60 120 120"><path id="s11-spiral" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/></svg></div>
+          <div><div class="nm">MiniMax Design</div><div class="sb">Download &amp; claim your credits</div></div></div>
         <div id="s11-get"><span id="s11-gtxt">GET</span><svg id="s11-ring" viewBox="0 0 40 40" class="h"><circle cx="20" cy="20" r="16" stroke="rgba(255,255,255,.25)" stroke-width="4" fill="none"/><circle id="s11-arc" cx="20" cy="20" r="16" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="100.5" transform="rotate(-90 20 20)"/></svg></div>
-      </div></div>
+        <div id="s11-cta">Start creating AI videos &#8594;</div>
+      </div>
     </section>
 
     <!-- 12. Conclusion -->
@@ -218,6 +181,7 @@
 </div>
 
 <script src="../node_modules/gsap/dist/gsap.min.js"></script>
+<script src="../media/manifest.js"></script>
 <script src="timing.js"></script>
 <script src="main.js"></script>
 </body>

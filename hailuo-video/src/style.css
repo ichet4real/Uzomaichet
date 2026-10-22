@@ -303,3 +303,70 @@ body { font-family: "Inter", sans-serif; color: var(--ink); -webkit-font-smoothi
   background: linear-gradient(180deg, #fde68a, #f59e0b 60%, #b45309); -webkit-background-clip: text; background-clip: text; color: transparent;
   filter: drop-shadow(0 0 70px rgba(251,191,36,0.55)); }
 #s13-q { position: absolute; left: 0; right: 0; top: 760px; text-align: center; font: 800 44px "Inter Display"; letter-spacing: 0.3em; color: #e2e8f0; }
+
+/* ===== Real-footage components ===== */
+.browser {
+  position: absolute; border-radius: 20px; overflow: hidden; background: #fff;
+  box-shadow: 0 40px 110px rgba(0,0,0,0.6), 0 0 0 1.5px rgba(255,255,255,0.16), 0 0 80px rgba(129,140,248,0.18);
+}
+.browser .bbar { height: 50px; background: #171925; display: flex; align-items: center; gap: 10px; padding: 0 20px; }
+.browser .bbar i { width: 13px; height: 13px; border-radius: 50%; }
+.browser .bbar i:nth-child(1) { background: #fb7185; } .browser .bbar i:nth-child(2) { background: #fbbf24; } .browser .bbar i:nth-child(3) { background: #34d399; }
+.browser .url { margin-left: 16px; width: 46%; height: 32px; border-radius: 10px; background: rgba(255,255,255,0.08); display: flex; align-items: center; gap: 9px; padding: 0 14px; font: 600 17px "Inter"; color: #cbd5e1; }
+.browser .vp { position: relative; overflow: hidden; background: #fff; }
+.browser .content { position: absolute; left: 0; top: 0; width: 1280px; height: 604px; transform-origin: 0 0; }
+.browser .content img { position: absolute; left: 0; top: 0; width: 1280px; height: 604px; display: block; }
+.hl {
+  position: absolute; border-radius: 12px; border: 4px solid #f472b6;
+  box-shadow: 0 0 0 5px rgba(244,114,182,0.22), 0 0 34px rgba(244,114,182,0.75), inset 0 0 18px rgba(244,114,182,0.25);
+}
+.hl.teal { border-color: #14b8a6; box-shadow: 0 0 0 5px rgba(20,184,166,0.2), 0 0 34px rgba(20,184,166,0.7), inset 0 0 18px rgba(20,184,166,0.2); }
+.hl.gold { border-color: #f59e0b; box-shadow: 0 0 0 5px rgba(245,158,11,0.22), 0 0 34px rgba(245,158,11,0.75), inset 0 0 18px rgba(245,158,11,0.2); }
+.clip { position: absolute; border-radius: 26px; overflow: hidden; box-shadow: 0 40px 110px rgba(0,0,0,0.6), 0 0 0 1.5px rgba(255,255,255,0.16); }
+.clip img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.made { position: absolute; right: 22px; bottom: 20px; padding: 10px 18px; border-radius: 12px; background: rgba(0,0,0,0.55); font: 700 20px "Inter"; letter-spacing: 0.06em; }
+
+/* Scene 2 */
+#s2-kick { top: 110px; }
+#s2-head { top: 72px; }
+#s2-hero { left: 380px; top: 210px; width: 1160px; height: 652px; }
+
+/* Scene 3 */
+.card .art { width: 434px; height: 300px; border-radius: 18px; overflow: hidden; background: #0b0f1e; }
+.card .art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Scene 4a */
+#s4-ticket { left: 1230px; top: 230px; width: 540px; height: 280px; }
+#s4-ticket .big { font-size: 170px; }
+#s4-label { left: 1236px; top: 560px; width: 560px; font-size: 62px; }
+#s4-label .sub { font: 700 30px "Inter"; color: var(--mute); letter-spacing: 0; }
+
+/* Scene 5 */
+#s5-main { left: 1210px; top: 200px; width: 580px; height: 560px; padding: 44px 46px; }
+#s5-num { font-size: 120px; }
+#s5-per { font-size: 30px; }
+#s5-cnum { font-size: 58px; }
+
+/* Scene 6 */
+#s6-stamp { left: 1230px; top: 270px; width: 540px; height: 330px; }
+#s6-stamp .o { font-size: 40px; letter-spacing: 0.18em; }
+#s6-save { left: 1150px; right: auto; width: 700px; top: 660px; font-size: 64px; }
+
+/* Scene 8b */
+#s8b-title { top: 118px; }
+
+/* Scene 11 */
+#s11-shot { position: absolute; left: 136px; top: 120px; width: 1649px; height: 300px; border-radius: 18px; overflow: hidden;
+  box-shadow: 0 40px 110px rgba(0,0,0,0.6), 0 0 0 1.5px rgba(255,255,255,0.16), 0 0 90px rgba(245,158,11,0.25); background: #fff; }
+#s11-shot .inner { position: absolute; left: 0; top: 0; width: 1137px; height: 237px; transform: scale(1.4503); transform-origin: 0 0; }
+#s11-shot img { width: 1137px; height: 237px; display: block; }
+#s11-new { left: 200px; top: 510px; }
+#s11-num { left: 190px; top: 585px; font-size: 220px; }
+#s11-free { left: 206px; top: 810px; font-size: 56px; }
+#s11-card { position: absolute; left: 1120px; top: 510px; width: 640px; height: 360px; padding: 34px 38px; }
+#s11-card .row { display: flex; align-items: center; gap: 24px; }
+#s11-card .icon { width: 110px; height: 110px; border-radius: 30px; background: linear-gradient(135deg, #f472b6, #818cf8 50%, #5eead4); display: grid; place-items: center; box-shadow: 0 16px 40px rgba(129,140,248,0.4); }
+#s11-card .nm { font: 900 44px "Inter Display"; letter-spacing: -0.02em; }
+#s11-card .sb { font: 600 22px "Inter"; color: var(--mute); margin-top: 4px; }
+#s11-get { margin: 30px 0 0; width: 100%; height: 72px; }
+#s11-cta { position: static; margin-top: 18px; text-align: center; padding: 0; background: none; box-shadow: none; color: var(--c1); font: 800 30px "Inter Display"; }

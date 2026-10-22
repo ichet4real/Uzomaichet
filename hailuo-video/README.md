@@ -1,7 +1,7 @@
 # Hailuo AI: motion graphics video
 
-A 63-second, 1920×1080, 30 fps motion graphics video for the "Number 2 is Hailuo AI" voiceover.
-Every animation is timed to the words in the voiceover.
+A 63-second, 1920×1080, 30 fps YouTube video for the "Number 2 is Hailuo AI" voiceover.
+It mixes motion graphics with real footage of hailuoai.video, and every animation is timed to the words in the voiceover.
 
 **Final video:** `hailuo_ai_motion_graphics.mp4`
 
@@ -9,46 +9,42 @@ Every animation is timed to the words in the voiceover.
 
 | Time | Voiceover | On screen |
 |---|---|---|
-| 0:00 | "Number 2 is Hailuo AI" | `#2` slams in, Hailuo AI wordmark and spiral logo |
-| 0:02 | "…seriously impressive" | Text-to-video app mock-up: prompt types, Generate is clicked, a rainy neon-city clip plays |
-| 0:06 | "…people, movement, and realistic scenes" | Three animated cards appear on each word |
-| 0:12 | "…one-time free credits" | FREE ticket, falling coins, "One-time" tag |
+| 0:00 | "Number 2 is Hailuo AI" | `#2` slams in, Hailuo AI wordmark |
+| 0:02 | "…where AI video starts…" | Generator recording in a browser frame, zooming in on the prompt |
+| 0:04 | "…seriously impressive" | Hailuo sample clip (hand-frame effect) plays big |
+| 0:06 | "…particularly good…" | Homepage gallery recording scrolling |
+| 0:09 | "people, movement, realistic scenes" | Three cards with real sample clips, each landing on its word |
+| 0:12 | "…free option… one-time free credits" | Pricing page zooms to the Free plan and highlights "One-time free trial credits"; FREE ticket |
 | 0:15 | "…try before going for paid plans" | Free trial → Paid plans flow |
-| 0:18 | "…$10.50 per month with 1,000 credits" | Price card counts up to $10.50 and 1,000 credits |
-| 0:23 | "…yearly plan… 47% discount" | Monthly/Yearly toggle flips, "47% OFF" stamp, savings bars |
+| 0:18 | "…$10.50 per month with 1,000 credits" | Pricing page zooms to Standard and highlights $10.50 and 1000 credits; counter card |
+| 0:23 | "…yearly plan… 47% discount" | Pricing page zooms to the Yearly −47% toggle; "47% OFF YEARLY" stamp |
 | 0:29 | "But as usual, here is the downside" | Red tint, warning sign, glitching "THE DOWNSIDE" |
-| 0:32 | "…credits depend on the plan" | Platform tiles, then Free / Paid / Higher tier bars |
-| 0:39 | "…credit efficiency" | Video grid fills up while the credit battery drains |
+| 0:32 | "Like almost every AI video platform" | Platform tiles with Hailuo highlighted |
+| 0:35 | "…credits depend on the plan" | Pricing page with 0 / 1000 / 4500 monthly credits highlighted in turn |
+| 0:39 | "…credit efficiency" | Grid of sample-video thumbnails fills while the credit battery drains |
 | 0:44 | "…the interesting part" | Flash, rays, gift box |
-| 0:46 | "…new user… 3,000 credits for free" | Phone with MiniMax app downloading; 3,000 counter and confetti |
+| 0:46 | "…new user… MiniMax Design… 3,000 credits for free" | Site banner screenshot with highlights on "Download MiniMax Design" and "Get 3,000 Free Credits"; download card; 3,000 counter |
 | 0:53 | "…absolutely worth trying" | Checklist, summary chips, "Worth trying" seal |
 | 1:00 | "So let's reveal our number one" | Gold `#1` teaser |
 
-There are also word-by-word captions, a top progress bar, a "#2 Hailuo AI" badge and synthesized sound effects.
+There are also word-by-word captions, a top progress bar, a "#2 Hailuo AI" badge and synthesized sound effects. There is no background music.
 
-## How it is built
+## Files
 
-- `src/index.html`, `src/style.css` and `src/main.js` hold the animation, built with HTML/CSS, canvas and GSAP. `window.__seek(t)` draws the exact frame for time `t`.
-- `src/timing.js` holds the speech timing. Phrase windows come from the SRT and from pauses measured in the audio. Word times are estimated inside each phrase.
+- `assets/voiceover.mp3`, `assets/transcript.srt`: the voiceover and its transcript.
+- `assets/footage/`: screen recordings of hailuoai.video (homepage, pricing, generator), two Hailuo sample videos and the banner screenshot.
+- `prep_media.py` cuts the footage into cropped, sharpened JPEG frame sequences in `media/`. This folder is generated and not committed.
+- `src/`: the animation, built with HTML/CSS, canvas and GSAP. `window.__seek(t)` draws the exact frame for time `t`, including the matching footage frame.
+- `src/timing.js` holds the speech timing. Phrase windows come from the SRT and from pauses measured in the audio.
 - `render.js` steps headless Chromium through every frame and pipes the frames to ffmpeg.
 - `sfx.py` synthesizes the sound effects with numpy. No third-party audio is used.
-- The voiceover and the SFX track are mixed and normalized to −14 LUFS.
 
 ## Rebuild
 
 ```bash
 npm install
-node render.js stills 5.3 26.9          # preview single frames -> out/stills/
-node render.js video 30 4               # frames -> out/video_noaudio.mp4 + out/sfx.json
-python3 sfx.py out/sfx.json out/sfx.wav 63.41
-ffmpeg -i out/video_noaudio.mp4 -i assets/voiceover.mp3 -i out/sfx.wav -filter_complex \
-  "[1:a]aresample=48000[v];[2:a]volume=0.45[s];[v][s]amix=inputs=2:normalize=0:duration=first,loudnorm=I=-14:TP=-1.5:LRA=11,aformat=channel_layouts=stereo[a]" \
-  -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 256k hailuo_ai_motion_graphics.mp4
+./build.sh                                  # media frames -> video -> SFX -> final mix (~10 min)
+node render.js stills 5.3 20.9              # preview single frames -> out/stills/
 ```
 
 Chromium is expected at `/opt/pw-browsers/chromium`. Set `CHROME=/path/to/chrome` to use another.
-
-## Notes
-
-- hailuoai.video could not be reached from the build environment, so no real screenshots or footage from the site are used. All visuals are original illustrations. The colors and logo are stand-ins, not Hailuo's official branding.
-- To use real screen recordings from Hailuo, swap them into the scene-2 preview (`#s2-preview`) or the scene-3 cards.

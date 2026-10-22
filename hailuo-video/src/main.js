@@ -54,6 +54,21 @@ const shake = (t, amp = 14, dur = 0.45) => SHAKES.push({ t, amp, dur });
 function flash(t, a = 0.65, d = 0.45) {
   tl.fromTo("#flash", { opacity: a }, { opacity: 0, duration: d, ease: "power2.out", immediateRender: false }, t);
 }
+// Camera inside a browser frame: content is a 1280x604 page image.
+function focusRect(br, rect, pad = 0.9) {
+  const el = $(br), W = +el.dataset.w, H = +el.dataset.h;
+  if (!rect) return { x: 0, y: 0, scale: W / 1280 };
+  const [rx, ry, rw, rh] = rect;
+  const s = Math.max(W / 1280, Math.min(W / rw, H / rh) * pad);
+  const x = clamp(W / 2 - (rx + rw / 2) * s, W - 1280 * s, 0);
+  const y = clamp(H / 2 - (ry + rh / 2) * s, H - 604 * s, 0);
+  return { x, y, scale: s };
+}
+const camInit = (br, rect) => gsap.set(`${br} .content`, focusRect(br, rect));
+const cam = (br, t, rect, d = 0.9, ease = "power3.inOut") => tl.to(`${br} .content`, { ...focusRect(br, rect), duration: d, ease }, t);
+const seqAt = (sel, t0) => $$(sel).forEach((el) => (el.dataset.t0 = t0));
+const hlIn = (sel, t) => inn(sel, t, { scale: 1.3 }, 0.4, "back.out(2)");
+
 const SPARK = ["94,234,212", "129,140,248", "244,114,182", "255,255,255"];
 const GOLD = ["251,191,36", "253,230,138", "245,158,11", "255,255,255"];
 const CONF = ["94,234,212", "129,140,248", "244,114,182", "251,191,36", "52,211,153"];
@@ -99,53 +114,64 @@ out("#badge", 60.75, { x: -40 }, 0.35);
   burst(w("AI.") + 0.1, 1560, 520, { kind: "spark", n: 40, colors: SPARK, g: 0, speed: 700, life: 0.7 });
 }
 
-/* ---------------- Scene 2: AI video, seriously impressive ---------------- */
-const S2 = { prompt: "Neon city at night in heavy rain, cinematic drone shot", typeStart: 2.75, typeDur: 1.15, gen: 4.0, genDur: 0.75 };
+/* ---------------- Scene 2: generator recording -> seriously impressive ---------------- */
 {
   scene("#s2", 2.42, 6.15);
-  inn("#s2-win", 2.45, { y: 90, scale: 0.92, filter: "blur(12px)" }, 0.7);
+  seqAt("#s2-br .seq", 2.45);
+  camInit("#s2-br", null);
+  inn("#s2-br", 2.45, { y: 90, scale: 0.92, filter: "blur(12px)" }, 0.7);
   inn("#s2-kick", 2.6, { y: 20 }, 0.5);
   sfx(2.45, "whoosh", 0.8);
-  tl.to("#s2-btn", { scale: 0.92, duration: 0.08, ease: "power2.in" }, S2.gen - 0.08);
-  tl.to("#s2-btn", { scale: 1, duration: 0.3, ease: "back.out(3)" }, S2.gen);
-  sfx(S2.gen - 0.05, "click", 0.9);
-  ring(S2.gen, 520, 718, { r: 220, life: 0.5, width: 6 });
-  out("#s2-skel", S2.gen + S2.genDur + 0.05, {}, 0.3);
-  inn("#s2-live", S2.gen + S2.genDur + 0.15, { x: -20 }, 0.4);
-  sfx(S2.gen + S2.genDur + 0.05, "chime", 0.7);
-  const tSer = w("seriously") - 0.1;
+  cam("#s2-br", 2.95, [120, 230, 900, 260], 1.1);
+  sfx(3.0, "swoosh", 0.4);
+  const tSer = w("seriously") - 0.18;
   out("#s2-kick", tSer - 0.15, { y: -20 }, 0.25);
-  inn("#s2-head", tSer, { y: 40, scale: 0.86, filter: "blur(14px)" }, 0.55, "back.out(1.6)");
-  sfx(tSer, "whoosh", 0.6);
+  out("#s2-br", tSer - 0.05, { scale: 0.9, filter: "blur(10px)" }, 0.35);
+  seqAt("#s2-hero .seq", tSer);
+  inn("#s2-hero", tSer + 0.05, { scale: 1.12, filter: "blur(18px)" }, 0.55, "expo.out");
+  flash(tSer + 0.08, 0.3, 0.4);
+  inn("#s2-head", tSer + 0.08, { y: 40, scale: 0.86, filter: "blur(14px)" }, 0.55, "back.out(1.6)");
+  inn("#s2-hero .made", tSer + 0.5, { x: 20 }, 0.4);
+  sfx(tSer + 0.05, "whoosh", 0.7);
   sfx(w("impressive") + 0.05, "sparkle", 0.8);
-  burst(w("impressive") + 0.05, 1180, 175, { kind: "spark", n: 55, colors: SPARK, g: 0, speed: 800, life: 0.9 });
+  burst(w("impressive") + 0.05, 1180, 118, { kind: "spark", n: 55, colors: SPARK, g: 0, speed: 800, life: 0.9 });
 }
 
-/* ---------------- Scene 3: people, movement, realistic scenes ---------------- */
+/* ---------------- Scene 3: gallery -> people, movement, realistic scenes ---------------- */
 {
   scene("#s3", 6.1, 12.25);
   inn("#s3-kick", 6.2, { y: 20 }, 0.5);
   inn("#s3-title", w("particularly") - 0.1, { y: 40, filter: "blur(12px)" }, 0.6);
   sfx(6.15, "whoosh", 0.7);
-  inn("#s3-sl1, #s3-sl2, #s3-sl3", 7.4, { scale: 0.9 }, 0.5, "power3.out", { stagger: 0.12 });
-  [["#s3-c1", "#s3-sl1", w("people,"), 442], ["#s3-c2", "#s3-sl2", w("movement,"), 960], ["#s3-c3", "#s3-sl3", w("realistic"), 1478]].forEach(([c, sl, t, x], i) => {
+  seqAt("#s3-br .seq", 6.2);
+  camInit("#s3-br", null);
+  inn("#s3-br", 6.2, { y: 90, scale: 0.92, filter: "blur(12px)" }, 0.7);
+  out("#s3-br", w("people,") - 0.4, { scale: 0.9, y: 40, filter: "blur(10px)" }, 0.3);
+  [["#s3-c1", w("people,"), 442], ["#s3-c2", w("movement,"), 960], ["#s3-c3", w("realistic"), 1478]].forEach(([c, t, x], i) => {
+    seqAt(`${c} .seq`, t - 0.12);
     inn(c, t - 0.12, { y: 80, scale: 0.8, rotationX: 30 }, 0.6, "back.out(1.5)");
-    out(sl, t - 0.12, {}, 0.2);
     sfx(t - 0.05, "pop", 0.9);
     burst(t + 0.1, x, 555, { kind: "spark", n: 30, colors: SPARK, g: 0, speed: 600, life: 0.6, seed: 40 + i });
   });
 }
 
-/* ---------------- Scene 4a: free option ---------------- */
+/* ---------------- Scene 4a: free option on the pricing page ---------------- */
 {
   scene("#s4a", 12.2, 15.15, { x: -160, filter: "blur(10px)" });
+  camInit("#s4-br", null);
+  inn("#s4-br", 12.25, { x: -80, filter: "blur(12px)" }, 0.6);
+  sfx(12.25, "whoosh", 0.7);
   const tFree = w("free", 12.2) - 0.12;
+  cam("#s4-br", tFree - 0.2, [270, 120, 360, 480], 0.8);
+  hlIn("#s4-hl1", tFree + 0.3);
   inn("#s4-ticket", tFree, { scale: 0.3, rotation: -14 }, 0.65, "back.out(1.8)");
   sfx(tFree + 0.05, "impact", 0.8); shake(tFree + 0.1, 10);
-  burst(tFree + 0.15, 650, 465, { n: 80, colors: CONF, speed: 1100 });
+  burst(tFree + 0.15, 1500, 370, { n: 80, colors: CONF, speed: 1100 });
   const tOnce = w("one-time") - 0.15;
-  inn("#s4-coins .coin", tOnce, { y: -420, rotation: -90 }, 0.75, "bounce.out", { stagger: 0.09 });
-  [0, 1, 2, 3].forEach((i) => sfx(tOnce + 0.45 + i * 0.09, "coin", 0.6));
+  cam("#s4-br", tOnce - 0.1, [240, 330, 470, 200], 0.7);
+  out("#s4-hl1", tOnce - 0.1, {}, 0.2);
+  hlIn("#s4-hl2", tOnce + 0.35);
+  sfx(tOnce + 0.35, "pop", 0.7);
   inn("#s4-label", tOnce + 0.1, { x: 50 }, 0.5);
   tl.to("#s4-label .once", { scale: 1.15, duration: 0.15, yoyo: true, repeat: 1, ease: "power2.out" }, w("free", 14) - 0.05);
 }
@@ -167,46 +193,51 @@ const S2 = { prompt: "Neon city at night in heavy rain, cinematic drone shot", t
   burst(t2 + 0.15, 1410, 510, { kind: "spark", n: 40, colors: SPARK, g: 0, speed: 700, life: 0.7 });
 }
 
-/* ---------------- Scene 5: monthly price ---------------- */
+/* ---------------- Scene 5: monthly price on the pricing page ---------------- */
 const S5 = { price: w("$10.50") - 0.05, cred: w("1,000") - 0.05 };
 {
   scene("#s5", 18.0, 23.55);
-  inn("#s5-ghostL, #s5-ghostR", 18.15, { y: 60 }, 0.7, "power3.out", { autoAlpha: 0.32, stagger: 0.08 });
-  inn("#s5-main", 18.1, { y: 90, scale: 0.9, filter: "blur(12px)" }, 0.7);
+  camInit("#s5-br", null);
+  inn("#s5-br", 18.05, { x: -80, filter: "blur(12px)" }, 0.6);
+  inn("#s5-main", 18.15, { x: 90, scale: 0.92, filter: "blur(12px)" }, 0.7);
   sfx(18.1, "whoosh", 0.8);
+  cam("#s5-br", w("monthly") - 0.2, [600, 120, 370, 480], 0.8);
+  hlIn("#s5-hl0", w("monthly") + 0.2);
   inn("#s5-main .pill", w("monthly") - 0.1, { scale: 0.6 }, 0.4, "back.out(2)");
   sfx(w("monthly"), "pop", 0.5);
   inn("#s5-from", w("starting") - 0.1, { y: 15 }, 0.4);
+  cam("#s5-br", S5.price - 0.3, [600, 190, 380, 250], 0.7);
+  out("#s5-hl0", S5.price - 0.3, {}, 0.2);
+  hlIn("#s5-hl1", S5.price + 0.1);
   tl.to("#s5-num", { scale: 1.12, duration: 0.14, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "0% 80%" }, S5.price + 0.9);
   sfx(S5.price, "roll", 0.55); sfx(S5.price + 0.9, "chime", 0.8);
-  burst(S5.price + 0.95, 900, 470, { kind: "spark", n: 50, colors: GOLD, g: 0, speed: 800, life: 0.8 });
+  burst(S5.price + 0.95, 1420, 420, { kind: "spark", n: 50, colors: GOLD, g: 0, speed: 800, life: 0.8 });
   inn("#s5-per", w("per") - 0.05, { x: -20 }, 0.35);
   inn("#s5-cred, #s5-cbar", S5.cred - 0.3, { y: 20 }, 0.4);
+  hlIn("#s5-hl2", S5.cred);
   sfx(S5.cred, "coin", 0.8); sfx(S5.cred + 0.7, "pop", 0.6);
 }
 
-/* ---------------- Scene 6: yearly discount ---------------- */
+/* ---------------- Scene 6: yearly discount on the pricing page ---------------- */
 const S6 = { yearly: w("yearly") - 0.1, stamp: w("47%") - 0.08, save: w("save") - 0.1 };
 {
   scene("#s6", 23.5, 29.65);
-  inn("#s6-toggle", 23.6, { y: -50, scale: 0.9 }, 0.55, "back.out(1.6)");
-  gsap.set("#s6-o1", { color: "#0b0b14" }); gsap.set("#s6-o2", { color: "#cbd5e1" });
-  sfx(23.6, "whoosh", 0.6);
-  inn("#s6-b1", 23.85, { x: -60 }, 0.5);
-  tl.fromTo("#s6-b1 i", { width: "0%" }, { width: "100%", duration: 0.7, ease: "power2.out", immediateRender: false }, 24.0);
-  tl.to("#s6-knob", { x: 290, duration: 0.45, ease: "power3.inOut" }, S6.yearly);
-  tl.to("#s6-o1", { color: "#cbd5e1", duration: 0.3 }, S6.yearly + 0.1);
-  tl.to("#s6-o2", { color: "#0b0b14", duration: 0.3 }, S6.yearly + 0.1);
+  camInit("#s6-br", null);
+  inn("#s6-br", 23.55, { x: -80, filter: "blur(12px)" }, 0.6);
+  sfx(23.55, "whoosh", 0.6);
+  cam("#s6-br", 23.9, [20, 40, 520, 240], 0.9);
+  hlIn("#s6-hl1", S6.yearly);
   sfx(S6.yearly + 0.05, "click", 0.9);
-  inn("#s6-b2", S6.yearly + 0.25, { x: -60 }, 0.5);
-  tl.fromTo("#s6-b2 i", { width: "0%" }, { width: "53%", duration: 0.8, ease: "power2.out", immediateRender: false }, S6.stamp + 0.1);
+  hlIn("#s6-hl2", S6.stamp - 0.1);
   inn("#s6-stamp", S6.stamp, { scale: 2.8, rotation: -28, filter: "blur(10px)" }, 0.32, "power4.in", { rotation: -7 });
   sfx(S6.stamp + 0.3, "stamp", 1); shake(S6.stamp + 0.32, 20);
-  ring(S6.stamp + 0.32, 1430, 500, { color: "52,211,153", r: 600 });
-  burst(S6.stamp + 0.34, 1430, 500, { n: 70, colors: ["52,211,153", "255,255,255", "94,234,212"], speed: 1000 });
+  ring(S6.stamp + 0.32, 1500, 435, { color: "52,211,153", r: 600 });
+  burst(S6.stamp + 0.34, 1500, 435, { n: 70, colors: ["52,211,153", "255,255,255", "94,234,212"], speed: 1000 });
+  cam("#s6-br", S6.save - 0.45, null, 1.0);
+  out("#s6-hl1", S6.save - 0.45, {}, 0.3);
   inn("#s6-save", S6.save, { y: 40, scale: 0.85 }, 0.5, "back.out(1.8)");
   sfx(S6.save + 0.05, "chime", 0.7);
-  burst(S6.save + 0.15, 960, 780, { kind: "spark", n: 40, colors: ["52,211,153", "255,255,255"], g: 0, speed: 700, life: 0.7 });
+  burst(S6.save + 0.15, 1500, 700, { kind: "spark", n: 40, colors: ["52,211,153", "255,255,255"], g: 0, speed: 700, life: 0.7 });
 }
 
 /* ---------------- Scene 7: the downside ---------------- */
@@ -239,21 +270,19 @@ const S7 = { down: w("downside") - 0.18 };
   sfx(w("platform"), "pop", 0.6);
 }
 
-/* ---------------- Scene 8b: plan decides credits ---------------- */
+/* ---------------- Scene 8b: plan decides credits (pricing page) ---------------- */
 {
   scene("#s8b", 35.3, 38.95);
   inn("#s8b-title", 35.42, { y: 40, filter: "blur(12px)" }, 0.55);
   sfx(35.4, "whoosh", 0.7);
-  inn("#s8-tiers .tier", 35.6, { y: 80, scale: 0.9 }, 0.55, "back.out(1.4)", { stagger: 0.12 });
-  $$("#s8-tiers .gen i").forEach((el, i) => {
-    tl.fromTo(el, { width: "0%" }, { width: el.dataset.w + "%", duration: 0.7, ease: "power2.out", immediateRender: false }, w("generations") + i * 0.12);
+  camInit("#s8-br", null);
+  inn("#s8-br", 35.5, { y: 90, scale: 0.92, filter: "blur(12px)" }, 0.65);
+  cam("#s8-br", 36.0, [270, 170, 1010, 300], 1.2);
+  [["#s8-hl0", w("generations")], ["#s8-hl1", w("credits", 36)], ["#s8-hl2", w("depend") + 0.05]].forEach(([el, t]) => {
+    hlIn(el, t); sfx(t + 0.05, "pop", 0.6);
   });
-  $$("#s8-tiers .crd i").forEach((el, i) => {
-    tl.fromTo(el, { width: "0%" }, { width: el.dataset.w + "%", duration: 0.7, ease: "power2.out", immediateRender: false }, w("credits", 36) + i * 0.12);
-  });
-  sfx(w("generations"), "roll", 0.35); sfx(w("credits", 36), "roll", 0.35);
-  tl.to("#s8-tiers .tier:last-child", { scale: 1.06, duration: 0.3, yoyo: true, repeat: 1, ease: "power2.out" }, w("plan", 37) - 0.05);
-  sfx(w("plan", 37), "pop", 0.6);
+  tl.to("#s8-br .hl", { scale: 1.12, duration: 0.2, yoyo: true, repeat: 1, ease: "power2.out" }, w("plan", 37) - 0.05);
+  sfx(w("plan", 37), "chime", 0.5);
 }
 
 /* ---------------- Scene 9: credit efficiency ---------------- */
@@ -265,7 +294,7 @@ const S9 = { start: 39.2, end: 41.4, drain0: 39.5, drain1: 42.5, eff: w("credit"
     const d = document.createElement("div");
     d.className = "thumb";
     const [a, b] = pal[i % pal.length];
-    d.style.background = `linear-gradient(${30 + i * 25}deg, ${a}, ${b})`;
+    d.style.background = `#111 url(../media/thumbs/${i + 1}.jpg) center/cover`;
     grid.appendChild(d);
   }
   scene("#s9", 38.9, 44.25);
@@ -296,28 +325,32 @@ const S9 = { start: 39.2, end: 41.4, drain0: 39.5, drain1: 42.5, eff: w("credit"
   burst(w("interesting") + 0.1, 960, 600, { kind: "spark", n: 80, colors: SPARK, g: 0, speed: 1200, life: 0.9 });
 }
 
-/* ---------------- Scene 11: new user, 3,000 free credits ---------------- */
+/* ---------------- Scene 11: new user, MiniMax Design, 3,000 free credits ---------------- */
 const S11 = { dl: w("download") - 0.05, dlDur: 1.1, num: w("3,000") - 0.1, numDur: 1.0 };
 {
   scene("#s11", 46.3, 53.5);
   sfx(46.3, "whoosh", 0.6);
+  inn("#s11-shot", 46.35, { y: -60, scale: 0.94, filter: "blur(12px)" }, 0.7);
   inn("#s11-new", w("new") - 0.15, { x: -70, scale: 0.9 }, 0.5, "back.out(1.7)");
   sfx(w("new"), "pop", 0.8);
-  burst(w("new") + 0.1, 330, 225, { kind: "spark", n: 30, colors: SPARK, g: 0, speed: 500, life: 0.6 });
-  inn("#s11-phone", 47.0, { y: 260, rotation: 9 }, 0.8, "power3.out");
-  sfx(47.0, "whoosh", 0.7);
-  tl.to("#s11-get", { scale: 0.92, duration: 0.08 }, S11.dl - 0.08);
-  tl.to("#s11-get", { scale: 1, duration: 0.25, ease: "back.out(3)" }, S11.dl);
-  sfx(S11.dl - 0.05, "click", 0.9); sfx(S11.dl + S11.dlDur, "chime", 0.8);
-  burst(S11.dl + S11.dlDur, 1420, 700, { kind: "spark", n: 30, colors: SPARK, g: 0, speed: 500, life: 0.6 });
+  burst(w("new") + 0.1, 330, 545, { kind: "spark", n: 30, colors: SPARK, g: 0, speed: 500, life: 0.6 });
+  hlIn("#s11-hl1", S11.dl - 0.15);
+  sfx(S11.dl - 0.1, "pop", 0.6);
+  inn("#s11-card", S11.dl - 0.35, { x: 90 }, 0.55, "back.out(1.4)");
+  sfx(S11.dl - 0.35, "whoosh", 0.6);
+  tl.to("#s11-get", { scale: 0.95, duration: 0.08 }, S11.dl + 0.12);
+  tl.to("#s11-get", { scale: 1, duration: 0.25, ease: "back.out(3)" }, S11.dl + 0.2);
+  sfx(S11.dl + 0.15, "click", 0.9); sfx(S11.dl + 0.2 + S11.dlDur, "chime", 0.8);
+  burst(S11.dl + 0.2 + S11.dlDur, 1440, 690, { kind: "spark", n: 30, colors: SPARK, g: 0, speed: 500, life: 0.6 });
+  hlIn("#s11-hl2", S11.num - 0.1);
   inn("#s11-num", S11.num - 0.05, { scale: 0.6, filter: "blur(16px)" }, 0.45, "back.out(1.6)");
   tl.to("#s11-num", { scale: 1.1, duration: 0.15, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "20% 60%" }, S11.num + S11.numDur);
   sfx(S11.num, "roll", 0.6); sfx(S11.num + S11.numDur, "impact", 0.9);
   shake(S11.num + S11.numDur, 16);
-  burst(S11.num + S11.numDur, 560, 430, { n: 110, colors: CONF, speed: 1300, life: 1.6 });
+  burst(S11.num + S11.numDur, 520, 700, { n: 110, colors: CONF, speed: 1300, life: 1.6 });
   inn("#s11-free", w("free", 51) - 0.12, { y: 30, scale: 0.9 }, 0.45, "back.out(1.8)");
   sfx(w("free", 51), "pop", 0.7);
-  inn("#s11-cta", w("start", 51.5) - 0.1, { y: 40 }, 0.5, "back.out(1.6)");
+  inn("#s11-cta", w("start", 51.5) - 0.1, { y: 20 }, 0.5, "back.out(1.6)");
   sfx(w("start", 51.5), "swoosh", 0.5);
 }
 
@@ -442,160 +475,6 @@ function drawBg(t) {
   });
 }
 
-/* ---------------- Scene 2 canvas: generated city clip ---------------- */
-const g2 = $("#s2-canvas").getContext("2d");
-const CITY = (() => {
-  const r = rng(5), b = [];
-  let x = -40;
-  while (x < 1500) { const wdt = 40 + r() * 90; b.push({ x, w: wdt, h: 120 + r() * 260, layer: r() < 0.5 ? 0 : 1, win: r() }); x += wdt * (0.55 + r() * 0.4); }
-  const rain = Array.from({ length: 160 }, () => ({ x: r() * 1000, y: r() * 506, l: 14 + r() * 26, v: 900 + r() * 600 }));
-  return { b, rain };
-})();
-function drawS2(t) {
-  if (t < 2.3 || t > 6.3) return;
-  const W = 900, H = 506, ctx = g2, pan = (t - 4) * 26;
-  const sky = ctx.createLinearGradient(0, 0, 0, H);
-  sky.addColorStop(0, "#090a1f"); sky.addColorStop(0.55, "#2a1050"); sky.addColorStop(0.75, "#7a1f5c"); sky.addColorStop(1, "#0a0a18");
-  ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
-  // moon glow
-  const mg = ctx.createRadialGradient(680, 110, 0, 680, 110, 220);
-  mg.addColorStop(0, "rgba(255,200,240,0.55)"); mg.addColorStop(1, "rgba(255,200,240,0)");
-  ctx.fillStyle = mg; ctx.fillRect(0, 0, W, H);
-  const horizon = 360;
-  [0, 1].forEach((layer) => {
-    CITY.b.filter((b) => b.layer === layer).forEach((b, i) => {
-      const x = b.x - pan * (layer ? 1.6 : 0.8) - 200, h = b.h * (layer ? 1 : 0.75);
-      ctx.fillStyle = layer ? "#0b0b1a" : "#1a1436";
-      ctx.fillRect(x, horizon - h, b.w, h);
-      if (layer) {
-        for (let wy = horizon - h + 14; wy < horizon - 10; wy += 18) for (let wx = x + 8; wx < x + b.w - 8; wx += 14) {
-          const lit = ((wx * 7 + wy * 13 + i * 31) % 10) < 3;
-          if (lit) { ctx.fillStyle = (wx + wy) % 3 < 1 ? "rgba(94,234,212,0.85)" : "rgba(253,224,171,0.85)"; ctx.fillRect(wx, wy, 6, 8); }
-        }
-      }
-    });
-  });
-  // neon signs
-  [[140, 230, "#f472b6"], [520, 190, "#5eead4"], [790, 260, "#818cf8"]].forEach(([x, y, c], i) => {
-    const xx = x - pan * 1.6, fl = 0.75 + 0.25 * Math.sin(t * 9 + i * 3);
-    ctx.shadowColor = c; ctx.shadowBlur = 24; ctx.fillStyle = c; ctx.globalAlpha = fl;
-    ctx.fillRect(xx, y, 70, 14); ctx.globalAlpha = 1; ctx.shadowBlur = 0;
-  });
-  // wet street reflection
-  ctx.save(); ctx.globalAlpha = 0.35; ctx.translate(0, horizon * 2); ctx.scale(1, -1);
-  ctx.drawImage(g2.canvas, 0, horizon - 160, W, 160, 0, horizon - 160, W, 160);
-  ctx.restore();
-  const street = ctx.createLinearGradient(0, horizon, 0, H);
-  street.addColorStop(0, "rgba(10,10,24,0.2)"); street.addColorStop(1, "rgba(5,5,12,0.9)");
-  ctx.fillStyle = street; ctx.fillRect(0, horizon, W, H - horizon);
-  // car light trails
-  for (let k = 0; k < 3; k++) {
-    const cx = ((t * 380 + k * 330) % 1300) - 200;
-    const grd = ctx.createLinearGradient(cx - 160, 0, cx, 0);
-    grd.addColorStop(0, "rgba(255,80,120,0)"); grd.addColorStop(1, "rgba(255,120,160,0.9)");
-    ctx.fillStyle = grd; ctx.fillRect(cx - 160, 410 + k * 22, 160, 4);
-  }
-  // rain
-  ctx.strokeStyle = "rgba(200,220,255,0.35)"; ctx.lineWidth = 1.4;
-  ctx.beginPath();
-  CITY.rain.forEach((d) => {
-    const y = (d.y + t * d.v) % (H + 40) - 20, x = d.x - y * 0.18;
-    ctx.moveTo(x, y); ctx.lineTo(x - d.l * 0.18, y + d.l);
-  });
-  ctx.stroke();
-  // film grain vignette
-  const vg = ctx.createRadialGradient(W / 2, H / 2, 200, W / 2, H / 2, 560);
-  vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,0.55)");
-  ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
-  // letterbox
-  ctx.fillStyle = "#000"; ctx.fillRect(0, 0, W, 26); ctx.fillRect(0, H - 26, W, 26);
-
-  // UI state
-  const n = Math.round(clamp((t - S2.typeStart) / S2.typeDur) * S2.prompt.length);
-  $("#s2-type").textContent = S2.prompt.slice(0, n);
-  $("#s2-caret").style.opacity = n < S2.prompt.length || Math.floor(t * 2.4) % 2 === 0 ? 1 : 0;
-  const gp = prog(t, S2.gen, S2.genDur);
-  $("#s2-pct").textContent = Math.round(easeInOut(gp) * 100) + "%";
-  $("#s2-bar").style.width = easeInOut(gp) * 100 + "%";
-  $("#s2-skel").style.backgroundPosition = `${(-t * 160) % 300}% 0`;
-}
-
-/* ---------------- Scene 3 canvases ---------------- */
-const k1 = $("#s3-k1").getContext("2d"), k2 = $("#s3-k2").getContext("2d"), k3 = $("#s3-k3").getContext("2d");
-function person(ctx, x, y, s, c1, c2) {
-  const g = ctx.createLinearGradient(x, y - 120 * s, x, y + 60 * s);
-  g.addColorStop(0, c1); g.addColorStop(1, c2);
-  ctx.fillStyle = g;
-  ctx.beginPath(); ctx.arc(x, y - 78 * s, 34 * s, 0, 6.283); ctx.fill();
-  ctx.beginPath();
-  ctx.moveTo(x - 66 * s, y + 70 * s);
-  ctx.bezierCurveTo(x - 66 * s, y - 30 * s, x - 30 * s, y - 34 * s, x, y - 34 * s);
-  ctx.bezierCurveTo(x + 30 * s, y - 34 * s, x + 66 * s, y - 30 * s, x + 66 * s, y + 70 * s);
-  ctx.fill();
-}
-function drawS3(t) {
-  if (t < 6 || t > 12.4) return;
-  const W = 434, H = 300;
-  // People
-  let c = k1, g = c.createLinearGradient(0, 0, W, H);
-  g.addColorStop(0, "#1e1b4b"); g.addColorStop(1, "#3b0a2a"); c.fillStyle = g; c.fillRect(0, 0, W, H);
-  const sun = c.createRadialGradient(330, 60, 0, 330, 60, 200);
-  sun.addColorStop(0, "rgba(251,191,36,0.35)"); sun.addColorStop(1, "rgba(251,191,36,0)"); c.fillStyle = sun; c.fillRect(0, 0, W, H);
-  person(c, 110, 236 + Math.sin(t * 3) * 4, 0.8, "#f9a8d4", "#831843");
-  person(c, 324, 238 + Math.sin(t * 3 + 2) * 4, 0.8, "#a5b4fc", "#312e81");
-  const by = 222 + Math.sin(t * 3 + 1) * 5;
-  person(c, 217, by, 1.05, "#99f6e4", "#134e4a");
-  // face tracking box
-  const pulse = 0.6 + 0.4 * Math.sin(t * 6);
-  c.strokeStyle = `rgba(94,234,212,${pulse})`; c.lineWidth = 3;
-  const bx = 217 - 50, byy = by - 82 * 1.05 - 48, bs = 100, L = 22;
-  [[bx, byy, 1, 1], [bx + bs, byy, -1, 1], [bx, byy + bs, 1, -1], [bx + bs, byy + bs, -1, -1]].forEach(([x, y, dx, dy]) => {
-    c.beginPath(); c.moveTo(x + dx * L, y); c.lineTo(x, y); c.lineTo(x, y + dy * L); c.stroke();
-  });
-  c.fillStyle = "rgba(94,234,212,0.9)"; c.font = "700 14px Inter"; c.fillText("FACE · 99%", bx, byy - 8);
-
-  // Movement
-  c = k2; g = c.createLinearGradient(0, 0, W, H);
-  g.addColorStop(0, "#082f49"); g.addColorStop(1, "#1e1b4b"); c.fillStyle = g; c.fillRect(0, 0, W, H);
-  c.strokeStyle = "rgba(148,163,184,0.25)"; c.lineWidth = 2;
-  for (let i = 0; i < 9; i++) { const y = 30 + i * 32, x = (((i * 97 - t * 520) % 600) + 600) % 600 - 100; c.beginPath(); c.moveTo(x, y); c.lineTo(x + 70 + (i % 3) * 30, y); c.stroke(); }
-  const pos = (tt) => [217 + Math.sin(tt * 2.2) * 150, 150 + Math.sin(tt * 4.4) * 70];
-  for (let k = 26; k >= 0; k--) {
-    const [x, y] = pos(t - k * 0.022), a = 1 - k / 27;
-    c.fillStyle = `rgba(${k % 2 ? "244,114,182" : "129,140,248"},${a * 0.55})`;
-    c.beginPath(); c.arc(x, y, 6 + a * 20, 0, 6.283); c.fill();
-  }
-  const [ox, oy] = pos(t);
-  const og = c.createRadialGradient(ox, oy, 0, ox, oy, 46);
-  og.addColorStop(0, "#fff"); og.addColorStop(0.4, "#5eead4"); og.addColorStop(1, "rgba(94,234,212,0)");
-  c.fillStyle = og; c.beginPath(); c.arc(ox, oy, 46, 0, 6.283); c.fill();
-
-  // Realistic scenes
-  c = k3; g = c.createLinearGradient(0, 0, 0, H);
-  g.addColorStop(0, "#1e3a8a"); g.addColorStop(0.55, "#f97316"); g.addColorStop(0.7, "#fbbf24"); g.addColorStop(1, "#0c0a09");
-  c.fillStyle = g; c.fillRect(0, 0, W, H);
-  const sx = 280, sy = 168;
-  const sg = c.createRadialGradient(sx, sy, 0, sx, sy, 140);
-  sg.addColorStop(0, "rgba(255,247,214,1)"); sg.addColorStop(0.2, "rgba(255,237,160,0.9)"); sg.addColorStop(1, "rgba(255,200,80,0)");
-  c.fillStyle = sg; c.fillRect(0, 0, W, H);
-  // clouds
-  c.fillStyle = "rgba(255,230,210,0.25)";
-  for (let i = 0; i < 4; i++) { const x = ((i * 140 + t * 18) % 600) - 100; c.beginPath(); c.ellipse(x, 60 + i * 18, 70, 10, 0, 0, 6.283); c.fill(); }
-  [["#7c2d12", 0.3, 150, 40], ["#431407", 0.6, 175, 30], ["#1c0a05", 1, 200, 22]].forEach(([col, par, base, amp], li) => {
-    c.fillStyle = col; c.beginPath(); c.moveTo(0, H);
-    for (let x = 0; x <= W; x += 6) {
-      const xx = x + t * 14 * par;
-      const y = base - amp * (Math.sin(xx * 0.018 + li) + 0.5 * Math.sin(xx * 0.043 + li * 2) + 0.3 * Math.sin(xx * 0.09));
-      c.lineTo(x, y);
-    }
-    c.lineTo(W, H); c.fill();
-  });
-  // lake with shimmer
-  c.fillStyle = "rgba(15,23,42,0.85)"; c.fillRect(0, 222, W, H - 222);
-  c.fillStyle = "rgba(255,220,150,0.7)";
-  for (let i = 0; i < 10; i++) { const y = 230 + i * 7, wdt = 60 - i * 4 + Math.sin(t * 5 + i) * 10; c.fillRect(sx - wdt / 2 + Math.sin(t * 3 + i * 2) * 6, y, wdt, 2); }
-}
-
 /* ---------------- Counters and per-frame UI ---------------- */
 const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 function drawUI(t) {
@@ -632,8 +511,8 @@ function drawUI(t) {
   $("#s13-rays").style.rotate = -t * 10 + "deg";
   // scene 11
   $("#s11-num").textContent = fmt(3000 * easeOut(prog(t, S11.num, S11.numDur)));
-  const dl = prog(t, S11.dl, S11.dlDur), get = $("#s11-get"), ringEl = $("#s11-ring");
-  if (t < S11.dl) { $("#s11-gtxt").textContent = "GET"; ringEl.classList.add("h"); get.style.background = "#2563eb"; }
+  const dl = prog(t, S11.dl + 0.2, S11.dlDur), get = $("#s11-get"), ringEl = $("#s11-ring");
+  if (t < S11.dl + 0.2) { $("#s11-gtxt").textContent = "GET"; ringEl.classList.add("h"); get.style.background = "#2563eb"; }
   else if (dl < 1) { $("#s11-gtxt").textContent = ""; ringEl.classList.remove("h"); $("#s11-arc").style.strokeDashoffset = 100.5 * (1 - easeInOut(dl)); get.style.background = "#1e293b"; }
   else { $("#s11-gtxt").textContent = "OPEN"; ringEl.classList.add("h"); get.style.background = "#16a34a"; }
 }
@@ -690,6 +569,24 @@ function applyShake(t) {
   $("#world").style.transform = dx || dy ? `translate(${dx.toFixed(2)}px, ${dy.toFixed(2)}px)` : "";
 }
 
+/* ---------------- Footage frame sequences ---------------- */
+const SEQ = $$("img.seq");
+function drawMedia(t) {
+  const jobs = [];
+  SEQ.forEach((img) => {
+    const n = MEDIA[img.dataset.seq], t0 = +(img.dataset.t0 || 0);
+    if (t < t0 - 1 || t > t0 + n / 30 + 4) return;
+    const idx = Math.min(n, Math.max(1, Math.floor((t - t0) * 30 + 1e-6) + 1));
+    const src = `../media/${img.dataset.seq}/${String(idx).padStart(4, "0")}.jpg`;
+    if (img.dataset.cur !== src) {
+      img.dataset.cur = src;
+      img.src = src;
+      jobs.push(img.decode().catch(() => {}));
+    }
+  });
+  return jobs;
+}
+
 /* ---------------- Entry point ---------------- */
 let lastT = 0;
 window.__seek = (t) => {
@@ -698,8 +595,12 @@ window.__seek = (t) => {
   for (let s = Math.max(lastT, 0); s < t; s += 0.25) tl.seek(s, false);
   tl.seek(t, false);
   lastT = t;
-  drawBg(t); drawS2(t); drawS3(t); drawUI(t); drawCaptions(t); drawFx(t); applyShake(t);
+  drawBg(t); drawUI(t); drawCaptions(t); drawFx(t); applyShake(t);
+  return Promise.all(drawMedia(t));
 };
 window.__dur = DUR;
 window.__sfx = SFX.sort((a, b) => a.t - b.t);
-window.__ready = document.fonts.ready.then(() => { window.__seek(0); return true; });
+window.__ready = document.fonts.ready
+  .then(() => Promise.all([...document.images].filter((i) => i.getAttribute("src")).map((i) => i.decode().catch(() => {}))))
+  .then(() => window.__seek(0))
+  .then(() => true);
