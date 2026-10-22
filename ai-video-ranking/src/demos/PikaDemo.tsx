@@ -29,7 +29,7 @@ export const PikaDemo: React.FC<{frame: number; w: number; h: number}> = ({frame
         transform: `translateZ(${explode}px) scale(${faceScale})`,
         background: `linear-gradient(145deg, ${c1}, ${c2})`,
         filter: `brightness(${shade})`,
-        boxShadow: 'inset 0 0 0 2px rgba(255,255,255,0.45), inset 0 -18px 40px rgba(0,0,0,0.12)',
+        boxShadow: 'inset 0 0 0 2px rgba(255,255,255,0.6), inset 0 -18px 40px rgba(0,0,0,0.08)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -51,11 +51,11 @@ export const PikaDemo: React.FC<{frame: number; w: number; h: number}> = ({frame
       {/* perspective floor */}
       <svg width={w} height={h} style={{position: 'absolute', inset: 0, opacity: 0.5}}>
         {Array.from({length: 15}, (_, i) => (
-          <line key={i} x1={w / 2} y1={h * 0.48} x2={w / 2 + (i - 7) * 170} y2={h + 40} stroke="rgba(255,255,255,0.10)" />
+          <line key={i} x1={w / 2} y1={h * 0.48} x2={w / 2 + (i - 7) * 170} y2={h + 40} stroke="rgba(14,16,20,0.07)" />
         ))}
         {Array.from({length: 6}, (_, i) => {
           const y = h * 0.48 + Math.pow((i + 1) / 6, 2) * (h * 0.52 + 40);
-          return <line key={`h${i}`} x1={0} y1={y} x2={w} y2={y} stroke="rgba(255,255,255,0.08)" />;
+          return <line key={`h${i}`} x1={0} y1={y} x2={w} y2={y} stroke="rgba(14,16,20,0.06)" />;
         })}
       </svg>
       {/* contact shadow */}
@@ -67,7 +67,7 @@ export const PikaDemo: React.FC<{frame: number; w: number; h: number}> = ({frame
           width: 340,
           height: 60,
           borderRadius: '50%',
-          background: `radial-gradient(ellipse, rgba(0,0,0,${0.55 * n}) 0%, transparent 70%)`,
+          background: `radial-gradient(ellipse, rgba(28,32,52,${0.28 * n}) 0%, transparent 70%)`,
           transform: `scale(${1 - 0.15 * (float / 10)})`,
         }}
       />
@@ -80,7 +80,7 @@ export const PikaDemo: React.FC<{frame: number; w: number; h: number}> = ({frame
           width: S,
           height: S,
           borderRadius: 18,
-          border: '2px dashed rgba(255,255,255,0.25)',
+          border: '2px dashed rgba(14,16,20,0.18)',
           opacity: 1 - n,
         }}
       />
@@ -94,7 +94,7 @@ export const PikaDemo: React.FC<{frame: number; w: number; h: number}> = ({frame
             width: 460,
             height: 460,
             borderRadius: '50%',
-            border: '2px solid rgba(255,255,255,0.35)',
+            border: '2px solid rgba(14,16,20,0.18)',
             transform: `rotateX(74deg) rotateZ(${frame * 2}deg) scale(${0.7 + 0.3 * u})`,
           }}
         >

@@ -103,9 +103,9 @@ const VFrame: React.FC<{kind: number; frame: number; w: number; h: number; conte
         height: h,
         borderRadius: 26,
         overflow: 'hidden',
-        background: 'linear-gradient(160deg, #1D2230, #141822)',
-        border: '1px solid rgba(255,255,255,0.14)',
-        boxShadow: '0 40px 80px rgba(0,0,0,0.55)',
+        background: 'linear-gradient(160deg, #F1F3F6, #E7EAEF)',
+        border: '1px solid rgba(14,16,20,0.06)',
+        boxShadow: '0 30px 60px rgba(28,32,52,0.18), 0 4px 10px rgba(28,32,52,0.06)',
       }}
     >
       {/* loading shimmer (before content) */}
@@ -113,7 +113,7 @@ const VFrame: React.FC<{kind: number; frame: number; w: number; h: number; conte
         style={{
           position: 'absolute',
           inset: 0,
-          background: `linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.07) 50%, transparent 70%)`,
+          background: `linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.75) 50%, transparent 70%)`,
           backgroundSize: '250% 100%',
           backgroundPosition: `${100 - ((frame * 2.2) % 100)}% 0`,
           opacity: 1 - content,
@@ -176,8 +176,8 @@ export const PixverseDemo: React.FC<{frame: number; w: number; h: number}> = ({f
         <VFrame kind={0} frame={frame} w={cw} h={ch} content={io(frame, T.shortForm + 2, T.shortForm + 16)} portal={portal(0)} split={split} />
         {/* play glyph on the placeholder */}
         <svg width={64} height={64} viewBox="0 0 64 64" style={{position: 'absolute', left: cw / 2 - 32, top: ch / 2 - 32, opacity: (1 - s) * 0.8}}>
-          <circle cx={32} cy={32} r={30} fill="rgba(255,255,255,0.12)" />
-          <path d="M26 20 L46 32 L26 44 Z" fill="#FFFFFF" />
+          <circle cx={32} cy={32} r={30} fill="#FFFFFF" />
+          <path d="M26 20 L46 32 L26 44 Z" fill="#0E1014" />
         </svg>
       </div>
     </div>

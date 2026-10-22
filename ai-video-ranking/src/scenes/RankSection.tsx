@@ -101,7 +101,7 @@ export const RankSection: React.FC<{frame: number}> = ({frame}) => {
                   fontWeight: 800,
                   fontSize: 92,
                   letterSpacing: '-0.03em',
-                  color: C.white,
+                  color: C.ink,
                   lineHeight: '112px',
                 }}
               >
@@ -118,25 +118,29 @@ export const RankSection: React.FC<{frame: number}> = ({frame}) => {
       {/* ===== demo stage ===== */}
       <div style={{position: 'absolute', left: gx, top: gy, width: gw, height: gh, opacity: stageIn, transform: `scale(${0.9 + 0.1 * stageIn})`}}>
         {/* multicolour halo */}
-        <div style={{position: 'absolute', left: -140, top: -120, width: gw * 0.7, height: gh * 0.9, borderRadius: '50%', background: `radial-gradient(circle, ${rgba(accA, 0.32)} 0%, transparent 65%)`}} />
-        <div style={{position: 'absolute', right: -140, bottom: -140, width: gw * 0.7, height: gh * 0.9, borderRadius: '50%', background: `radial-gradient(circle, ${rgba(accB, 0.28)} 0%, transparent 65%)`}} />
+        {/* Klarna-style rainbow halo behind the card */}
+        <div style={{position: 'absolute', left: -160, top: -140, width: gw * 0.75, height: gh * 1.0, borderRadius: '50%', background: `radial-gradient(circle, ${rgba(accA, 0.38)} 0%, transparent 64%)`}} />
+        <div style={{position: 'absolute', right: -160, bottom: -170, width: gw * 0.75, height: gh * 1.0, borderRadius: '50%', background: `radial-gradient(circle, ${rgba(accB, 0.34)} 0%, transparent 64%)`}} />
+        <div style={{position: 'absolute', left: gw * 0.3, bottom: -200, width: gw * 0.5, height: gh * 0.7, borderRadius: '50%', background: 'radial-gradient(circle, rgba(120,230,170,0.28) 0%, transparent 64%)'}} />
+        <div style={{position: 'absolute', right: gw * 0.05, top: -170, width: gw * 0.4, height: gh * 0.6, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,214,102,0.24) 0%, transparent 64%)'}} />
         <div
           style={{
             position: 'absolute',
             inset: 0,
             borderRadius: gr,
             overflow: 'hidden',
-            background: 'linear-gradient(180deg, rgba(30,34,46,0.92), rgba(16,19,27,0.95))',
-            border: `1px solid ${C.stroke}`,
-            boxShadow: '0 60px 120px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08)',
+            background: '#FFFFFF',
+            border: `1px solid ${C.line}`,
+            boxShadow: C.shadow,
           }}
         >
           {/* window chrome */}
-          <div style={{position: 'absolute', left: 0, right: 0, top: 0, height: bar, borderBottom: bar > 2 ? `1px solid ${C.stroke}` : 'none', opacity: bar / 56, display: 'flex', alignItems: 'center', paddingLeft: 30 + Math.max(0, gr - 40) * 0.5, gap: 10}}>
-            {['#FF5F57', '#FEBC2E', '#28C840'].map((c) => (
-              <div key={c} style={{width: 13, height: 13, borderRadius: 7, background: c, opacity: 0.85}} />
+          <div style={{position: 'absolute', left: 0, right: 0, top: 0, height: bar, borderBottom: bar > 2 ? `1px solid ${C.line}` : 'none', opacity: bar / 56, display: 'flex', alignItems: 'center', paddingLeft: 30 + Math.max(0, gr - 40) * 0.5, gap: 10}}>
+            {[0, 1, 2].map((c) => (
+              <div key={c} style={{width: 12, height: 12, borderRadius: 6, background: C.skel2}} />
             ))}
-            <div style={{marginLeft: 'auto', marginRight: 26, width: 160, height: 10, borderRadius: 5, background: 'rgba(255,255,255,0.1)'}} />
+            <div style={{marginLeft: 22, width: 220, height: 10, borderRadius: 5, background: C.skel}} />
+            <div style={{marginLeft: 'auto', marginRight: 26, width: 34, height: 34, borderRadius: 17, background: C.skel}} />
           </div>
           <div style={{position: 'absolute', left: 0, right: 0, top: bar, bottom: 0, overflow: 'hidden'}}>
             {DEMOS.map((Demo, i) => {

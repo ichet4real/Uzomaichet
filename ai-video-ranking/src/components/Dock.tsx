@@ -31,9 +31,9 @@ const Mystery: React.FC<{s: number}> = ({s}) => (
       position: 'absolute',
       inset: 0,
       borderRadius: s * 0.24,
-      background: 'linear-gradient(160deg, #1A1F2B, #0F121A)',
-      border: `${Math.max(1.5, s * 0.012)}px dashed ${rgba(C.cyan, 0.7)}`,
-      boxShadow: `0 0 ${s * 0.25}px ${rgba(C.cyan, 0.25)}, inset 0 0 ${s * 0.2}px ${rgba(C.violet, 0.3)}`,
+      background: 'linear-gradient(160deg, #FBFAFF, #F1EEFF)',
+      border: `${Math.max(1.5, s * 0.012)}px dashed ${rgba(C.violet, 0.55)}`,
+      boxShadow: `0 ${s * 0.08}px ${s * 0.25}px rgba(28,32,52,0.12), 0 0 ${s * 0.3}px ${rgba(C.violet, 0.18)}`,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -44,7 +44,7 @@ const Mystery: React.FC<{s: number}> = ({s}) => (
       backfaceVisibility: 'hidden',
     }}
   >
-    <span style={{backgroundImage: `linear-gradient(160deg, ${C.cyan}, ${C.violet})`, WebkitBackgroundClip: 'text', color: 'transparent'}}>?</span>
+    <span style={{backgroundImage: `linear-gradient(160deg, ${C.violet}, ${C.cyan})`, WebkitBackgroundClip: 'text', color: 'transparent'}}>?</span>
   </div>
 );
 
@@ -64,9 +64,9 @@ export const Dock: React.FC<{frame: number}> = ({frame}) => {
           width: 500,
           height: 104,
           borderRadius: 34,
-          background: 'linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03))',
-          border: `1px solid ${C.stroke}`,
-          boxShadow: '0 30px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08)',
+          background: 'rgba(255,255,255,0.72)',
+          border: `1px solid ${C.line}`,
+          boxShadow: C.shadow,
           opacity: barIn,
           transform: `scale(${0.9 + 0.1 * barIn})`,
         }}
@@ -98,7 +98,7 @@ export const Dock: React.FC<{frame: number}> = ({frame}) => {
             }}
           >
             {on > 0.02 ? (
-              <div style={{position: 'absolute', inset: -g.s * 0.6, borderRadius: '50%', background: `radial-gradient(circle, ${rgba(accent, 0.55 * on)} 0%, transparent 65%)`}} />
+              <div style={{position: 'absolute', inset: -g.s * 0.6, borderRadius: '50%', background: `radial-gradient(circle, ${rgba(accent, 0.45 * on)} 0%, transparent 65%)`}} />
             ) : null}
             {rp >= 0 ? (
               <div
@@ -116,8 +116,9 @@ export const Dock: React.FC<{frame: number}> = ({frame}) => {
                   position: 'absolute',
                   inset: 0,
                   borderRadius: g.s * 0.24,
-                  background: 'linear-gradient(160deg, #FFFFFF, #EBEEF4)',
-                  boxShadow: `0 ${g.s * 0.08}px ${g.s * 0.25}px rgba(0,0,0,0.5)`,
+                  background: '#FFFFFF',
+                  border: '1px solid rgba(14,16,20,0.06)',
+                  boxShadow: `0 ${g.s * 0.08}px ${g.s * 0.24}px rgba(28,32,52,${0.12 + 0.1 * on}), 0 2px 6px rgba(28,32,52,0.06)`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -181,10 +182,10 @@ export const Cursor: React.FC<{frame: number}> = ({frame}) => {
         opacity: appear * (1 - gone),
         transform: `scale(${1 - press * 0.18})`,
         transformOrigin: '0 0',
-        filter: 'drop-shadow(0 6px 10px rgba(0,0,0,0.5))',
+        filter: 'drop-shadow(0 4px 8px rgba(28,32,52,0.35))',
       }}
     >
-      <path d="M3 2 L3 19 L7.6 14.8 L10.6 21.4 L13.6 20.1 L10.7 13.6 L17 13.4 Z" fill="#FFFFFF" stroke="#0A0C11" strokeWidth="1.3" strokeLinejoin="round" />
+      <path d="M3 2 L3 19 L7.6 14.8 L10.6 21.4 L13.6 20.1 L10.7 13.6 L17 13.4 Z" fill="#0E1014" stroke="#FFFFFF" strokeWidth="1.5" strokeLinejoin="round" />
     </svg>
   );
 };

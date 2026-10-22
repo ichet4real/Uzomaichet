@@ -30,13 +30,13 @@ export const Final: React.FC<{frame: number}> = ({frame}) => {
           fontWeight: 900,
           fontSize: 88,
           letterSpacing: '-0.02em',
-          color: C.white,
+          color: C.ink,
           opacity: q,
           transform: `translateY(${(1 - q) * 30}px)`,
         }}
       >
         WHICH WOULD YOU{' '}
-        <span style={{backgroundImage: `linear-gradient(120deg, ${C.cyan}, ${C.violet})`, WebkitBackgroundClip: 'text', color: 'transparent'}}>CHOOSE?</span>
+        <span style={{display: 'inline-block', background: C.pink, borderRadius: 22, padding: '0 20px'}}>CHOOSE?</span>
       </div>
       {BOARD.map((id, i) => {
         const t = TOOLS[id];
@@ -57,10 +57,10 @@ export const Final: React.FC<{frame: number}> = ({frame}) => {
                 height: hgt,
                 borderRadius: '28px 28px 10px 10px',
                 background: top
-                  ? `linear-gradient(180deg, ${rgba(t.accent[0], 0.35)}, ${rgba(t.accent[1], 0.08)})`
-                  : 'linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02))',
-                border: `1.5px solid ${top ? rgba(t.accent[0], 0.85) : 'rgba(255,255,255,0.14)'}`,
-                boxShadow: top ? `0 0 70px ${rgba(t.accent[0], 0.35)}, inset 0 1px 0 rgba(255,255,255,0.2)` : 'inset 0 1px 0 rgba(255,255,255,0.08)',
+                  ? `linear-gradient(180deg, ${rgba(t.accent[0], 0.22)}, ${rgba(t.accent[1], 0.14)}), #FFFFFF`
+                  : '#FFFFFF',
+                border: `1.5px solid ${top ? rgba(t.accent[0], 0.7) : 'rgba(14,16,20,0.06)'}`,
+                boxShadow: top ? `0 0 80px ${rgba(t.accent[0], 0.3)}, ${C.shadow}` : C.shadow,
                 display: 'flex',
                 justifyContent: 'center',
                 paddingTop: 18,
@@ -70,7 +70,7 @@ export const Final: React.FC<{frame: number}> = ({frame}) => {
               <DimText text={`#${t.rank}`} size={top ? 104 : 80} colors={t.accent} depth={top ? 8 : 5} />
             </div>
             {/* name + logo above the bar */}
-            <div style={{position: 'absolute', left: 0, width: COLW, top: BASE - hgt - 72, textAlign: 'center', fontFamily: FONT.display, fontWeight: 800, fontSize: top ? 58 : 48, color: C.white, letterSpacing: '-0.02em'}}>
+            <div style={{position: 'absolute', left: 0, width: COLW, top: BASE - hgt - 72, textAlign: 'center', fontFamily: FONT.display, fontWeight: 800, fontSize: top ? 58 : 48, color: C.ink, letterSpacing: '-0.02em'}}>
               {t.name}
             </div>
             <div style={{position: 'absolute', left: COLW / 2 - card / 2, top: BASE - hgt - 92 - card}}>

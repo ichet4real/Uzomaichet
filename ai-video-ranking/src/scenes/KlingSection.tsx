@@ -72,7 +72,7 @@ export const KlingSection: React.FC<{frame: number}> = ({frame}) => {
                 fontSize: nameSize,
                 lineHeight: `${nameSize * 1.2}px`,
                 letterSpacing: '-0.03em',
-                color: C.white,
+                color: C.ink,
                 transform: `translateY(${(1 - nameIn) * 100}%)`,
               }}
             >
@@ -110,7 +110,8 @@ const Advantages: React.FC<{frame: number}> = ({frame}) => {
           width: 1720,
           height: ph + 40,
           borderRadius: 44,
-          border: `1.5px solid ${rgba(K[0], 0.4 * join)}`,
+          border: `1.5px solid ${rgba(K[0], 0.45 * join)}`,
+          background: `linear-gradient(90deg, ${rgba(K[0], 0.06 * join)}, ${rgba(K[1], 0.06 * join)})`,
           boxShadow: `0 0 60px ${rgba(K[0], 0.12 * join)}`,
         }}
       />
@@ -124,10 +125,10 @@ const Advantages: React.FC<{frame: number}> = ({frame}) => {
       <svg width={1920} height={1080} style={{position: 'absolute', inset: 0}}>
         <line x1={890} y1={top + ph / 2} x2={890 + 70 * Math.min(1, r * 1.3)} y2={top + ph / 2} stroke={K[0]} strokeWidth={3} opacity={r} />
         <line x1={1030} y1={top + ph / 2} x2={1030 - 70 * Math.min(1, b * 1.3)} y2={top + ph / 2} stroke={K[1]} strokeWidth={3} opacity={b} />
-        <line x1={960} y1={228} x2={960} y2={228 + (top + ph / 2 - 50 - 228) * ghost} stroke="rgba(255,255,255,0.18)" strokeWidth={2} strokeDasharray="6 8" />
+        <line x1={960} y1={228} x2={960} y2={228 + (top + ph / 2 - 50 - 228) * ghost} stroke="rgba(14,16,20,0.2)" strokeWidth={2} strokeDasharray="6 8" />
       </svg>
       <div style={{position: 'absolute', left: 960 - 46, top: top + ph / 2 - 46, transform: `scale(${ghost})`}}>
-        <div style={{width: 92, height: 92, borderRadius: 46, background: 'linear-gradient(160deg,#FFFFFF,#E9EDF4)', boxShadow: `0 0 0 ${4 + 6 * join}px ${rgba(K[0], 0.25)}, 0 20px 40px rgba(0,0,0,0.5)`, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <div style={{width: 92, height: 92, borderRadius: 46, background: '#FFFFFF', boxShadow: `0 0 0 ${4 + 6 * join}px ${rgba(K[0], 0.2)}, 0 20px 40px rgba(28,32,52,0.18)`, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <Img src={TOOLS.kling.logo} style={{width: 60, height: 60, objectFit: 'contain'}} />
         </div>
       </div>
@@ -143,16 +144,16 @@ const Panel: React.FC<{x: number; y: number; w: number; h: number; ghost: number
         inset: 0,
         borderRadius: 32,
         overflow: 'hidden',
-        background: 'linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025))',
-        border: `1px ${p > 0.05 ? 'solid' : 'dashed'} ${p > 0.05 ? rgba(accent, 0.25 + 0.35 * p) : 'rgba(255,255,255,0.18)'}`,
-        boxShadow: `0 40px 90px rgba(0,0,0,0.5), 0 0 ${50 * p}px ${rgba(accent, 0.15)}`,
+        background: p > 0.05 ? '#FFFFFF' : 'rgba(255,255,255,0.6)',
+        border: `1px ${p > 0.05 ? 'solid' : 'dashed'} ${p > 0.05 ? 'rgba(14,16,20,0.06)' : 'rgba(14,16,20,0.18)'}`,
+        boxShadow: `${C.shadow}, 0 0 ${60 * p}px ${rgba(accent, 0.22)}`,
       }}
     >
       {p > 0 ? children : null}
-      <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: 140, background: 'linear-gradient(180deg, transparent, rgba(8,10,14,0.85))'}} />
+      <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: 140, background: 'linear-gradient(180deg, transparent, rgba(255,255,255,0.97) 70%)'}} />
       <div style={{position: 'absolute', left: 44, bottom: 40, display: 'flex', alignItems: 'center', gap: 18, opacity: p, transform: `translateY(${(1 - p) * 20}px)`}}>
         <div style={{width: 8, height: 46, borderRadius: 4, background: accent, boxShadow: `0 0 16px ${accent}`}} />
-        <div style={{fontFamily: FONT.label, fontWeight: 800, fontSize: 54, letterSpacing: '0.14em', color: C.white}}>{label}</div>
+        <div style={{fontFamily: FONT.label, fontWeight: 800, fontSize: 54, letterSpacing: '0.14em', color: C.ink}}>{label}</div>
       </div>
     </div>
   </div>
@@ -196,7 +197,7 @@ const RealismVisual: React.FC<{frame: number; p: number}> = ({frame, p}) => {
       <svg width={760} height={540} viewBox="-380 -270 760 540" style={{position: 'absolute', inset: 0, opacity: 1 - open}}>
         {Array.from({length: 6}, (_, i) => (
           <g key={i} transform={`rotate(${i * 60 + open * 40})`}>
-            <path d={`M ${30 + open * 500} -600 L 900 -600 L 900 600 L ${-60 + open * 520} 600 Z`} fill="#0D1016" stroke="#1E2532" strokeWidth={2} />
+            <path d={`M ${30 + open * 500} -600 L 900 -600 L 900 600 L ${-60 + open * 520} 600 Z`} fill="#F3F4F7" stroke="#DADEE6" strokeWidth={2} />
           </g>
         ))}
       </svg>
@@ -214,8 +215,8 @@ const BudgetVisual: React.FC<{frame: number; p: number}> = ({frame, p}) => {
     <svg width={760} height={540} viewBox="0 0 760 540" style={{position: 'absolute', inset: 0, opacity: Math.min(1, p * 1.5)}}>
       <defs>
         <linearGradient id="wbody" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#3C4C2C" />
-          <stop offset="1" stopColor="#1A2214" />
+          <stop offset="0" stopColor="#E6F8C9" />
+          <stop offset="1" stopColor="#B9E383" />
         </linearGradient>
         <linearGradient id="coin" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="#E9FFC2" />
@@ -234,11 +235,11 @@ const BudgetVisual: React.FC<{frame: number; p: number}> = ({frame, p}) => {
         </g>
       ) : null}
       <g transform={`translate(0 ${settle})`}>
-        <rect x={210} y={200} width={340} height={210} rx={34} fill="url(#wbody)" stroke="#B6F24A" strokeOpacity={0.45} strokeWidth={2} />
-        <rect x={226} y={216} width={308} height={178} rx={24} fill="none" stroke="#B6F24A" strokeOpacity={0.35} strokeWidth={2} strokeDasharray="8 8" />
-        <path d="M210 250 Q 380 290 550 250 L 550 234 Q 550 200 516 200 L 244 200 Q 210 200 210 234 Z" fill="#323D2B" />
-        <rect x={470} y={280} width={100} height={64} rx={18} fill="#323D2B" stroke="#B6F24A" strokeOpacity={0.5} strokeWidth={2} />
-        <circle cx={505} cy={312} r={10} fill="#B6F24A" />
+        <rect x={210} y={200} width={340} height={210} rx={34} fill="url(#wbody)" stroke="#6DA51E" strokeOpacity={0.55} strokeWidth={2} />
+        <rect x={226} y={216} width={308} height={178} rx={24} fill="none" stroke="#6DA51E" strokeOpacity={0.4} strokeWidth={2} strokeDasharray="8 8" />
+        <path d="M210 250 Q 380 290 550 250 L 550 234 Q 550 200 516 200 L 244 200 Q 210 200 210 234 Z" fill="#CDEEA0" />
+        <rect x={470} y={280} width={100} height={64} rx={18} fill="#FFFFFF" stroke="#6DA51E" strokeOpacity={0.5} strokeWidth={2} />
+        <circle cx={505} cy={312} r={10} fill="#6DC51E" />
       </g>
     </svg>
   );

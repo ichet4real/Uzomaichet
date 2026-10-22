@@ -37,8 +37,8 @@ export const ViduDemo: React.FC<{frame: number; w: number; h: number}> = ({frame
           width: VW,
           height: VH,
           borderRadius: 20,
-          background: 'rgba(255,255,255,0.05)',
-          border: '1px dashed rgba(255,255,255,0.2)',
+          background: '#F1F3F6',
+          border: '1px dashed rgba(14,16,20,0.15)',
           opacity: 1 - inP,
         }}
       />
@@ -51,8 +51,8 @@ export const ViduDemo: React.FC<{frame: number; w: number; h: number}> = ({frame
           height: VH + border * 2,
           padding: border,
           borderRadius: 18 + border,
-          background: '#F4F6FA',
-          boxShadow: '0 50px 100px rgba(0,0,0,0.6)',
+          background: '#FFFFFF',
+          boxShadow: '0 40px 80px rgba(28,32,52,0.22), 0 4px 12px rgba(28,32,52,0.08)',
           transform: `translateY(${(1 - inP) * 80}px) rotate(${rot}deg) scale(${0.9 + 0.1 * inP})`,
           opacity: inP,
         }}

@@ -21,7 +21,7 @@ export const HailuoDemo: React.FC<{frame: number; w: number; h: number}> = ({fra
     s: 0.3 + (i % 4) * 0.12,
   }));
   return (
-    <div style={{position: 'absolute', inset: 0, overflow: 'hidden', background: '#07050A'}}>
+    <div style={{position: 'absolute', inset: 0, overflow: 'hidden', background: '#120C14'}}>
       <svg width={w} height={h} viewBox={`0 0 ${VW} ${VH}`} preserveAspectRatio="xMidYMid slice" style={{position: 'absolute', inset: 0, filter: `brightness(${lerp(0.12, 1, expo)})`}}>
         <defs>
           <linearGradient id="hsun" x1="0" y1="0" x2="0" y2="1">

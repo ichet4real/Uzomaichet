@@ -38,5 +38,6 @@ Remotion's browser). On a normal machine Remotion downloads its own browser auto
 - `src/scenes/`: `Intro`, `RankSection` (rank odometer, logo/name/labels, demo stage whose shape changes between tools), `KlingSection` (#1 hero → REALISM/BUDGET), `UseCases`, `Final` (leaderboard)
 - `src/demos/`: illustrative demos for PixVerse, Pika, Vidu, Hailuo (flat graphics, not tool output)
 
-Style: deep charcoal with cyan/violet accents and logo-coloured glows. The motion language (floating UI cards, colour halos,
-an icon dock with a cursor selecting each tool, cards changing shape) is inspired by the Klarna "App Page" reference.
+Style: light, airy page with pastel glows, white floating cards, a black cursor and Klarna-style highlight chips,
+modelled on the Klarna "App Page" reference. Motion language: an icon dock where the cursor selects each tool, a demo card
+that changes shape from tool to tool, and camera push-ins/pull-backs. (v1 used a dark charcoal theme; see git history.)

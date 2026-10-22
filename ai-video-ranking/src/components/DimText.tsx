@@ -2,7 +2,7 @@ import React from 'react';
 import {FONT, rgba} from '../theme';
 import {mix} from '../lib/anim';
 
-/** Large dimensional text: extruded back layer + gradient face + optional light sweep (0..1). */
+/** Large dimensional text for a light page: tinted extrusion + gradient face + optional light sweep (0..1). */
 export const DimText: React.FC<{
   text: string;
   size: number;
@@ -10,9 +10,9 @@ export const DimText: React.FC<{
   depth?: number;
   sweep?: number;
   style?: React.CSSProperties;
-}> = ({text, size, colors, depth = 14, sweep, style}) => {
-  const shade = mix(colors[1], '#000000', 0.62);
-  const ext = Array.from({length: depth}, (_, i) => `${(i + 1) * 0.55}px ${i + 1}px 0 ${shade}`).join(',');
+}> = ({text, size, colors, depth = 12, sweep, style}) => {
+  const shade = mix(colors[1], '#1A1030', 0.45);
+  const ext = Array.from({length: depth}, (_, i) => `${(i + 1) * 0.5}px ${i + 1}px 0 ${shade}`).join(',');
   const base: React.CSSProperties = {
     fontFamily: FONT.display,
     fontWeight: 900,
@@ -23,13 +23,13 @@ export const DimText: React.FC<{
   };
   return (
     <div style={{position: 'relative', display: 'inline-block', ...style}}>
-      <div style={{...base, color: shade, textShadow: `${ext}, ${depth * 0.6}px ${depth + 26}px 60px rgba(0,0,0,0.6), 0 0 80px ${rgba(colors[0], 0.25)}`}}>{text}</div>
+      <div style={{...base, color: shade, textShadow: `${ext}, ${depth * 0.6}px ${depth + 24}px 40px ${rgba('#1C2034', 0.2)}, 0 0 70px ${rgba(colors[0], 0.25)}`}}>{text}</div>
       <div
         style={{
           ...base,
           position: 'absolute',
           inset: 0,
-          backgroundImage: `linear-gradient(165deg, #FFFFFF 0%, ${colors[0]} 48%, ${colors[1]} 100%)`,
+          backgroundImage: `linear-gradient(165deg, ${mix(colors[0], '#FFFFFF', 0.35)} 0%, ${colors[0]} 40%, ${colors[1]} 100%)`,
           WebkitBackgroundClip: 'text',
           color: 'transparent',
         }}

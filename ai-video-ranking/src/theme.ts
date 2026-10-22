@@ -1,13 +1,20 @@
 import {staticFile} from 'remotion';
 
+// Light, airy palette inspired by the Klarna "App Page" reference.
 export const C = {
-  bg: '#0A0C11',
-  white: '#F5F7FB',
-  mute: '#8C95A8',
-  cyan: '#22D3EE',
-  violet: '#8B5CF6',
-  lime: '#B6F24A',
-  stroke: 'rgba(255,255,255,0.12)',
+  bg: '#F5F6F8',
+  page: '#FFFFFF',
+  ink: '#0E1014',
+  inkSoft: '#5B6170',
+  skel: '#ECEEF2',
+  skel2: '#E2E5EA',
+  line: 'rgba(14,16,20,0.08)',
+  cyan: '#06B6D4',
+  violet: '#7C3AED',
+  pink: '#FFB8CC',
+  lime: '#8BD12E',
+  white: '#FFFFFF',
+  shadow: '0 30px 70px rgba(28,32,52,0.12), 0 4px 14px rgba(28,32,52,0.06)',
 };
 
 export const FONT = {
@@ -28,11 +35,11 @@ export type Tool = {
 
 // Accents sampled from each supplied logo (Pika's logo is near-black, so it gets a neutral lavender).
 export const TOOLS: Record<ToolId, Tool> = {
-  pixverse: {id: 'pixverse', name: 'PixVerse', rank: 5, logo: staticFile('logos/pixverselogo.png'), accent: ['#C85CF0', '#FF9A5A'], label: ['SHORT-FORM', '+ EFFECTS']},
-  pika: {id: 'pika', name: 'Pika', rank: 4, logo: staticFile('logos/pika.png'), accent: ['#A99BFF', '#FF8FB1'], label: ['CREATIVE', '+ UNUSUAL']},
-  vidu: {id: 'vidu', name: 'Vidu', rank: 3, logo: staticFile('logos/vidu-ai-video-logo-256.png'), accent: ['#36D6FF', '#2E6BFF'], label: ['CHARACTERS', '+ IMAGE → VIDEO']},
-  hailuo: {id: 'hailuo', name: 'Hailuo', rank: 2, logo: staticFile('logos/hailuo-color.png'), accent: ['#FF9A1F', '#E8445F'], label: ['PEOPLE', '+ CINEMATIC SCENES']},
-  kling: {id: 'kling', name: 'Kling', rank: 1, logo: staticFile('logos/kling-color.png'), accent: ['#14E6F0', '#B6F24A'], label: ['MY #1 PICK', '']},
+  pixverse: {id: 'pixverse', name: 'PixVerse', rank: 5, logo: staticFile('logos/pixverselogo.png'), accent: ['#B44BEA', '#FF8A3D'], label: ['SHORT-FORM', '+ EFFECTS']},
+  pika: {id: 'pika', name: 'Pika', rank: 4, logo: staticFile('logos/pika.png'), accent: ['#7B6CF6', '#FF6F9A'], label: ['CREATIVE', '+ UNUSUAL']},
+  vidu: {id: 'vidu', name: 'Vidu', rank: 3, logo: staticFile('logos/vidu-ai-video-logo-256.png'), accent: ['#1DB8F0', '#2E5BFF'], label: ['CHARACTERS', '+ IMAGE → VIDEO']},
+  hailuo: {id: 'hailuo', name: 'Hailuo', rank: 2, logo: staticFile('logos/hailuo-color.png'), accent: ['#FF8A1F', '#E8445F'], label: ['PEOPLE', '+ CINEMATIC SCENES']},
+  kling: {id: 'kling', name: 'Kling', rank: 1, logo: staticFile('logos/kling-color.png'), accent: ['#00BFD8', '#6DC51E'], label: ['MY #1 PICK', '']},
 };
 
 // Dock / countdown order: #5 → #1
