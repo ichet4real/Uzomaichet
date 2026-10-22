@@ -1,0 +1,545 @@
+{
+ "audioDuration": 35.981,
+ "method": "pocketsphinx forced alignment per SRT phrase",
+ "segments": [
+  {
+   "segment": 1,
+   "srtStart": 0.0,
+   "srtEnd": 1.8399999999999999,
+   "text": "So let's quickly rank them.",
+   "aligned": true,
+   "words": [
+    {
+     "word": "so",
+     "start": 0.14,
+     "end": 0.34
+    },
+    {
+     "word": "let's",
+     "start": 0.34,
+     "end": 0.58
+    },
+    {
+     "word": "quickly",
+     "start": 0.58,
+     "end": 0.97
+    },
+    {
+     "word": "rank",
+     "start": 0.97,
+     "end": 1.24
+    },
+    {
+     "word": "them",
+     "start": 1.24,
+     "end": 1.54
+    }
+   ]
+  },
+  {
+   "segment": 2,
+   "srtStart": 1.8399999999999999,
+   "srtEnd": 6.4,
+   "text": "At number 5, PixVerse, great for short form and creative effects.",
+   "aligned": true,
+   "words": [
+    {
+     "word": "at",
+     "start": 1.94,
+     "end": 2.07
+    },
+    {
+     "word": "number",
+     "start": 2.07,
+     "end": 2.34
+    },
+    {
+     "word": "five",
+     "start": 2.34,
+     "end": 2.81
+    },
+    {
+     "word": "pixverse",
+     "start": 3.07,
+     "end": 3.74
+    },
+    {
+     "word": "great",
+     "start": 3.99,
+     "end": 4.23
+    },
+    {
+     "word": "for",
+     "start": 4.23,
+     "end": 4.37
+    },
+    {
+     "word": "short",
+     "start": 4.37,
+     "end": 4.62
+    },
+    {
+     "word": "form",
+     "start": 4.62,
+     "end": 4.96
+    },
+    {
+     "word": "and",
+     "start": 4.96,
+     "end": 5.12
+    },
+    {
+     "word": "creative",
+     "start": 5.12,
+     "end": 5.52
+    },
+    {
+     "word": "effects",
+     "start": 5.52,
+     "end": 6.07
+    }
+   ]
+  },
+  {
+   "segment": 3,
+   "srtStart": 6.4,
+   "srtEnd": 10.8,
+   "text": "Number 4, Pika, Excellent for creative and unusual content.",
+   "aligned": true,
+   "words": [
+    {
+     "word": "number",
+     "start": 6.5,
+     "end": 6.78
+    },
+    {
+     "word": "four",
+     "start": 6.78,
+     "end": 7.22
+    },
+    {
+     "word": "pika",
+     "start": 7.41,
+     "end": 7.89
+    },
+    {
+     "word": "excellent",
+     "start": 8.1,
+     "end": 8.55
+    },
+    {
+     "word": "for",
+     "start": 8.55,
+     "end": 8.67
+    },
+    {
+     "word": "creative",
+     "start": 8.67,
+     "end": 9.24
+    },
+    {
+     "word": "and",
+     "start": 9.24,
+     "end": 9.45
+    },
+    {
+     "word": "unusual",
+     "start": 9.45,
+     "end": 9.94
+    },
+    {
+     "word": "content",
+     "start": 9.94,
+     "end": 10.48
+    }
+   ]
+  },
+  {
+   "segment": 4,
+   "srtStart": 10.8,
+   "srtEnd": 15.76,
+   "text": "Number 3, Vidu, particularly interesting for characters and image to video.",
+   "aligned": true,
+   "words": [
+    {
+     "word": "number",
+     "start": 10.92,
+     "end": 11.23
+    },
+    {
+     "word": "three",
+     "start": 11.23,
+     "end": 11.68
+    },
+    {
+     "word": "vidu",
+     "start": 11.88,
+     "end": 12.34
+    },
+    {
+     "word": "particularly",
+     "start": 12.58,
+     "end": 13.23
+    },
+    {
+     "word": "interesting",
+     "start": 13.23,
+     "end": 13.71
+    },
+    {
+     "word": "for",
+     "start": 13.71,
+     "end": 13.85
+    },
+    {
+     "word": "characters",
+     "start": 13.85,
+     "end": 14.46
+    },
+    {
+     "word": "and",
+     "start": 14.46,
+     "end": 14.63
+    },
+    {
+     "word": "image",
+     "start": 14.63,
+     "end": 14.94
+    },
+    {
+     "word": "to",
+     "start": 14.94,
+     "end": 15.03
+    },
+    {
+     "word": "video",
+     "start": 15.03,
+     "end": 15.48
+    }
+   ]
+  },
+  {
+   "segment": 5,
+   "srtStart": 15.76,
+   "srtEnd": 20.96,
+   "text": "Number 2, Hailuo, Excellent option for realistic people and cinematic scenes.",
+   "aligned": true,
+   "words": [
+    {
+     "word": "number",
+     "start": 15.9,
+     "end": 16.2
+    },
+    {
+     "word": "two",
+     "start": 16.2,
+     "end": 16.58
+    },
+    {
+     "word": "hailuo",
+     "start": 16.77,
+     "end": 17.4
+    },
+    {
+     "word": "excellent",
+     "start": 17.63,
+     "end": 18.07
+    },
+    {
+     "word": "option",
+     "start": 18.07,
+     "end": 18.4
+    },
+    {
+     "word": "for",
+     "start": 18.4,
+     "end": 18.57
+    },
+    {
+     "word": "realistic",
+     "start": 18.57,
+     "end": 19.07
+    },
+    {
+     "word": "people",
+     "start": 19.07,
+     "end": 19.5
+    },
+    {
+     "word": "and",
+     "start": 19.5,
+     "end": 19.66
+    },
+    {
+     "word": "cinematic",
+     "start": 19.66,
+     "end": 20.16
+    },
+    {
+     "word": "scenes",
+     "start": 20.16,
+     "end": 20.63
+    }
+   ]
+  },
+  {
+   "segment": 6,
+   "srtStart": 20.96,
+   "srtEnd": 23.2,
+   "text": "And my number 1, Kling.",
+   "aligned": true,
+   "words": [
+    {
+     "word": "and",
+     "start": 21.08,
+     "end": 21.23
+    },
+    {
+     "word": "my",
+     "start": 21.23,
+     "end": 21.36
+    },
+    {
+     "word": "number",
+     "start": 21.36,
+     "end": 21.68
+    },
+    {
+     "word": "one",
+     "start": 21.68,
+     "end": 22.09
+    },
+    {
+     "word": "kling",
+     "start": 22.46,
+     "end": 22.88
+    }
+   ]
+  },
+  {
+   "segment": 7,
+   "srtStart": 23.2,
+   "srtEnd": 28.21,
+   "text": "Especially if your top priority is almost 100% realistic video while keeping",
+   "aligned": true,
+   "words": [
+    {
+     "word": "especially",
+     "start": 23.37,
+     "end": 24.02
+    },
+    {
+     "word": "if",
+     "start": 24.02,
+     "end": 24.13
+    },
+    {
+     "word": "your",
+     "start": 24.13,
+     "end": 24.24
+    },
+    {
+     "word": "top",
+     "start": 24.24,
+     "end": 24.5
+    },
+    {
+     "word": "priority",
+     "start": 24.5,
+     "end": 25.13
+    },
+    {
+     "word": "is",
+     "start": 25.13,
+     "end": 25.27
+    },
+    {
+     "word": "almost",
+     "start": 25.27,
+     "end": 25.61
+    },
+    {
+     "word": "one",
+     "start": 25.61,
+     "end": 25.81
+    },
+    {
+     "word": "hundred",
+     "start": 25.81,
+     "end": 26.14
+    },
+    {
+     "word": "percent",
+     "start": 26.14,
+     "end": 26.51
+    },
+    {
+     "word": "realistic",
+     "start": 26.51,
+     "end": 27.01
+    },
+    {
+     "word": "video",
+     "start": 27.01,
+     "end": 27.47
+    },
+    {
+     "word": "while",
+     "start": 27.56,
+     "end": 27.74
+    },
+    {
+     "word": "keeping",
+     "start": 27.74,
+     "end": 28.05
+    }
+   ]
+  },
+  {
+   "segment": 8,
+   "srtStart": 28.21,
+   "srtEnd": 29.12,
+   "text": "your budget low.",
+   "aligned": true,
+   "words": [
+    {
+     "word": "your",
+     "start": 27.96,
+     "end": 28.15
+    },
+    {
+     "word": "budget",
+     "start": 28.15,
+     "end": 28.44
+    },
+    {
+     "word": "low",
+     "start": 28.44,
+     "end": 28.75
+    }
+   ]
+  },
+  {
+   "segment": 9,
+   "srtStart": 29.12,
+   "srtEnd": 33.17,
+   "text": "So whichever your preference lies be at products ads, image generation,",
+   "aligned": true,
+   "words": [
+    {
+     "word": "so",
+     "start": 29.23,
+     "end": 29.59
+    },
+    {
+     "word": "whichever",
+     "start": 29.59,
+     "end": 29.98
+    },
+    {
+     "word": "your",
+     "start": 29.98,
+     "end": 30.1
+    },
+    {
+     "word": "preference",
+     "start": 30.1,
+     "end": 30.56
+    },
+    {
+     "word": "lies",
+     "start": 30.56,
+     "end": 30.83
+    },
+    {
+     "word": "be",
+     "start": 30.83,
+     "end": 30.94
+    },
+    {
+     "word": "at",
+     "start": 30.94,
+     "end": 31.02
+    },
+    {
+     "word": "products",
+     "start": 31.02,
+     "end": 31.39
+    },
+    {
+     "word": "ads",
+     "start": 31.39,
+     "end": 31.78
+    },
+    {
+     "word": "image",
+     "start": 31.98,
+     "end": 32.27
+    },
+    {
+     "word": "generation",
+     "start": 32.27,
+     "end": 32.94
+    }
+   ]
+  },
+  {
+   "segment": 10,
+   "srtStart": 33.17,
+   "srtEnd": 34.56,
+   "text": "cinematic movies etc,",
+   "aligned": true,
+   "words": [
+    {
+     "word": "cinematic",
+     "start": 33.15,
+     "end": 33.65
+    },
+    {
+     "word": "movies",
+     "start": 33.65,
+     "end": 33.99
+    },
+    {
+     "word": "etcetera",
+     "start": 33.99,
+     "end": 34.5
+    }
+   ]
+  },
+  {
+   "segment": 11,
+   "srtStart": 34.56,
+   "srtEnd": 35.981,
+   "text": "it all depends on you.",
+   "aligned": true,
+   "words": [
+    {
+     "word": "it",
+     "start": 34.69,
+     "end": 34.84
+    },
+    {
+     "word": "all",
+     "start": 34.84,
+     "end": 34.99
+    },
+    {
+     "word": "depends",
+     "start": 34.99,
+     "end": 35.35
+    },
+    {
+     "word": "on",
+     "start": 35.35,
+     "end": 35.46
+    },
+    {
+     "word": "you",
+     "start": 35.46,
+     "end": 35.66
+    }
+   ]
+  }
+ ]
+}

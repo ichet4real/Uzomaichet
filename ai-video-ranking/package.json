@@ -1,0 +1,22 @@
+{
+  "name": "ai-video-tools-ranking",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render src/index.ts Ranking out/ai-video-tools-ranking-youtube.mp4 --codec=h264 --audio-codec=aac --pixel-format=yuv420p --crf=18",
+    "still": "remotion still src/index.ts Ranking"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.538",
+    "@types/react": "^18.3.12",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.538",
+    "typescript": "^5.6.3"
+  },
+  "devDependencies": {
+    "@fontsource/inter": "^5.1.0",
+    "@fontsource/manrope": "^5.1.0"
+  }
+}

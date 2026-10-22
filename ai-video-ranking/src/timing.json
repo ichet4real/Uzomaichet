@@ -1,0 +1,878 @@
+{
+ "fps": 30,
+ "durationInFrames": 1083,
+ "audioDuration": 35.981,
+ "method": "pocketsphinx forced alignment per SRT phrase; onsets snapped to RMS energy rise; cues lead audio by 2 frames",
+ "cues": {
+  "titleIn": 0,
+  "rank5": 68,
+  "pixverse": 91,
+  "shortForm": 129,
+  "creativeEffects": 152,
+  "rank4": 201,
+  "pika": 221,
+  "creativeUnusual": 258,
+  "unusual": 282,
+  "rank3": 335,
+  "vidu": 354,
+  "characters": 414,
+  "imageToVideo": 437,
+  "rank2": 484,
+  "hailuo": 501,
+  "realisticPeople": 555,
+  "cinematicScenes": 588,
+  "myNumber": 635,
+  "rank1": 648,
+  "kling": 672,
+  "especially": 699,
+  "realisticVideo": 793,
+  "budgetLow": 842,
+  "useCases": 875,
+  "productAds": 929,
+  "imageGeneration": 958,
+  "cinematicMovies": 992,
+  "finalBoard": 1018,
+  "dependsOnYou": 1039
+ },
+ "scenes": [
+  {
+   "id": "intro",
+   "from": 0,
+   "to": 62
+  },
+  {
+   "id": "pixverse",
+   "from": 62,
+   "to": 195
+  },
+  {
+   "id": "pika",
+   "from": 195,
+   "to": 329
+  },
+  {
+   "id": "vidu",
+   "from": 329,
+   "to": 478
+  },
+  {
+   "id": "hailuo",
+   "from": 478,
+   "to": 631
+  },
+  {
+   "id": "kling",
+   "from": 631,
+   "to": 695
+  },
+  {
+   "id": "klingBenefits",
+   "from": 695,
+   "to": 871
+  },
+  {
+   "id": "useCases",
+   "from": 871,
+   "to": 1010
+  },
+  {
+   "id": "leaderboard",
+   "from": 1010,
+   "to": 1083
+  }
+ ],
+ "words": [
+  {
+   "word": "so",
+   "segment": 1,
+   "start": 0.14,
+   "end": 0.34,
+   "onset": 0.14,
+   "snapped": false,
+   "frame": 4
+  },
+  {
+   "word": "let's",
+   "segment": 1,
+   "start": 0.34,
+   "end": 0.58,
+   "onset": 0.34,
+   "snapped": false,
+   "frame": 10
+  },
+  {
+   "word": "quickly",
+   "segment": 1,
+   "start": 0.58,
+   "end": 0.97,
+   "onset": 0.62,
+   "snapped": true,
+   "frame": 19
+  },
+  {
+   "word": "rank",
+   "segment": 1,
+   "start": 0.97,
+   "end": 1.24,
+   "onset": 0.97,
+   "snapped": false,
+   "frame": 29
+  },
+  {
+   "word": "them",
+   "segment": 1,
+   "start": 1.24,
+   "end": 1.54,
+   "onset": 1.26,
+   "snapped": true,
+   "frame": 38
+  },
+  {
+   "word": "at",
+   "segment": 2,
+   "start": 1.94,
+   "end": 2.07,
+   "onset": 1.94,
+   "snapped": false,
+   "frame": 58
+  },
+  {
+   "word": "number",
+   "segment": 2,
+   "start": 2.07,
+   "end": 2.34,
+   "onset": 2.07,
+   "snapped": false,
+   "frame": 62
+  },
+  {
+   "word": "five",
+   "segment": 2,
+   "start": 2.34,
+   "end": 2.81,
+   "onset": 2.34,
+   "snapped": false,
+   "frame": 70
+  },
+  {
+   "word": "pixverse",
+   "segment": 2,
+   "start": 3.07,
+   "end": 3.74,
+   "onset": 3.11,
+   "snapped": true,
+   "frame": 93
+  },
+  {
+   "word": "great",
+   "segment": 2,
+   "start": 3.99,
+   "end": 4.23,
+   "onset": 4.01,
+   "snapped": true,
+   "frame": 120
+  },
+  {
+   "word": "for",
+   "segment": 2,
+   "start": 4.23,
+   "end": 4.37,
+   "onset": 4.31,
+   "snapped": true,
+   "frame": 129
+  },
+  {
+   "word": "short",
+   "segment": 2,
+   "start": 4.37,
+   "end": 4.62,
+   "onset": 4.37,
+   "snapped": false,
+   "frame": 131
+  },
+  {
+   "word": "form",
+   "segment": 2,
+   "start": 4.62,
+   "end": 4.96,
+   "onset": 4.71,
+   "snapped": true,
+   "frame": 141
+  },
+  {
+   "word": "and",
+   "segment": 2,
+   "start": 4.96,
+   "end": 5.12,
+   "onset": 4.96,
+   "snapped": false,
+   "frame": 149
+  },
+  {
+   "word": "creative",
+   "segment": 2,
+   "start": 5.12,
+   "end": 5.52,
+   "onset": 5.12,
+   "snapped": false,
+   "frame": 154
+  },
+  {
+   "word": "effects",
+   "segment": 2,
+   "start": 5.52,
+   "end": 6.07,
+   "onset": 5.52,
+   "snapped": false,
+   "frame": 166
+  },
+  {
+   "word": "number",
+   "segment": 3,
+   "start": 6.5,
+   "end": 6.78,
+   "onset": 6.5,
+   "snapped": false,
+   "frame": 195
+  },
+  {
+   "word": "four",
+   "segment": 3,
+   "start": 6.78,
+   "end": 7.22,
+   "onset": 6.78,
+   "snapped": false,
+   "frame": 203
+  },
+  {
+   "word": "pika",
+   "segment": 3,
+   "start": 7.41,
+   "end": 7.89,
+   "onset": 7.44,
+   "snapped": true,
+   "frame": 223
+  },
+  {
+   "word": "excellent",
+   "segment": 3,
+   "start": 8.1,
+   "end": 8.55,
+   "onset": 8.11,
+   "snapped": true,
+   "frame": 243
+  },
+  {
+   "word": "for",
+   "segment": 3,
+   "start": 8.55,
+   "end": 8.67,
+   "onset": 8.61,
+   "snapped": true,
+   "frame": 258
+  },
+  {
+   "word": "creative",
+   "segment": 3,
+   "start": 8.67,
+   "end": 9.24,
+   "onset": 8.67,
+   "snapped": false,
+   "frame": 260
+  },
+  {
+   "word": "and",
+   "segment": 3,
+   "start": 9.24,
+   "end": 9.45,
+   "onset": 9.27,
+   "snapped": true,
+   "frame": 278
+  },
+  {
+   "word": "unusual",
+   "segment": 3,
+   "start": 9.45,
+   "end": 9.94,
+   "onset": 9.45,
+   "snapped": false,
+   "frame": 284
+  },
+  {
+   "word": "content",
+   "segment": 3,
+   "start": 9.94,
+   "end": 10.48,
+   "onset": 9.94,
+   "snapped": false,
+   "frame": 298
+  },
+  {
+   "word": "number",
+   "segment": 4,
+   "start": 10.92,
+   "end": 11.23,
+   "onset": 10.92,
+   "snapped": false,
+   "frame": 328
+  },
+  {
+   "word": "three",
+   "segment": 4,
+   "start": 11.23,
+   "end": 11.68,
+   "onset": 11.23,
+   "snapped": false,
+   "frame": 337
+  },
+  {
+   "word": "vidu",
+   "segment": 4,
+   "start": 11.88,
+   "end": 12.34,
+   "onset": 11.88,
+   "snapped": false,
+   "frame": 356
+  },
+  {
+   "word": "particularly",
+   "segment": 4,
+   "start": 12.58,
+   "end": 13.23,
+   "onset": 12.61,
+   "snapped": true,
+   "frame": 378
+  },
+  {
+   "word": "interesting",
+   "segment": 4,
+   "start": 13.23,
+   "end": 13.71,
+   "onset": 13.23,
+   "snapped": false,
+   "frame": 397
+  },
+  {
+   "word": "for",
+   "segment": 4,
+   "start": 13.71,
+   "end": 13.85,
+   "onset": 13.71,
+   "snapped": false,
+   "frame": 411
+  },
+  {
+   "word": "characters",
+   "segment": 4,
+   "start": 13.85,
+   "end": 14.46,
+   "onset": 13.85,
+   "snapped": false,
+   "frame": 416
+  },
+  {
+   "word": "and",
+   "segment": 4,
+   "start": 14.46,
+   "end": 14.63,
+   "onset": 14.47,
+   "snapped": true,
+   "frame": 434
+  },
+  {
+   "word": "image",
+   "segment": 4,
+   "start": 14.63,
+   "end": 14.94,
+   "onset": 14.63,
+   "snapped": false,
+   "frame": 439
+  },
+  {
+   "word": "to",
+   "segment": 4,
+   "start": 14.94,
+   "end": 15.03,
+   "onset": 14.94,
+   "snapped": false,
+   "frame": 448
+  },
+  {
+   "word": "video",
+   "segment": 4,
+   "start": 15.03,
+   "end": 15.48,
+   "onset": 15.03,
+   "snapped": false,
+   "frame": 451
+  },
+  {
+   "word": "number",
+   "segment": 5,
+   "start": 15.9,
+   "end": 16.2,
+   "onset": 15.9,
+   "snapped": false,
+   "frame": 477
+  },
+  {
+   "word": "two",
+   "segment": 5,
+   "start": 16.2,
+   "end": 16.58,
+   "onset": 16.2,
+   "snapped": false,
+   "frame": 486
+  },
+  {
+   "word": "hailuo",
+   "segment": 5,
+   "start": 16.77,
+   "end": 17.4,
+   "onset": 16.77,
+   "snapped": false,
+   "frame": 503
+  },
+  {
+   "word": "excellent",
+   "segment": 5,
+   "start": 17.63,
+   "end": 18.07,
+   "onset": 17.64,
+   "snapped": true,
+   "frame": 529
+  },
+  {
+   "word": "option",
+   "segment": 5,
+   "start": 18.07,
+   "end": 18.4,
+   "onset": 18.07,
+   "snapped": false,
+   "frame": 542
+  },
+  {
+   "word": "for",
+   "segment": 5,
+   "start": 18.4,
+   "end": 18.57,
+   "onset": 18.4,
+   "snapped": false,
+   "frame": 552
+  },
+  {
+   "word": "realistic",
+   "segment": 5,
+   "start": 18.57,
+   "end": 19.07,
+   "onset": 18.57,
+   "snapped": false,
+   "frame": 557
+  },
+  {
+   "word": "people",
+   "segment": 5,
+   "start": 19.07,
+   "end": 19.5,
+   "onset": 19.11,
+   "snapped": true,
+   "frame": 573
+  },
+  {
+   "word": "and",
+   "segment": 5,
+   "start": 19.5,
+   "end": 19.66,
+   "onset": 19.54,
+   "snapped": true,
+   "frame": 586
+  },
+  {
+   "word": "cinematic",
+   "segment": 5,
+   "start": 19.66,
+   "end": 20.16,
+   "onset": 19.66,
+   "snapped": false,
+   "frame": 590
+  },
+  {
+   "word": "scenes",
+   "segment": 5,
+   "start": 20.16,
+   "end": 20.63,
+   "onset": 20.16,
+   "snapped": false,
+   "frame": 605
+  },
+  {
+   "word": "and",
+   "segment": 6,
+   "start": 21.08,
+   "end": 21.23,
+   "onset": 21.08,
+   "snapped": false,
+   "frame": 632
+  },
+  {
+   "word": "my",
+   "segment": 6,
+   "start": 21.23,
+   "end": 21.36,
+   "onset": 21.23,
+   "snapped": false,
+   "frame": 637
+  },
+  {
+   "word": "number",
+   "segment": 6,
+   "start": 21.36,
+   "end": 21.68,
+   "onset": 21.36,
+   "snapped": false,
+   "frame": 641
+  },
+  {
+   "word": "one",
+   "segment": 6,
+   "start": 21.68,
+   "end": 22.09,
+   "onset": 21.68,
+   "snapped": false,
+   "frame": 650
+  },
+  {
+   "word": "kling",
+   "segment": 6,
+   "start": 22.46,
+   "end": 22.88,
+   "onset": 22.48,
+   "snapped": true,
+   "frame": 674
+  },
+  {
+   "word": "especially",
+   "segment": 7,
+   "start": 23.37,
+   "end": 24.02,
+   "onset": 23.37,
+   "snapped": false,
+   "frame": 701
+  },
+  {
+   "word": "if",
+   "segment": 7,
+   "start": 24.02,
+   "end": 24.13,
+   "onset": 24.02,
+   "snapped": false,
+   "frame": 721
+  },
+  {
+   "word": "your",
+   "segment": 7,
+   "start": 24.13,
+   "end": 24.24,
+   "onset": 24.13,
+   "snapped": false,
+   "frame": 724
+  },
+  {
+   "word": "top",
+   "segment": 7,
+   "start": 24.24,
+   "end": 24.5,
+   "onset": 24.24,
+   "snapped": false,
+   "frame": 727
+  },
+  {
+   "word": "priority",
+   "segment": 7,
+   "start": 24.5,
+   "end": 25.13,
+   "onset": 24.52,
+   "snapped": true,
+   "frame": 736
+  },
+  {
+   "word": "is",
+   "segment": 7,
+   "start": 25.13,
+   "end": 25.27,
+   "onset": 25.13,
+   "snapped": false,
+   "frame": 754
+  },
+  {
+   "word": "almost",
+   "segment": 7,
+   "start": 25.27,
+   "end": 25.61,
+   "onset": 25.27,
+   "snapped": false,
+   "frame": 758
+  },
+  {
+   "word": "one",
+   "segment": 7,
+   "start": 25.61,
+   "end": 25.81,
+   "onset": 25.61,
+   "snapped": false,
+   "frame": 768
+  },
+  {
+   "word": "hundred",
+   "segment": 7,
+   "start": 25.81,
+   "end": 26.14,
+   "onset": 25.81,
+   "snapped": false,
+   "frame": 774
+  },
+  {
+   "word": "percent",
+   "segment": 7,
+   "start": 26.14,
+   "end": 26.51,
+   "onset": 26.16,
+   "snapped": true,
+   "frame": 785
+  },
+  {
+   "word": "realistic",
+   "segment": 7,
+   "start": 26.51,
+   "end": 27.01,
+   "onset": 26.51,
+   "snapped": false,
+   "frame": 795
+  },
+  {
+   "word": "video",
+   "segment": 7,
+   "start": 27.01,
+   "end": 27.47,
+   "onset": 27.01,
+   "snapped": false,
+   "frame": 810
+  },
+  {
+   "word": "while",
+   "segment": 7,
+   "start": 27.56,
+   "end": 27.74,
+   "onset": 27.56,
+   "snapped": false,
+   "frame": 827
+  },
+  {
+   "word": "keeping",
+   "segment": 7,
+   "start": 27.74,
+   "end": 28.05,
+   "onset": 27.74,
+   "snapped": false,
+   "frame": 832
+  },
+  {
+   "word": "your",
+   "segment": 8,
+   "start": 27.96,
+   "end": 28.15,
+   "onset": 27.96,
+   "snapped": false,
+   "frame": 839
+  },
+  {
+   "word": "budget",
+   "segment": 8,
+   "start": 28.15,
+   "end": 28.44,
+   "onset": 28.15,
+   "snapped": false,
+   "frame": 844
+  },
+  {
+   "word": "low",
+   "segment": 8,
+   "start": 28.44,
+   "end": 28.75,
+   "onset": 28.44,
+   "snapped": false,
+   "frame": 853
+  },
+  {
+   "word": "so",
+   "segment": 9,
+   "start": 29.23,
+   "end": 29.59,
+   "onset": 29.23,
+   "snapped": false,
+   "frame": 877
+  },
+  {
+   "word": "whichever",
+   "segment": 9,
+   "start": 29.59,
+   "end": 29.98,
+   "onset": 29.59,
+   "snapped": false,
+   "frame": 888
+  },
+  {
+   "word": "your",
+   "segment": 9,
+   "start": 29.98,
+   "end": 30.1,
+   "onset": 29.98,
+   "snapped": false,
+   "frame": 899
+  },
+  {
+   "word": "preference",
+   "segment": 9,
+   "start": 30.1,
+   "end": 30.56,
+   "onset": 30.1,
+   "snapped": false,
+   "frame": 903
+  },
+  {
+   "word": "lies",
+   "segment": 9,
+   "start": 30.56,
+   "end": 30.83,
+   "onset": 30.56,
+   "snapped": false,
+   "frame": 917
+  },
+  {
+   "word": "be",
+   "segment": 9,
+   "start": 30.83,
+   "end": 30.94,
+   "onset": 30.85,
+   "snapped": true,
+   "frame": 926
+  },
+  {
+   "word": "at",
+   "segment": 9,
+   "start": 30.94,
+   "end": 31.02,
+   "onset": 30.94,
+   "snapped": false,
+   "frame": 928
+  },
+  {
+   "word": "products",
+   "segment": 9,
+   "start": 31.02,
+   "end": 31.39,
+   "onset": 31.04,
+   "snapped": true,
+   "frame": 931
+  },
+  {
+   "word": "ads",
+   "segment": 9,
+   "start": 31.39,
+   "end": 31.78,
+   "onset": 31.39,
+   "snapped": false,
+   "frame": 942
+  },
+  {
+   "word": "image",
+   "segment": 9,
+   "start": 31.98,
+   "end": 32.27,
+   "onset": 32.0,
+   "snapped": true,
+   "frame": 960
+  },
+  {
+   "word": "generation",
+   "segment": 9,
+   "start": 32.27,
+   "end": 32.94,
+   "onset": 32.27,
+   "snapped": false,
+   "frame": 968
+  },
+  {
+   "word": "cinematic",
+   "segment": 10,
+   "start": 33.15,
+   "end": 33.65,
+   "onset": 33.15,
+   "snapped": false,
+   "frame": 994
+  },
+  {
+   "word": "movies",
+   "segment": 10,
+   "start": 33.65,
+   "end": 33.99,
+   "onset": 33.66,
+   "snapped": true,
+   "frame": 1010
+  },
+  {
+   "word": "etcetera",
+   "segment": 10,
+   "start": 33.99,
+   "end": 34.5,
+   "onset": 33.99,
+   "snapped": false,
+   "frame": 1020
+  },
+  {
+   "word": "it",
+   "segment": 11,
+   "start": 34.69,
+   "end": 34.84,
+   "onset": 34.71,
+   "snapped": true,
+   "frame": 1041
+  },
+  {
+   "word": "all",
+   "segment": 11,
+   "start": 34.84,
+   "end": 34.99,
+   "onset": 34.84,
+   "snapped": false,
+   "frame": 1045
+  },
+  {
+   "word": "depends",
+   "segment": 11,
+   "start": 34.99,
+   "end": 35.35,
+   "onset": 34.99,
+   "snapped": false,
+   "frame": 1050
+  },
+  {
+   "word": "on",
+   "segment": 11,
+   "start": 35.35,
+   "end": 35.46,
+   "onset": 35.35,
+   "snapped": false,
+   "frame": 1060
+  },
+  {
+   "word": "you",
+   "segment": 11,
+   "start": 35.46,
+   "end": 35.66,
+   "onset": 35.46,
+   "snapped": false,
+   "frame": 1064
+  }
+ ]
+}
