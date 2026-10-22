@@ -155,7 +155,7 @@ const S2 = { prompt: "Neon city at night in heavy rain, cinematic drone shot", t
   scene("#s4b", 15.05, 18.05);
   inn("#s4b-title", 15.12, { y: 40, filter: "blur(12px)" }, 0.55);
   sfx(15.1, "whoosh", 0.6);
-  const t1 = w("try") - 0.25, t2 = w("paid", 17) - 0.15;
+  const t1 = w("try", 16) - 0.25, t2 = w("paid", 17) - 0.15;
   inn("#s4-n1", t1, { x: -90, scale: 0.9 }, 0.5, "back.out(1.6)");
   sfx(t1 + 0.05, "pop", 0.8);
   gsap.set("#s4-arrowp", { strokeDasharray: 300, strokeDashoffset: 300 });
