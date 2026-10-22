@@ -391,41 +391,6 @@ const S13 = { one: w("number", 62) - 0.3 };
   inn("#s13-q", w("one.") - 0.05, { y: 30 }, 0.5);
 }
 
-/* ---------------- Captions ---------------- */
-const KEY = /^(2|hailuo|ai|free|\$10\.50|1,000|47%|3,000|downside|impressive|worth|minimax|efficiency|yearly|monthly)/i;
-const CHUNKS = [];
-{
-  const byPhrase = {};
-  WORDS.forEach((x) => (byPhrase[x.phrase] = byPhrase[x.phrase] || []).push(x));
-  Object.values(byPhrase).forEach((list) => {
-    const n = Math.ceil(list.length / 5), size = Math.ceil(list.length / n);
-    for (let i = 0; i < list.length; i += size) {
-      const ws = list.slice(i, i + size);
-      CHUNKS.push({ words: ws, start: ws[0].start, end: ws[ws.length - 1].end });
-    }
-  });
-  CHUNKS.forEach((c, i) => {
-    const next = CHUNKS[i + 1];
-    c.show = c.start - 0.06;
-    c.hide = next ? Math.min(next.start - 0.06, c.end + 0.7) : c.end + 0.6;
-  });
-}
-const capEl = $("#captions .cap");
-let capIdx = -2;
-function drawCaptions(t) {
-  const i = CHUNKS.findIndex((c) => t >= c.show && t < c.hide);
-  if (i !== capIdx) {
-    capIdx = i;
-    capEl.innerHTML = i < 0 ? "" : CHUNKS[i].words.map((x) => `<span class="wd${KEY.test(x.text) ? " key" : ""}">${x.text}</span>`).join("");
-  }
-  if (i < 0) return;
-  const c = CHUNKS[i];
-  const p = easeOut(prog(t, c.show, 0.16));
-  capEl.style.transform = `translateY(${(1 - p) * 26}px) scale(${0.94 + 0.06 * p})`;
-  capEl.style.opacity = p;
-  [...capEl.children].forEach((el, k) => el.classList.toggle("on", t >= c.words[k].start && t < c.words[k].end + 0.05));
-}
-
 /* ---------------- Background ---------------- */
 const bg = $("#bg").getContext("2d");
 const PARTS = (() => { const r = rng(11); return Array.from({ length: 110 }, () => ({ x: r() * 1920, y: r() * 1080, s: 0.3 + r() * 1.4, z: 0.6 + r() * 2.4, ph: r() * 6.28 })); })();
@@ -595,7 +560,7 @@ window.__seek = (t) => {
   for (let s = Math.max(lastT, 0); s < t; s += 0.25) tl.seek(s, false);
   tl.seek(t, false);
   lastT = t;
-  drawBg(t); drawUI(t); drawCaptions(t); drawFx(t); applyShake(t);
+  drawBg(t); drawUI(t); drawFx(t); applyShake(t);
   return Promise.all(drawMedia(t));
 };
 window.__dur = DUR;

@@ -27,7 +27,7 @@ It mixes motion graphics with real footage of hailuoai.video, and every animatio
 | 0:53 | "…absolutely worth trying" | Checklist, summary chips, "Worth trying" seal |
 | 1:00 | "So let's reveal our number one" | Gold `#1` teaser |
 
-There are also word-by-word captions, a top progress bar, a "#2 Hailuo AI" badge and synthesized sound effects. There is no background music.
+There are also a top progress bar, a "#2 Hailuo AI" badge and synthesized sound effects. The video has no burned-in captions and no background music.
 
 ## Files
 
