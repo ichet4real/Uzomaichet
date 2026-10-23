@@ -51,12 +51,12 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg);color:
 #cap .w{display:inline-block;margin:0 .04em;color:rgba(244,246,251,.4)}
 #cap .w.past{color:#f4f6fb}
 #cap .w.now{color:var(--lime);transform:scale(1.08);text-shadow:0 0 24px rgba(184,255,61,.55)}
-#eq{position:absolute;left:50%;bottom:190px;transform:translateX(-50%);display:flex;gap:6px;align-items:center;height:50px}
+#eq{position:absolute;left:50%;bottom:60px;transform:translateX(-50%);display:flex;gap:6px;align-items:center;height:50px}
 #eq i{display:block;width:6px;border-radius:6px;background:linear-gradient(var(--lime),var(--cyan));opacity:.8}
 
 /* ---------- scenes ---------- */
 .scene{position:absolute;left:0;top:0;width:1920px;height:1080px;visibility:hidden}
-.inner{position:absolute;left:0;top:0;width:1920px;height:860px;display:flex;align-items:center;justify-content:center}
+.inner{position:absolute;left:0;top:0;width:1920px;height:1000px;display:flex;align-items:center;justify-content:center}
 .a{animation-fill-mode:both;animation-play-state:paused;animation-delay:calc(var(--d) * 1s);animation-duration:.7s;animation-timing-function:cubic-bezier(.22,1,.36,1)}
 .pop{animation-name:pop;animation-timing-function:cubic-bezier(.34,1.56,.64,1)}
 .up{animation-name:up}.down{animation-name:down}.left{animation-name:left}.right{animation-name:right}
@@ -233,7 +233,7 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
   </div></section>
 
   <!-- S5: use cases with footage -->
-  <section class="scene" id="s5" data-in="20.08" data-out="27.04"><div class="inner" style="padding-bottom:120px">
+  <section class="scene" id="s5" data-in="20.08" data-out="27.04"><div class="inner" style="padding-bottom:60px">
     <div class="col" style="gap:40px;position:relative">
       <div class="h2 a up" style="--d:20.2">So if you're creating…</div>
       <div class="row" style="gap:28px">
@@ -343,7 +343,7 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
         <div class="card a pop row" style="--d:58.6;padding:22px 34px;gap:16px;border-color:rgba(34,230,255,.6)"><div class="h3 cyan" style="font-size:44px">+</div><div class="h3" style="font-size:38px">Exceptional features</div></div>
       </div>
     </div>
-    <div id="s10b" style="position:absolute;left:250px;top:100px;width:1420px">
+    <div id="s10b" style="position:absolute;left:250px;top:150px;width:1420px">
       <div class="browser">
         <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><div class="url">🔒 kling.ai</div></div>
         <div class="body" style="height:676px"><img class="clip" data-clip="home" data-t0="59.4" data-src="0" data-rate="2.35"></div>
@@ -399,7 +399,7 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
   </section>
 
   <div id="eq"></div>
-  <div id="cap"></div>
+  
   <div id="chip"><img src="assets/kling_logo.png"><b>#1</b> Best AI video tool under $10</div>
   <div id="reason">Reason <span id="rnum">01</span></div>
   <div id="progress"></div>
@@ -486,7 +486,7 @@ async function render(t){
   });
 
   // S1 rings + slow logo spin
-  ['#r1','#r2','#r3'].forEach((id,i)=>{const p=((t-.6-i*.35)/1.6);const r=$(id);if(p<0||p>1){r.style.opacity=0;return}r.style.width=r.style.height=(300+p*1100)+'px';r.style.opacity=(1-p)*.7;r.style.left=(960-(150+p*550))+'px';r.style.top=(430-(150+p*550))+'px'});
+  ['#r1','#r2','#r3'].forEach((id,i)=>{const p=((t-.6-i*.35)/1.6);const r=$(id);if(p<0||p>1){r.style.opacity=0;return}r.style.width=r.style.height=(300+p*1100)+'px';r.style.opacity=(1-p)*.7;r.style.left=(960-(150+p*550))+'px';r.style.top=(500-(150+p*550))+'px'});
   $('#qmark').style.transform=`rotate(${Math.sin(t*14)*10*clamp(1-(t-9.3))}deg) translateY(${-e*20}px)`;
 
   counters.forEach(c=>{const k=ease((t-c.st)/c.du);const v=lerp(c.f,c.to,k);c.el.textContent=c.pre+(c.dec?v.toFixed(c.dec):Math.round(v))+c.suf});
@@ -506,13 +506,13 @@ async function render(t){
   $$('#tools .scan').forEach((s,i)=>{const p=((t-73.8-i*.12)/1.2);s.style.opacity=p>0&&p<1?1:0;s.style.top=(clamp(p)*100)+'%'});
   const w=smooth((t-75.2)/.4);$('#winner').style.boxShadow=`0 0 ${w*70}px rgba(184,255,61,${w*.6})`;$('#winner').style.borderColor=w>.5?'var(--lime)':'transparent';
 
-  conf.forEach(c=>{const p=t-76.7;if(p<0){c.style.opacity=0;return}c.style.opacity=clamp(1-(p-2.6)/1);const x=960+Math.cos(c._a)*c._v*p*.8;const y=430+Math.sin(c._a)*c._v*p*.6+420*p*p;c.style.transform=`translate(${x}px,${y}px) rotate(${c._r*p}deg)`});
+  conf.forEach(c=>{const p=t-76.7;if(p<0){c.style.opacity=0;return}c.style.opacity=clamp(1-(p-2.6)/1);const x=960+Math.cos(c._a)*c._v*p*.8;const y=500+Math.sin(c._a)*c._v*p*.6+420*p*p;c.style.transform=`translate(${x}px,${y}px) rotate(${c._r*p}deg)`});
 
   $('#progress').style.width=(t/DUR*1920)+'px';
   const chipV=smooth((t-3.3)/.5)*(1-smooth((t-76.0)/.4));$('#chip').style.opacity=chipV;$('#chip').style.transform=`translateY(${(1-chipV)*-20}px)`;
   $('#reason').style.opacity=((t>10.1&&t<20.3)||(t>27.1&&t<56.5))?1:0;$('#rnum').textContent=t<27?'01':'02';
   $$('#eq i').forEach((b,i)=>{const mid=Math.abs(i-23.5)/24;const v=env(t-i*.004)*(1-mid*.7)*(.6+.4*Math.sin(t*9+b._k*20));b.style.height=(6+Math.max(0,v)*44)+'px'});
-  caption(t);
+
   await Promise.all(loads);
 }
 window.render=render;window.DUR=DUR;window.FPS=FPS;
