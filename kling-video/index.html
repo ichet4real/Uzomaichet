@@ -12,7 +12,7 @@
 @font-face{font-family:SG;font-weight:700;src:url(node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff2)}
 
 :root{
-  --bg:#06070b; --ink:#f4f6fb; --dim:#8a90a3; --lime:#c8ff3d; --cyan:#38e1ff; --pink:#ff4fd8; --amber:#ffb23d; --red:#ff4d5e;
+  --bg:#06070b; --ink:#f4f6fb; --dim:#8a90a3; --lime:#b8ff3d; --cyan:#22e6ff; --blue:#2a6bff; --pink:#ff4fd8; --amber:#ffb23d; --red:#ff4d5e;
   --card:rgba(255,255,255,.055); --stroke:rgba(255,255,255,.12);
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -20,72 +20,74 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg);color:
 #stage{position:relative;width:1920px;height:1080px;overflow:hidden}
 
 /* ---------- background ---------- */
-.blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:.55}
+.blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:.5}
 #b1{width:900px;height:900px;background:radial-gradient(circle,#2a6bff 0%,transparent 65%)}
-#b2{width:800px;height:800px;background:radial-gradient(circle,#c8ff3d 0%,transparent 65%);opacity:.22}
-#b3{width:850px;height:850px;background:radial-gradient(circle,#ff4fd8 0%,transparent 65%);opacity:.32}
+#b2{width:800px;height:800px;background:radial-gradient(circle,#b8ff3d 0%,transparent 65%);opacity:.2}
+#b3{width:850px;height:850px;background:radial-gradient(circle,#22e6ff 0%,transparent 65%);opacity:.25}
 #grid{position:absolute;left:-50%;width:200%;height:700px;bottom:-160px;
   background-image:linear-gradient(rgba(120,160,255,.16) 2px,transparent 2px),linear-gradient(90deg,rgba(120,160,255,.16) 2px,transparent 2px);
   background-size:90px 90px;transform:perspective(600px) rotateX(62deg);transform-origin:center top;
-  -webkit-mask-image:linear-gradient(to bottom,transparent,#000 40%,#000);mask-image:linear-gradient(to bottom,transparent 0%,#000 50%)}
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 50%);mask-image:linear-gradient(to bottom,transparent 0%,#000 50%)}
 #vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.75) 100%);pointer-events:none}
-#grain{position:absolute;inset:-100px;opacity:.07;pointer-events:none;
+#grain{position:absolute;inset:-100px;opacity:.06;pointer-events:none;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
 .particle{position:absolute;width:4px;height:4px;border-radius:50%;background:#fff;opacity:.35}
 
+/* full-bleed footage behind a scene */
+.bgclip{position:absolute;left:-20px;top:-20px;width:1960px;height:1120px;object-fit:cover;filter:blur(3px) saturate(1.1)}
+.bgshade{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(6,7,11,.55),rgba(6,7,11,.92) 75%)}
+
 /* ---------- HUD ---------- */
 #progress{position:absolute;left:0;top:0;height:6px;background:linear-gradient(90deg,var(--cyan),var(--lime));box-shadow:0 0 18px var(--lime)}
-#chip{position:absolute;left:60px;top:44px;display:flex;align-items:center;gap:14px;padding:12px 22px;border-radius:999px;background:var(--card);border:1px solid var(--stroke);font:600 22px Inter;letter-spacing:.08em;text-transform:uppercase;color:#cfd5e6;backdrop-filter:blur(8px)}
+#chip{position:absolute;left:60px;top:44px;display:flex;align-items:center;gap:14px;padding:10px 22px 10px 12px;border-radius:999px;background:rgba(10,12,18,.7);border:1px solid var(--stroke);font:600 22px Inter;letter-spacing:.08em;text-transform:uppercase;color:#cfd5e6;backdrop-filter:blur(8px)}
+#chip img{width:36px;height:36px}
 #chip b{color:var(--bg);background:var(--lime);padding:4px 12px;border-radius:999px;font-weight:900}
-#reason{position:absolute;right:60px;top:44px;padding:12px 22px;border-radius:999px;border:1px solid var(--stroke);background:var(--card);font:600 22px Inter;letter-spacing:.08em;text-transform:uppercase;color:#cfd5e6}
+#reason{position:absolute;right:60px;top:44px;padding:12px 22px;border-radius:999px;border:1px solid var(--stroke);background:rgba(10,12,18,.7);font:600 22px Inter;letter-spacing:.08em;text-transform:uppercase;color:#cfd5e6}
 #reason span{color:var(--lime)}
 
 /* ---------- captions ---------- */
-#cap{position:absolute;left:50%;bottom:64px;transform:translateX(-50%);max-width:1560px;text-align:center;
-  font:700 50px/1.25 SG,Inter;padding:14px 34px;border-radius:22px;background:rgba(6,7,11,.62);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(10px)}
-#cap .w{display:inline-block;margin:0 .04em;color:rgba(244,246,251,.38);transition:none}
+#cap{position:absolute;left:50%;bottom:58px;transform:translateX(-50%);max-width:1560px;text-align:center;
+  font:700 48px/1.25 SG,Inter;padding:14px 34px;border-radius:22px;background:rgba(6,7,11,.72);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(10px)}
+#cap .w{display:inline-block;margin:0 .04em;color:rgba(244,246,251,.4)}
 #cap .w.past{color:#f4f6fb}
-#cap .w.now{color:var(--lime);transform:scale(1.08);text-shadow:0 0 24px rgba(200,255,61,.55)}
-#eq{position:absolute;left:50%;bottom:196px;transform:translateX(-50%);display:flex;gap:6px;align-items:center;height:60px}
-#eq i{display:block;width:6px;border-radius:6px;background:linear-gradient(var(--lime),var(--cyan));opacity:.85}
+#cap .w.now{color:var(--lime);transform:scale(1.08);text-shadow:0 0 24px rgba(184,255,61,.55)}
+#eq{position:absolute;left:50%;bottom:190px;transform:translateX(-50%);display:flex;gap:6px;align-items:center;height:50px}
+#eq i{display:block;width:6px;border-radius:6px;background:linear-gradient(var(--lime),var(--cyan));opacity:.8}
 
 /* ---------- scenes ---------- */
-.scene{position:absolute;left:0;top:0;width:1920px;height:860px;display:flex;align-items:center;justify-content:center;visibility:hidden}
+.scene{position:absolute;left:0;top:0;width:1920px;height:1080px;visibility:hidden}
+.inner{position:absolute;left:0;top:0;width:1920px;height:860px;display:flex;align-items:center;justify-content:center}
 .a{animation-fill-mode:both;animation-play-state:paused;animation-delay:calc(var(--d) * 1s);animation-duration:.7s;animation-timing-function:cubic-bezier(.22,1,.36,1)}
 .pop{animation-name:pop;animation-timing-function:cubic-bezier(.34,1.56,.64,1)}
 .up{animation-name:up}.down{animation-name:down}.left{animation-name:left}.right{animation-name:right}
-.fade{animation-name:fade}.wipe{animation-name:wipe;animation-duration:.9s}
+.fade{animation-name:fade}
 .stamp{animation-name:stamp;animation-duration:.5s;animation-timing-function:cubic-bezier(.5,0,.75,0)}
 .zoom{animation-name:zoom;animation-duration:1s}
 .draw{animation-name:draw;animation-duration:.8s;stroke-dasharray:1000;stroke-dashoffset:1000}
 .grow{animation-name:grow;animation-duration:1.2s;transform-origin:bottom}
 .growx{animation-name:growx;animation-duration:1s;transform-origin:left}
+.spinin{animation-name:spinin;animation-duration:1.1s}
 @keyframes pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
 @keyframes up{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
 @keyframes down{from{opacity:0;transform:translateY(-60px)}to{opacity:1;transform:none}}
 @keyframes left{from{opacity:0;transform:translateX(-120px)}to{opacity:1;transform:none}}
 @keyframes right{from{opacity:0;transform:translateX(120px)}to{opacity:1;transform:none}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
-@keyframes wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
 @keyframes stamp{from{opacity:0;transform:scale(2.6) rotate(-4deg)}to{opacity:1;transform:scale(1) rotate(-8deg)}}
 @keyframes zoom{from{opacity:0;transform:scale(1.8);filter:blur(20px)}to{opacity:1;transform:scale(1);filter:blur(0)}}
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 @keyframes growx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes spinin{from{opacity:0;transform:rotate(-200deg) scale(.2)}to{opacity:1;transform:none}}
 .loop{animation-play-state:paused;animation-iteration-count:infinite;animation-timing-function:ease-in-out}
-@keyframes floaty{0%,100%{transform:translateY(-10px)}50%{transform:translateY(10px)}}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes pan{from{background-position:0% 50%}to{background-position:100% 50%}}
-@keyframes swingA{0%,100%{transform:rotate(28deg)}50%{transform:rotate(-28deg)}}
-@keyframes swingB{0%,100%{transform:rotate(-28deg)}50%{transform:rotate(28deg)}}
-@keyframes orbit{from{offset-distance:0%}to{offset-distance:100%}}
 @keyframes shine{0%{transform:translateX(-140%) skewX(-20deg)}60%,100%{transform:translateX(240%) skewX(-20deg)}}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes shimmer{from{background-position:-400px 0}to{background-position:400px 0}}
+@keyframes slowspin{to{transform:rotate(360deg)}}
 
 .h1{font:700 120px/1 SG;letter-spacing:-.03em}
-.h2{font:700 78px/1.05 SG;letter-spacing:-.02em}
-.h3{font:700 44px/1.1 SG}
+.h2{font:700 76px/1.05 SG;letter-spacing:-.02em}
+.h3{font:700 42px/1.1 SG}
 .kicker{font:600 26px Inter;letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}
 .lime{color:var(--lime)}.cyan{color:var(--cyan)}.pink{color:var(--pink)}
 .grad{background:linear-gradient(100deg,var(--cyan),var(--lime) 55%,#fff);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -94,14 +96,29 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg);color:
 .row{display:flex;align-items:center}
 svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .shine{position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none}
-.shine::after{content:"";position:absolute;top:0;bottom:0;width:30%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);animation:shine 3s infinite paused}
-.thumb{background-size:300% 300%;animation:pan 6s infinite alternate ease-in-out paused}
+.shine::after{content:"";position:absolute;top:0;bottom:0;width:30%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:shine 3s infinite paused}
 
-/* S1 */
-#s1 .num{font:700 420px/0.8 SG;letter-spacing:-.06em;background:linear-gradient(180deg,#fff,#c8ff3d);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 60px rgba(200,255,61,.45))}
-#s1 .ring{position:absolute;border:3px solid var(--lime);border-radius:50%;opacity:0}
-.kl{display:flex;gap:14px;font:700 150px/1 SG;letter-spacing:.06em}
+/* footage frames */
+.media{position:relative;overflow:hidden;border-radius:18px;background:#000}
+.media img.clip{width:100%;height:100%;object-fit:cover;display:block}
+.media .tag{position:absolute;left:14px;top:12px;padding:6px 12px;border-radius:8px;background:rgba(0,0,0,.6);font:700 16px Inter;letter-spacing:.12em;color:#fff}
+.browser{border-radius:18px;overflow:hidden;background:#0e1018;border:1px solid var(--stroke);box-shadow:0 40px 100px rgba(0,0,0,.6)}
+.browser .bar{height:46px;display:flex;align-items:center;gap:9px;padding:0 18px;background:#1a1d27;border-bottom:1px solid var(--stroke)}
+.browser .bar i{width:13px;height:13px;border-radius:50%;display:block}
+.browser .url{margin-left:18px;flex:1;height:30px;border-radius:8px;background:rgba(255,255,255,.07);display:flex;align-items:center;gap:8px;padding:0 14px;font:500 18px Inter;color:#cfd5e6}
+.browser .body{position:relative;overflow:hidden}
+.browser .body img.clip{width:100%;height:100%;object-fit:cover;display:block;transform-origin:12% 60%}
+
+.logo{display:block}
+.glowlogo{filter:drop-shadow(0 0 40px rgba(34,230,255,.55)) drop-shadow(0 0 80px rgba(184,255,61,.3))}
+#s1 .num{font:700 360px/0.8 SG;letter-spacing:-.06em;background:linear-gradient(180deg,#fff,#b8ff3d);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 60px rgba(184,255,61,.45))}
+.ring{position:absolute;border:3px solid var(--lime);border-radius:50%;opacity:0}
+.kl{display:flex;gap:14px;font:700 130px/1 SG;letter-spacing:.06em}
 .kl span{display:inline-block}
+.rank{display:flex;align-items:center;gap:24px;padding:16px 34px;border-radius:20px;background:var(--card);border:1px solid var(--stroke);width:560px}
+.rank .n{font:700 40px SG;color:var(--dim);width:60px}
+.rank .nm{font:700 40px SG;color:#9aa0b3}
+.ph{position:absolute;inset:0;background:linear-gradient(90deg,#1a1d27 0%,#2a2e3c 50%,#1a1d27 100%);background-size:800px 100%;animation:shimmer 1.4s infinite linear paused}
 </style>
 </head>
 <body>
@@ -112,23 +129,28 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
     <div id="particles"></div>
   </div>
 
-  <!-- S1: #1 Kling -->
+  <!-- S1: #1 Kling over homepage wingsuit footage -->
   <section class="scene" id="s1" data-in="0" data-out="3.12">
+    <img class="clip bgclip" data-clip="home" data-t0="0" data-src="0.3" data-rate="1">
+    <div class="bgshade"></div>
     <div class="ring" id="r1"></div><div class="ring" id="r2"></div><div class="ring" id="r3"></div>
-    <div class="col" style="gap:10px">
-      <div class="kicker a up" style="--d:.15">And now… the top pick</div>
-      <div class="num a zoom" style="--d:.55">#1</div>
+    <div class="inner"><div class="col" style="gap:16px">
+      <div class="kicker a up" style="--d:.1;color:#dfe3ef">And now… number one</div>
+      <div class="row" style="gap:40px">
+        <img class="logo glowlogo a spinin" style="--d:.3" src="assets/kling_logo.png" width="300" height="300">
+        <div class="num a zoom" style="--d:.6">#1</div>
+      </div>
       <div class="kl" id="klword"></div>
-    </div>
+    </div></div>
   </section>
 
-  <!-- S2: $10 budget -->
-  <section class="scene" id="s2" data-in="3.12" data-out="8.96">
-    <div class="row" style="gap:90px">
+  <!-- S2: $10 budget + ranking list -->
+  <section class="scene" id="s2" data-in="3.12" data-out="8.96"><div class="inner">
+    <div class="row" style="gap:100px">
       <div class="card a left col" style="--d:3.25;padding:50px 70px;gap:8px;position:relative">
         <div class="kicker">AI video budget</div>
         <div class="row" style="gap:10px;align-items:flex-start">
-          <span class="h2 dim" style="color:var(--dim);margin-top:30px">≤</span>
+          <span class="h2" style="color:var(--dim);margin-top:30px">≤</span>
           <span style="font:700 220px/1 SG" class="grad" data-count="0,10,3.6,1.6,$"></span>
         </div>
         <div class="h3" style="color:#cfd5e6">or less to spend</div>
@@ -137,250 +159,204 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
         </div>
         <div class="shine"></div>
       </div>
-      <div class="col" style="gap:24px;align-items:flex-start">
-        <div class="kicker a right" style="--d:6.4">First tool I'd go for</div>
-        <div class="card a right row" style="--d:6.55;padding:28px 40px;gap:26px;border-color:rgba(200,255,61,.55);box-shadow:0 0 60px rgba(200,255,61,.25)">
-          <div style="font:700 64px SG" class="lime">01</div>
-          <div style="font:700 72px SG;letter-spacing:.04em">KLING</div>
-          <svg class="ic a pop lime" style="--d:7.6" width="70" height="70" viewBox="0 0 24 24" stroke-width="3"><circle cx="12" cy="12" r="10"/><path d="m7 12.5 3.2 3.2L17 9"/></svg>
+      <div class="col" style="gap:14px;align-items:flex-start">
+        <div class="kicker a right" style="--d:6.3;margin-bottom:6px">First tool I'd go for</div>
+        <div class="rank a right" style="--d:6.4;opacity:.55"><div class="n">05</div><div class="nm">PixVerse</div></div>
+        <div class="rank a right" style="--d:6.52"><div class="n">04</div><div class="nm">Pika</div></div>
+        <div class="rank a right" style="--d:6.64"><div class="n">03</div><div class="nm">Vidu</div></div>
+        <div class="rank a right" style="--d:6.76"><div class="n">02</div><div class="nm">Hailuo</div></div>
+        <div class="rank a pop" style="--d:7.1;border-color:rgba(184,255,61,.6);background:rgba(184,255,61,.08);box-shadow:0 0 60px rgba(184,255,61,.25);padding:20px 34px">
+          <div class="n lime" style="font-size:48px">01</div>
+          <img src="assets/kling_logo.png" width="56" height="56">
+          <div style="font:700 56px SG;letter-spacing:.04em;flex:1">KLING</div>
+          <svg class="ic a pop lime" style="--d:7.6" width="56" height="56" viewBox="0 0 24 24" stroke-width="3"><circle cx="12" cy="12" r="10"/><path d="m7 12.5 3.2 3.2L17 9"/></svg>
         </div>
-        <div class="card a right row" style="--d:6.75;padding:22px 40px;gap:26px;opacity:.5;filter:blur(1.5px)"><div style="font:700 48px SG;color:var(--dim)">02</div><div style="font:700 48px SG;color:var(--dim)">Other tool</div></div>
-        <div class="card a right row" style="--d:6.9;padding:22px 40px;gap:26px;opacity:.35;filter:blur(2.5px)"><div style="font:700 48px SG;color:var(--dim)">03</div><div style="font:700 48px SG;color:var(--dim)">Other tool</div></div>
       </div>
     </div>
-  </section>
+  </div></section>
 
   <!-- S3: you know why -->
   <section class="scene" id="s3" data-in="8.96" data-out="10.08">
-    <div class="col">
-      <div class="h2 a up" style="--d:9.0;color:#cfd5e6">You know</div>
-      <div class="a zoom" style="--d:9.25;font:700 300px/1 SG;letter-spacing:-.04em" ><span class="grad">WHY</span><span class="pink" id="qmark" style="display:inline-block">?</span></div>
-    </div>
+    <img class="clip bgclip" data-clip="p_point" data-t0="8.96" data-src="0" data-rate="1">
+    <div class="bgshade"></div>
+    <div class="inner"><div class="col">
+      <div class="h2 a up" style="--d:9.0;color:#dfe3ef">You know</div>
+      <div class="a zoom" style="--d:9.25;font:700 300px/1 SG;letter-spacing:-.04em"><span class="grad">WHY</span><span class="pink" id="qmark" style="display:inline-block">?</span></div>
+    </div></div>
   </section>
 
-  <!-- S4a: most realistic -->
-  <section class="scene" id="s4" data-in="10.08" data-out="16.4">
-    <div class="row" style="gap:110px">
-      <div class="col" style="align-items:flex-start;gap:18px;width:640px">
+  <!-- S4a: realism ranking -->
+  <section class="scene" id="s4" data-in="10.08" data-out="16.4"><div class="inner">
+    <div class="row" style="gap:90px">
+      <div class="col" style="align-items:flex-start;gap:18px;width:600px">
         <div class="kicker a up" style="--d:10.2">Reason 01</div>
-        <div class="h2 a up" style="--d:10.35">Of all AI video generators…</div>
-        <div class="h1 a up" style="--d:13.1;font-size:104px"><span class="grad">Most realistic</span></div>
+        <div class="h2 a up" style="--d:10.35">Of all the AI video generators…</div>
+        <div class="h1 a up" style="--d:13.1;font-size:100px"><span class="grad">Most realistic</span></div>
         <div class="h3 a up" style="--d:13.5;color:#cfd5e6">AI-generated videos</div>
       </div>
-      <div class="card" style="padding:44px 50px 30px;width:760px">
+      <div class="card" style="padding:40px 46px 28px;width:860px">
         <div class="kicker" style="margin-bottom:26px">Realism · my ranking</div>
-        <div class="row" style="gap:36px;align-items:flex-end;height:400px">
-          <div class="col" style="gap:14px;flex:1"><div class="a grow" style="--d:10.6;height:170px;width:100%;border-radius:14px 14px 4px 4px;background:rgba(255,255,255,.16)"></div><div style="font:600 22px Inter;color:var(--dim)">Generator A</div></div>
-          <div class="col" style="gap:14px;flex:1"><div class="a grow" style="--d:10.8;height:230px;width:100%;border-radius:14px 14px 4px 4px;background:rgba(255,255,255,.16)"></div><div style="font:600 22px Inter;color:var(--dim)">Generator B</div></div>
-          <div class="col" style="gap:14px;flex:1"><div class="a grow" style="--d:11.0;height:200px;width:100%;border-radius:14px 14px 4px 4px;background:rgba(255,255,255,.16)"></div><div style="font:600 22px Inter;color:var(--dim)">Generator C</div></div>
+        <div class="row" style="gap:24px;align-items:flex-end;height:420px">
+          <div class="col" style="gap:14px;flex:1"><div class="a grow" style="--d:10.6;height:140px;width:100%;border-radius:14px 14px 4px 4px;background:rgba(255,255,255,.16)"></div><div style="font:600 22px Inter;color:var(--dim)">PixVerse</div></div>
+          <div class="col" style="gap:14px;flex:1"><div class="a grow" style="--d:10.8;height:180px;width:100%;border-radius:14px 14px 4px 4px;background:rgba(255,255,255,.16)"></div><div style="font:600 22px Inter;color:var(--dim)">Pika</div></div>
+          <div class="col" style="gap:14px;flex:1"><div class="a grow" style="--d:11.0;height:220px;width:100%;border-radius:14px 14px 4px 4px;background:rgba(255,255,255,.16)"></div><div style="font:600 22px Inter;color:var(--dim)">Vidu</div></div>
+          <div class="col" style="gap:14px;flex:1"><div class="a grow" style="--d:11.2;height:265px;width:100%;border-radius:14px 14px 4px 4px;background:rgba(255,255,255,.2)"></div><div style="font:600 22px Inter;color:var(--dim)">Hailuo</div></div>
           <div class="col" style="gap:14px;flex:1;position:relative">
-            <svg class="ic a pop lime" style="--d:14.0;position:absolute;top:-70px" width="56" height="56" viewBox="0 0 24 24"><path d="M2 18h20M3 18l2-11 5 5 2-7 2 7 5-5 2 11" fill="rgba(200,255,61,.25)"/></svg>
-            <div class="a grow" style="--d:13.1;height:370px;width:100%;border-radius:14px 14px 4px 4px;background:linear-gradient(180deg,var(--lime),var(--cyan));box-shadow:0 0 50px rgba(200,255,61,.45)"></div>
+            <img class="a pop" style="--d:14.0;position:absolute;top:-78px" src="assets/kling_logo.png" width="64" height="64">
+            <div class="a grow" style="--d:13.1;height:360px;width:100%;border-radius:14px 14px 4px 4px;background:linear-gradient(180deg,var(--lime),var(--cyan) 60%,var(--blue));box-shadow:0 0 50px rgba(184,255,61,.45)"></div>
             <div style="font:800 24px Inter" class="lime">KLING</div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div></section>
 
-  <!-- S4b: three pillars -->
-  <section class="scene" id="s4b" data-in="16.4" data-out="20.08">
-    <div class="col" style="gap:50px">
+  <!-- S4b: three pillars with real Kling footage -->
+  <section class="scene" id="s4b" data-in="16.4" data-out="20.08"><div class="inner">
+    <div class="col" style="gap:40px">
       <div class="kicker a up" style="--d:16.45">In terms of</div>
-      <div class="row" style="gap:44px">
-        <div class="card a up col" style="--d:16.95;width:470px;padding:40px;gap:26px">
-          <svg width="220" height="220" viewBox="0 0 220 220">
-            <circle cx="110" cy="110" r="100" fill="rgba(56,225,255,.08)" stroke="rgba(56,225,255,.3)"/>
-            <g class="loop" style="animation:bob .7s infinite paused" stroke="#38e1ff" stroke-width="10" stroke-linecap="round" fill="none">
-              <circle cx="110" cy="50" r="17" fill="#38e1ff" stroke="none"/>
-              <line x1="110" y1="72" x2="110" y2="130"/>
-              <line class="loop" style="transform-box:fill-box;transform-origin:top center;animation:swingA .7s infinite paused" x1="110" y1="82" x2="110" y2="125"/>
-              <line class="loop" style="transform-box:fill-box;transform-origin:top center;animation:swingB .7s infinite paused" x1="110" y1="82" x2="110" y2="125"/>
-              <line class="loop" style="transform-box:fill-box;transform-origin:top center;animation:swingB .7s infinite paused" x1="110" y1="130" x2="110" y2="185"/>
-              <line class="loop" style="transform-box:fill-box;transform-origin:top center;animation:swingA .7s infinite paused" x1="110" y1="130" x2="110" y2="185"/>
-            </g>
-          </svg>
-          <div class="h3" style="text-align:center">Human<br><span class="cyan">movement</span></div>
+      <div class="row" style="gap:36px">
+        <div class="card a up col" style="--d:16.95;width:540px;padding:20px 20px 30px;gap:22px">
+          <div class="media" style="width:500px;height:281px"><img class="clip" data-clip="p_point" data-t0="16.95" data-src="0" data-rate=".65"><div class="tag">MADE WITH KLING</div></div>
+          <div class="h3" style="text-align:center">Human <span class="cyan">movement</span></div>
         </div>
-        <div class="card a up col" style="--d:18.1;width:470px;padding:40px;gap:26px">
-          <div style="position:relative;width:220px;height:220px">
-            <svg width="220" height="220" viewBox="0 0 220 220" style="position:absolute;inset:0">
-              <ellipse cx="110" cy="120" rx="96" ry="44" fill="none" stroke="rgba(200,255,61,.35)" stroke-dasharray="6 8" stroke-width="2"/>
-              <rect x="88" y="78" width="44" height="74" rx="10" fill="rgba(255,255,255,.18)"/>
-              <circle cx="110" cy="66" r="16" fill="rgba(255,255,255,.3)"/>
-            </svg>
-            <div class="loop" style="position:absolute;left:0;top:0;width:58px;height:40px;offset-path:path('M 110 76 A 96 44 0 1 1 109.9 76');offset-rotate:0deg;animation:orbit 3.2s infinite linear paused">
-              <svg class="ic" viewBox="0 0 24 24" width="58" height="40" style="color:var(--lime)"><rect x="2" y="6" width="14" height="12" rx="2" fill="rgba(200,255,61,.3)"/><path d="m16 10 6-3v10l-6-3z" fill="rgba(200,255,61,.3)"/></svg>
-            </div>
-          </div>
-          <div class="h3" style="text-align:center">Camera<br><span class="lime">movement</span></div>
+        <div class="card a up col" style="--d:18.1;width:540px;padding:20px 20px 30px;gap:22px">
+          <div class="media" style="width:500px;height:281px"><img class="clip" data-clip="p_street" data-t0="18.1" data-src="0" data-rate="1"><div class="tag">MADE WITH KLING</div></div>
+          <div class="h3" style="text-align:center">Camera <span class="lime">movement</span></div>
         </div>
-        <div class="card a up col" style="--d:19.15;width:470px;padding:40px;gap:26px">
-          <div style="position:relative;width:300px;height:220px;display:flex;align-items:center">
-            <div class="thumb" style="position:relative;width:300px;height:170px;border-radius:10px;overflow:hidden;background-image:linear-gradient(180deg,#ff7a59 0%,#ff4fd8 40%,#2a1b5c 75%,#0b0b1a 100%)">
-              <div style="position:absolute;left:50%;top:58%;width:90px;height:90px;margin-left:-45px;border-radius:50%;background:#ffd36b;box-shadow:0 0 50px #ffb23d"></div>
-              <svg viewBox="0 0 300 170" style="position:absolute;inset:0"><path d="M0 170 L0 120 L60 80 L110 115 L170 60 L240 110 L300 85 L300 170Z" fill="#120d24"/></svg>
-              <div class="a" style="--d:19.5;animation-name:fade;position:absolute;left:0;right:0;top:0;height:26px;background:#000"></div>
-              <div class="a" style="--d:19.5;animation-name:fade;position:absolute;left:0;right:0;bottom:0;height:26px;background:#000"></div>
-            </div>
-          </div>
-          <div class="h3" style="text-align:center">Cinematic<br><span class="pink">scenes</span></div>
+        <div class="card a up col" style="--d:19.15;width:540px;padding:20px 20px 30px;gap:22px">
+          <div class="media" style="width:500px;height:281px"><img class="clip" data-clip="p_truck" data-t0="19.15" data-src="0.3" data-rate="1"><div class="tag">MADE WITH KLING</div></div>
+          <div class="h3" style="text-align:center">Cinematic <span class="pink">scenes</span></div>
         </div>
       </div>
     </div>
-  </section>
+  </div></section>
 
-  <!-- S5: use cases -->
-  <section class="scene" id="s5" data-in="20.08" data-out="27.04" style="padding-bottom:150px">
-    <div class="col" style="gap:46px;position:relative">
+  <!-- S5: use cases with footage -->
+  <section class="scene" id="s5" data-in="20.08" data-out="27.04"><div class="inner" style="padding-bottom:120px">
+    <div class="col" style="gap:40px;position:relative">
       <div class="h2 a up" style="--d:20.2">So if you're creating…</div>
-      <div class="row" style="gap:34px">
-        <div class="card a pop col" style="--d:22.15;width:340px;padding:40px 20px;gap:22px"><svg class="ic" style="color:var(--amber)" width="96" height="96" viewBox="0 0 24 24"><path d="M3 11l18-5v12L3 14z" fill="rgba(255,178,61,.2)"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg><div class="h3" style="font-size:36px">Advertisements</div></div>
-        <div class="card a pop col" style="--d:22.75;width:340px;padding:40px 20px;gap:22px"><svg class="ic" style="color:var(--cyan)" width="96" height="96" viewBox="0 0 24 24"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z" fill="rgba(56,225,255,.15)"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z" fill="rgba(56,225,255,.15)"/></svg><div class="h3" style="font-size:36px">Storytelling</div></div>
-        <div class="card a pop col" style="--d:23.6;width:340px;padding:40px 20px;gap:22px"><svg class="ic" style="color:var(--pink)" width="96" height="96" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2.5" fill="rgba(255,79,216,.15)"/><path d="M12 15.5s-3-1.8-3-4a1.7 1.7 0 0 1 3-1.1 1.7 1.7 0 0 1 3 1.1c0 2.2-3 4-3 4z" fill="currentColor"/></svg><div class="h3" style="font-size:36px">Social media</div></div>
-        <div class="card a pop col" style="--d:24.9;width:340px;padding:40px 20px;gap:22px"><svg class="ic" style="color:var(--lime)" width="96" height="96" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.7z" fill="rgba(200,255,61,.12)"/><path d="M3.3 7 12 12l8.7-5M12 22V12"/></svg><div class="h3" style="font-size:36px">Product videos</div></div>
+      <div class="row" style="gap:28px">
+        <div class="card a pop col" style="--d:22.15;width:390px;padding:16px 16px 24px;gap:18px"><div class="media" style="width:358px;height:201px"><img class="clip" data-clip="p_bag" data-t0="22.15" data-src="0" data-rate=".8"></div><div class="row" style="gap:12px"><svg class="ic" style="color:var(--amber)" width="40" height="40" viewBox="0 0 24 24"><path d="M3 11l18-5v12L3 14z" fill="rgba(255,178,61,.2)"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg><div class="h3" style="font-size:34px">Advertisements</div></div></div>
+        <div class="card a pop col" style="--d:22.75;width:390px;padding:16px 16px 24px;gap:18px"><div class="media" style="width:358px;height:201px"><img class="clip" data-clip="p_write" data-t0="22.75" data-src="0" data-rate="1"></div><div class="row" style="gap:12px"><svg class="ic" style="color:var(--cyan)" width="40" height="40" viewBox="0 0 24 24"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z" fill="rgba(34,230,255,.15)"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z" fill="rgba(34,230,255,.15)"/></svg><div class="h3" style="font-size:34px">Storytelling</div></div></div>
+        <div class="card a pop col" style="--d:23.6;width:390px;padding:16px 16px 24px;gap:18px"><div class="media" style="width:358px;height:201px"><img class="clip" data-clip="p_selfie" data-t0="23.6" data-src="0" data-rate="1"></div><div class="row" style="gap:12px"><svg class="ic" style="color:var(--pink)" width="40" height="40" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2.5" fill="rgba(255,79,216,.15)"/><path d="M12 15.5s-3-1.8-3-4a1.7 1.7 0 0 1 3-1.1 1.7 1.7 0 0 1 3 1.1c0 2.2-3 4-3 4z" fill="currentColor"/></svg><div class="h3" style="font-size:34px">Social media</div></div></div>
+        <div class="card a pop col" style="--d:24.9;width:390px;padding:16px 16px 24px;gap:18px"><div class="media" style="width:358px;height:201px"><img class="clip" data-clip="elem" data-t0="24.9" data-src="0" data-rate="1"></div><div class="row" style="gap:12px"><svg class="ic" style="color:var(--lime)" width="40" height="40" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.7z" fill="rgba(184,255,61,.12)"/><path d="M3.3 7 12 12l8.7-5M12 22V12"/></svg><div class="h3" style="font-size:34px">Product videos</div></div></div>
       </div>
-      <div class="a stamp" style="--d:26.1;position:absolute;right:30px;bottom:-115px;padding:12px 28px;border:5px solid var(--lime);border-radius:16px;font:700 54px SG;color:var(--lime);background:rgba(6,7,11,.8);box-shadow:0 0 50px rgba(200,255,61,.4)">KLING DOES IT.</div>
+      <div class="a stamp" style="--d:26.1;position:absolute;right:30px;bottom:-110px;padding:12px 28px;border:5px solid var(--lime);border-radius:16px;font:700 54px SG;color:var(--lime);background:rgba(6,7,11,.85);box-shadow:0 0 50px rgba(184,255,61,.4)">KLING DOES IT.</div>
     </div>
-  </section>
+  </div></section>
 
-  <!-- S6: lowest package -->
-  <section class="scene" id="s6" data-in="27.04" data-out="37.52">
-    <div class="row" style="gap:80px">
-      <div class="col" style="align-items:flex-start;gap:20px;width:620px">
-        <div class="kicker a up" style="--d:27.2">Reason 02</div>
-        <div class="h2 a up" style="--d:27.4">Lowest package <span class="grad">to start with</span></div>
-        <div class="row a up" style="--d:30.1;gap:18px;margin-top:20px">
-          <div style="padding:10px 22px;border-radius:999px;background:var(--pink);color:#fff;font:800 28px Inter">NEW USERS</div>
-          <div style="font:600 30px Inter;color:#cfd5e6">first month only</div>
+  <!-- S6: lowest package – real pricing page -->
+  <section class="scene" id="s6" data-in="27.04" data-out="37.52"><div class="inner">
+    <div class="col" style="gap:30px">
+      <div class="row a up" style="--d:27.2;gap:22px"><div class="kicker">Reason 02</div><div class="h3">Lowest package <span class="grad">to start with</span></div></div>
+      <div class="row" style="gap:44px;align-items:center">
+        <div class="browser a left" style="--d:27.4;width:1040px">
+          <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><div class="url">🔒 kling.ai/app/membership</div></div>
+          <div class="body" style="height:495px"><img class="clip" id="priceimg" data-clip="price" data-t0="27.4" data-src="0.2" data-rate=".12"></div>
         </div>
-      </div>
-      <div class="card a pop col" style="--d:30.2;width:640px;padding:46px 50px;gap:12px;position:relative;border-color:rgba(200,255,61,.45)">
-        <div class="a stamp" style="--d:30.5;position:absolute;top:-56px;right:-46px;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff7ae5,#ff2fb9);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(255,79,216,.6)">
-          <div style="font:700 70px/1 SG" data-count="0,35,30.6,1,,%"></div><div style="font:800 26px Inter">OFF</div>
+        <div class="card a pop col" style="--d:30.2;width:500px;padding:40px 40px;gap:10px;position:relative;border-color:rgba(184,255,61,.45);align-items:flex-start">
+          <div class="a stamp" style="--d:30.5;position:absolute;top:-60px;right:-40px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff7ae5,#ff2fb9);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(255,79,216,.6)">
+            <div style="font:700 62px/1 SG" data-count="0,35,30.6,1,,%"></div><div style="font:800 24px Inter">OFF</div>
+          </div>
+          <div style="padding:8px 18px;border-radius:999px;background:var(--pink);color:#fff;font:800 22px Inter">NEW USERS</div>
+          <div class="row" style="align-items:flex-end;gap:8px;margin-top:6px">
+            <div style="font:700 150px/1 SG" class="grad" data-count="0,6.99,31.8,1.6,$,,2"></div>
+            <div style="font:600 34px Inter;color:var(--dim);margin-bottom:20px">/mo</div>
+          </div>
+          <div style="height:2px;width:100%;background:var(--stroke);margin:10px 0"></div>
+          <div class="row a up" style="--d:34.9;gap:16px">
+            <svg class="ic lime" width="52" height="52" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="rgba(184,255,61,.15)"/><path d="M12 7v10M9 9.5h4.5a1.75 1.75 0 0 1 0 3.5h-3a1.75 1.75 0 0 0 0 3.5H15"/></svg>
+            <div style="font:700 60px SG" data-count="0,660,35.0,1.4"></div>
+            <div style="font:600 30px Inter;color:#cfd5e6">credits</div>
+          </div>
+          <div class="a fade" style="--d:36.2;margin-top:8px;padding:8px 18px;border:2px dashed var(--amber);border-radius:12px;color:var(--amber);font:700 22px Inter;letter-spacing:.1em">FIRST MONTH ONLY</div>
+          <div class="shine"></div>
         </div>
-        <div class="kicker">Starter plan</div>
-        <div class="row" style="align-items:flex-end;gap:10px">
-          <div style="font:700 190px/1 SG" class="grad" data-count="0,6.99,31.8,1.6,$,,2"></div>
-          <div style="font:600 42px Inter;color:var(--dim);margin-bottom:26px">/ month</div>
-        </div>
-        <div style="height:2px;width:100%;background:var(--stroke);margin:14px 0"></div>
-        <div class="row a up" style="--d:34.9;gap:20px;align-self:flex-start">
-          <svg class="ic lime" width="58" height="58" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="rgba(200,255,61,.15)"/><path d="M12 7v10M9 9.5h4.5a1.75 1.75 0 0 1 0 3.5h-3a1.75 1.75 0 0 0 0 3.5H15"/></svg>
-          <div style="font:700 64px SG" data-count="0,660,35.0,1.4"></div>
-          <div style="font:600 34px Inter;color:#cfd5e6">credits</div>
-        </div>
-        <div class="a fade" style="--d:36.2;align-self:flex-start;margin-top:10px;padding:8px 18px;border:2px dashed var(--amber);border-radius:12px;color:var(--amber);font:700 24px Inter;letter-spacing:.1em">FIRST MONTH ONLY</div>
-        <div class="shine"></div>
       </div>
     </div>
-  </section>
+  </div></section>
 
-  <!-- S7: annual -->
-  <section class="scene" id="s7" data-in="37.52" data-out="42.72">
-    <div class="row" style="gap:100px">
-      <div class="card a left" style="--d:37.6;padding:40px;width:560px">
-        <div class="row" style="justify-content:space-between;margin-bottom:24px"><div class="kicker">Annual plan</div><svg class="ic cyan" width="44" height="44" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
-        <div id="months" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px"></div>
+  <!-- S7: annual – real pricing banner screenshot -->
+  <section class="scene" id="s7" data-in="37.52" data-out="42.72"><div class="inner">
+    <div class="col" style="gap:40px">
+      <div class="a down" style="--d:37.6;position:relative;width:1300px;border-radius:22px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.6);border:1px solid var(--stroke)">
+        <img src="assets/pricing_banner.png" style="display:block;width:1300px">
+        <div class="a pop" style="--d:39.7;position:absolute;left:536px;top:258px;width:146px;height:54px;border:4px solid var(--lime);border-radius:16px;box-shadow:0 0 40px rgba(184,255,61,.8)"></div>
+        <div class="a pop" style="--d:39.9;position:absolute;left:300px;top:188px;width:118px;height:44px;border:4px solid var(--lime);border-radius:12px;box-shadow:0 0 30px rgba(184,255,61,.7)"></div>
       </div>
-      <div class="col" style="align-items:flex-start;gap:18px">
-        <div class="h3 a up" style="--d:37.9;color:#cfd5e6">Going annual?</div>
-        <div class="row" style="gap:22px;align-items:flex-end">
-          <div class="a zoom" style="--d:40.0;font:700 230px/0.9 SG" ><span class="grad" data-count="0,40,40.0,1,,%"></span></div>
-          <div class="a up" style="--d:40.4;font:800 56px Inter;color:var(--pink);margin-bottom:20px">OFF</div>
+      <div class="row" style="gap:60px;align-items:center">
+        <div class="row a up" style="--d:37.9;gap:16px"><svg class="ic cyan" width="64" height="64" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><div class="h2" style="font-size:64px">Annual plans</div></div>
+        <div class="row" style="gap:18px;align-items:flex-end">
+          <div class="a zoom" style="--d:40.0;font:700 170px/0.9 SG"><span class="grad" data-count="0,40,40.0,1,,%"></span></div>
+          <div class="a up" style="--d:40.4;font:800 50px Inter;color:var(--pink);margin-bottom:14px">OFF</div>
         </div>
-        <div class="row a up" style="--d:41.4;gap:16px;padding:14px 26px;border-radius:999px;background:rgba(200,255,61,.12);border:1px solid rgba(200,255,61,.5)">
+        <div class="row a up" style="--d:41.4;gap:14px;padding:14px 26px;border-radius:999px;background:rgba(184,255,61,.12);border:1px solid rgba(184,255,61,.5)">
           <svg class="ic lime" width="40" height="40" viewBox="0 0 24 24"><path d="m22 17-8.5-8.5-5 5L2 7"/><path d="M16 17h6v-6"/></svg>
           <div style="font:700 36px SG" class="lime">More economical</div>
         </div>
       </div>
     </div>
-  </section>
+  </div></section>
 
-  <!-- S8: free option flow -->
-  <section class="scene" id="s8" data-in="42.72" data-out="53.6">
-    <div class="col" style="gap:60px">
-      <div class="col" style="gap:14px">
-        <div class="kicker a up" style="--d:42.8">Biggest advantage on a budget</div>
-        <div class="h2 a up" style="--d:43.0">Start <span class="grad">free</span>, then decide</div>
-      </div>
-      <div class="row" style="gap:0">
-        <div class="card a pop col" style="--d:45.0;width:330px;padding:34px;gap:16px;border-color:rgba(200,255,61,.5)">
-          <svg class="ic lime" width="84" height="84" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1" fill="rgba(200,255,61,.2)"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg>
-          <div class="h3" style="font-size:38px">Free plan</div><div style="font:600 22px Inter;color:var(--dim)">Start here</div>
+  <!-- S8: free → test → paid, with real generator footage -->
+  <section class="scene" id="s8" data-in="42.72" data-out="53.6"><div class="inner">
+    <div class="col" style="gap:34px">
+      <div class="row a up" style="--d:42.8;gap:22px"><div class="kicker">Best for a budget</div><div class="h3" style="font-size:52px">Start <span class="grad">free</span>, then decide</div></div>
+      <div class="row" style="gap:50px;align-items:center">
+        <div class="browser a left" style="--d:43.0;width:1060px">
+          <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><div class="url">🔒 kling.ai/app</div></div>
+          <div class="body" style="height:505px"><img class="clip" data-clip="gen" data-t0="43.0" data-src="0" data-rate="8.5"></div>
         </div>
-        <svg width="110" height="40" viewBox="0 0 110 40"><path class="a draw" style="--d:47.0" d="M10 20 H90 M78 8 L95 20 L78 32" stroke="#c8ff3d" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="card a pop col" style="--d:48.9;width:330px;padding:34px;gap:16px">
-          <svg class="ic cyan" width="84" height="84" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="rgba(56,225,255,.15)"/><path d="m21 21-4.3-4.3M8.5 11l2 2 3.5-3.5"/></svg>
-          <div class="h3" style="font-size:38px">Test quality</div><div style="font:600 22px Inter;color:var(--dim)">Yourself</div>
-        </div>
-        <svg width="110" height="40" viewBox="0 0 110 40"><path class="a draw" style="--d:50.6" d="M10 20 H90 M78 8 L95 20 L78 32" stroke="#c8ff3d" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="card a pop col" style="--d:51.0;width:330px;padding:34px;gap:16px">
-          <svg class="ic pink" width="84" height="84" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="rgba(255,79,216,.15)"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
-          <div class="h3" style="font-size:38px">Satisfied?</div><div style="font:600 22px Inter;color:var(--dim)">Then upgrade</div>
-        </div>
-        <svg width="110" height="40" viewBox="0 0 110 40"><path class="a draw" style="--d:52.0" d="M10 20 H90 M78 8 L95 20 L78 32" stroke="#c8ff3d" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="card a pop col" style="--d:52.4;width:330px;padding:34px;gap:16px;background:linear-gradient(160deg,rgba(200,255,61,.25),rgba(56,225,255,.15))">
-          <svg class="ic" width="84" height="84" viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.7 1.5 7L12 17.5 5.7 21l1.5-7L2 9.3l7-.8z" fill="rgba(255,255,255,.25)"/></svg>
-          <div class="h3" style="font-size:38px">Paid plan</div><div style="font:600 22px Inter;color:#cfd5e6">When you're sure</div>
+        <div class="col" style="gap:0;align-items:flex-start">
+          <div class="row card a right" style="--d:45.0;gap:18px;padding:18px 26px;width:420px;border-color:rgba(184,255,61,.5)"><svg class="ic lime" width="50" height="50" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1" fill="rgba(184,255,61,.2)"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg><div><div class="h3" style="font-size:34px">Free plan</div><div style="font:600 20px Inter;color:var(--dim)">Start here</div></div></div>
+          <svg width="420" height="46" viewBox="0 0 420 46"><path class="a draw" style="--d:47.0" d="M60 4 V38 M48 28 L60 42 L72 28" stroke="#b8ff3d" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="row card a right" style="--d:48.9;gap:18px;padding:18px 26px;width:420px"><svg class="ic cyan" width="50" height="50" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="rgba(34,230,255,.15)"/><path d="m21 21-4.3-4.3M8.5 11l2 2 3.5-3.5"/></svg><div><div class="h3" style="font-size:34px">Test the quality</div><div style="font:600 20px Inter;color:var(--dim)">Yourself</div></div></div>
+          <svg width="420" height="46" viewBox="0 0 420 46"><path class="a draw" style="--d:50.6" d="M60 4 V38 M48 28 L60 42 L72 28" stroke="#b8ff3d" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="row card a right" style="--d:51.0;gap:18px;padding:18px 26px;width:420px"><svg class="ic pink" width="50" height="50" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="rgba(255,79,216,.15)"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg><div><div class="h3" style="font-size:34px">Satisfied?</div><div style="font:600 20px Inter;color:var(--dim)">Then upgrade</div></div></div>
+          <svg width="420" height="46" viewBox="0 0 420 46"><path class="a draw" style="--d:52.0" d="M60 4 V38 M48 28 L60 42 L72 28" stroke="#b8ff3d" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="row card a right" style="--d:52.4;gap:18px;padding:18px 26px;width:420px;background:linear-gradient(160deg,rgba(184,255,61,.25),rgba(34,230,255,.15))"><svg class="ic" width="50" height="50" viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.7 1.5 7L12 17.5 5.7 21l1.5-7L2 9.3l7-.8z" fill="rgba(255,255,255,.25)"/></svg><div><div class="h3" style="font-size:34px">Paid plan</div><div style="font:600 20px Inter;color:#cfd5e6">When you're sure</div></div></div>
         </div>
       </div>
     </div>
-  </section>
+  </div></section>
 
   <!-- S9: strongly recommend -->
-  <section class="scene" id="s9" data-in="53.6" data-out="56.64">
+  <section class="scene" id="s9" data-in="53.6" data-out="56.64"><div class="inner">
     <div class="col" style="gap:30px;position:relative">
       <div id="burst" style="position:absolute;left:50%;top:150px;width:0;height:0"></div>
-      <div class="a pop" style="--d:53.8;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e3ff8f,#7fd400);display:flex;align-items:center;justify-content:center;box-shadow:0 0 90px rgba(200,255,61,.6)">
+      <div class="a pop" style="--d:53.8;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e3ff8f,#7fd400);display:flex;align-items:center;justify-content:center;box-shadow:0 0 90px rgba(184,255,61,.6)">
         <svg class="ic" width="180" height="180" viewBox="0 0 24 24" stroke="#0b1200" stroke-width="2.6"><path class="a draw" style="--d:54.2" d="m5 12.5 4.5 4.5L19 7.5"/></svg>
       </div>
       <div class="h2 a up" style="--d:54.4">Strongly <span class="grad">recommended</span></div>
       <div class="kicker a up" style="--d:54.8">Try before you buy</div>
     </div>
-  </section>
+  </div></section>
 
-  <!-- S10: features / homepage -->
+  <!-- S10: more features → real homepage navigation -->
   <section class="scene" id="s10" data-in="56.64" data-out="66.48">
-    <div class="col" id="s10a" style="gap:30px;position:absolute;left:0;right:0;top:0;bottom:0;justify-content:center">
+    <div class="inner" id="s10a" style="flex-direction:column;gap:30px">
       <div class="kicker a up" style="--d:56.7">Aside these two reasons</div>
       <div class="row" style="gap:30px">
         <div class="card a pop row" style="--d:56.9;padding:22px 34px;gap:16px"><svg class="ic lime" width="44" height="44" viewBox="0 0 24 24" stroke-width="3"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><div class="h3" style="font-size:38px">Realism</div></div>
         <div class="card a pop row" style="--d:57.3;padding:22px 34px;gap:16px"><svg class="ic lime" width="44" height="44" viewBox="0 0 24 24" stroke-width="3"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><div class="h3" style="font-size:38px">Price</div></div>
-        <div class="card a pop row" style="--d:58.6;padding:22px 34px;gap:16px;border-color:rgba(255,79,216,.6)"><div class="h3 pink" style="font-size:44px">+</div><div class="h3" style="font-size:38px">Exceptional features</div></div>
+        <div class="card a pop row" style="--d:58.6;padding:22px 34px;gap:16px;border-color:rgba(34,230,255,.6)"><div class="h3 cyan" style="font-size:44px">+</div><div class="h3" style="font-size:38px">Exceptional features</div></div>
       </div>
     </div>
-    <div id="s10b" style="position:absolute;left:260px;top:110px;width:1400px;height:720px">
-      <div class="card" style="position:absolute;inset:0;overflow:hidden;border-radius:22px;background:rgba(14,16,24,.92)">
-        <div class="row" style="height:58px;padding:0 22px;gap:10px;background:rgba(255,255,255,.05);border-bottom:1px solid var(--stroke)">
-          <i style="width:14px;height:14px;border-radius:50%;background:#ff5f57"></i><i style="width:14px;height:14px;border-radius:50%;background:#febc2e"></i><i style="width:14px;height:14px;border-radius:50%;background:#28c840"></i>
-          <div style="margin-left:24px;flex:1;height:34px;border-radius:10px;background:rgba(255,255,255,.07);display:flex;align-items:center;padding:0 18px;font:500 20px Inter;color:#cfd5e6">🔒 kling.ai</div>
-        </div>
-        <div style="position:absolute;top:58px;left:0;right:0;bottom:0;overflow:hidden">
-          <div id="scroller" style="position:absolute;left:0;right:0;top:0;padding:40px 50px">
-            <div class="row" style="justify-content:space-between;margin-bottom:34px">
-              <div style="font:700 34px SG;letter-spacing:.08em">KLING <span style="font:500 18px Inter;color:var(--dim);letter-spacing:0">AI</span></div>
-              <div class="row" style="gap:30px;font:500 19px Inter;color:#cfd5e6"><span>Explore</span><span>Video</span><span>Images</span><span>Pricing</span><span style="padding:8px 18px;border-radius:10px;background:var(--lime);color:#000;font-weight:800">Start free</span></div>
-            </div>
-            <div style="height:250px;border-radius:18px;position:relative;overflow:hidden;margin-bottom:34px" class="thumb" id="hero">
-              <div style="position:absolute;left:50px;bottom:40px"><div style="font:700 54px SG">Create cinematic AI video</div><div style="font:500 22px Inter;color:#dfe3ef;margin-top:8px">Text · Image · Motion</div></div>
-            </div>
-            <div class="kicker" style="margin-bottom:20px;font-size:20px">Features</div>
-            <div id="tiles" style="display:grid;grid-template-columns:repeat(4,1fr);gap:22px"></div>
-          </div>
-        </div>
+    <div id="s10b" style="position:absolute;left:250px;top:100px;width:1420px">
+      <div class="browser">
+        <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><div class="url">🔒 kling.ai</div></div>
+        <div class="body" style="height:676px"><img class="clip" data-clip="home" data-t0="59.4" data-src="0" data-rate="2.35"></div>
       </div>
-      <svg id="cursor" width="44" height="44" viewBox="0 0 24 24" style="position:absolute;left:0;top:0;filter:drop-shadow(0 4px 8px rgba(0,0,0,.6))"><path d="M4 2l16 9-7 2-3 7z" fill="#fff" stroke="#000" stroke-width="1.2"/></svg>
-      <div id="clickfx" style="position:absolute;width:60px;height:60px;border-radius:50%;border:3px solid var(--lime);opacity:0"></div>
     </div>
   </section>
 
   <!-- S11: don't trust hype -->
-  <section class="scene" id="s11" data-in="66.48" data-out="71.36">
+  <section class="scene" id="s11" data-in="66.48" data-out="71.36"><div class="inner">
     <div class="row" style="gap:90px">
-      <div class="card a left" style="--d:66.6;width:640px;height:400px;position:relative;overflow:hidden;padding:0">
-        <div class="thumb" style="position:absolute;inset:0;background-image:linear-gradient(130deg,#1d2440,#3a1f4f,#14304a)"></div>
-        <div style="position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:150px;height:104px;border-radius:28px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center"><svg width="54" height="54" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="#111"/></svg></div>
+      <div class="card a left" style="--d:66.6;width:700px;height:394px;position:relative;overflow:hidden;padding:0">
+        <img class="clip" data-clip="p_water" data-t0="66.6" data-src="0" data-rate="1" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.7)">
+        <div style="position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:140px;height:96px;border-radius:26px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center"><svg width="50" height="50" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="#111"/></svg></div>
         <div style="position:absolute;left:0;right:0;bottom:0;height:8px;background:rgba(255,255,255,.2)"><div style="width:62%;height:100%;background:var(--red)"></div></div>
         <div class="a pop" style="--d:68.9;position:absolute;right:26px;top:24px;padding:16px 24px;border-radius:20px 20px 4px 20px;background:#fff;color:#111;font:800 28px Inter">"This AI tool is good!"</div>
       </div>
@@ -390,51 +366,41 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
         <div class="a stamp" style="--d:70.2;padding:14px 30px;border:6px solid var(--red);border-radius:16px;font:700 52px SG;color:var(--red);background:rgba(6,7,11,.8)">✕ HYPE ≠ PROOF</div>
       </div>
     </div>
-  </section>
+  </div></section>
 
-  <!-- S12: compare tools -->
-  <section class="scene" id="s12" data-in="71.36" data-out="76.24">
-    <div class="col" style="gap:40px">
-      <div class="card a down row" style="--d:71.4;width:1300px;padding:22px 30px;gap:18px">
-        <div style="padding:8px 16px;border-radius:10px;background:rgba(56,225,255,.15);color:var(--cyan);font:800 20px Inter;letter-spacing:.1em">SAME PROMPT</div>
-        <div style="font:500 30px Inter;color:#e7eaf3"><span id="typed" data-type="A woman walks through neon rain, cinematic camera push-in" data-ts="71.7" data-cps="34"></span><span class="loop" style="animation:blink 1s infinite paused;color:var(--lime)">|</span></div>
+  <!-- S12: same prompt, 5 tools -->
+  <section class="scene" id="s12" data-in="71.36" data-out="76.24"><div class="inner">
+    <div class="col" style="gap:36px">
+      <div class="card a down row" style="--d:71.4;width:1500px;padding:22px 30px;gap:18px">
+        <div style="padding:8px 16px;border-radius:10px;background:rgba(34,230,255,.15);color:var(--cyan);font:800 20px Inter;letter-spacing:.1em">SAME PROMPT</div>
+        <div style="font:500 30px Inter;color:#e7eaf3"><span id="typed" data-type="Two friends talk on a misty beach, cinematic camera push-in" data-ts="71.7" data-cps="32"></span><span class="loop" style="animation:blink 1s infinite paused;color:var(--lime)">|</span></div>
       </div>
-      <div class="row" style="gap:40px">
-        <div class="col" style="gap:16px"><div class="card a up" style="--d:72.6;width:420px;height:250px;overflow:hidden;position:relative"><div class="thumb" style="position:absolute;inset:0;background-image:linear-gradient(120deg,#26324a,#4b3a5e,#1d2a3d)"></div><div class="scan" style="position:absolute;left:0;right:0;height:4px;background:var(--cyan);box-shadow:0 0 20px var(--cyan)"></div></div><div style="font:700 28px SG;color:var(--dim)">Tool A</div></div>
-        <div class="col" style="gap:16px"><div class="card a up" style="--d:72.85;width:420px;height:250px;overflow:hidden;position:relative"><div class="thumb" style="position:absolute;inset:0;background-image:linear-gradient(120deg,#2a2f3a,#40475a,#22262f)"></div><div class="scan" style="position:absolute;left:0;right:0;height:4px;background:var(--cyan);box-shadow:0 0 20px var(--cyan)"></div></div><div style="font:700 28px SG;color:var(--dim)">Tool B</div></div>
-        <div class="col" style="gap:16px;position:relative">
-          <div class="card a up" id="winner" style="--d:73.1;width:420px;height:250px;overflow:hidden;position:relative">
-            <div class="thumb" style="position:absolute;inset:0;background-image:linear-gradient(120deg,#ff4fd8,#3a1f9f 40%,#38e1ff 80%,#0a0f2a)"></div>
-            <div id="rain" style="position:absolute;inset:0"></div>
-            <div class="scan" style="position:absolute;left:0;right:0;height:4px;background:var(--cyan);box-shadow:0 0 20px var(--cyan)"></div>
-          </div>
-          <div style="font:800 28px SG" class="lime">Kling</div>
-          <svg class="ic a pop lime" style="--d:75.3;position:absolute;top:-64px" width="70" height="70" viewBox="0 0 24 24"><path d="M2 18h20M3 18l2-11 5 5 2-7 2 7 5-5 2 11" fill="rgba(200,255,61,.3)"/></svg>
-        </div>
-      </div>
+      <div class="row" style="gap:22px;align-items:flex-start" id="tools"></div>
       <div class="kicker a up" style="--d:73.8;color:#cfd5e6">Generate · Compare · Decide</div>
     </div>
-  </section>
+  </div></section>
 
   <!-- S13: finale -->
-  <section class="scene" id="s13" data-in="76.24" data-out="80.2">
+  <section class="scene" id="s13" data-in="76.24" data-out="80.3">
+    <img class="clip bgclip" data-clip="p_pottery" data-t0="76.24" data-src="0" data-rate="1">
+    <div class="bgshade"></div>
     <div id="confetti" style="position:absolute;inset:0"></div>
-    <div class="col" style="gap:20px">
-      <div class="kicker a up" style="--d:76.3">That's how I rated</div>
-      <div class="row" style="gap:40px">
-        <svg class="ic a pop" style="--d:76.6;color:var(--amber);filter:drop-shadow(0 0 40px rgba(255,178,61,.6))" width="230" height="230" viewBox="0 0 24 24" stroke-width="1.6"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.7V17c0 .6-.5 1-1 1.2C7.9 18.8 7 20.2 7 22M14 14.7V17c0 .6.5 1 1 1.2 1.1.6 2 2 2 3.8"/><path d="M18 2H6v7a6 6 0 0 0 12 0z" fill="rgba(255,178,61,.3)"/></svg>
+    <div class="inner"><div class="col" style="gap:22px">
+      <div class="kicker a up" style="--d:76.3;color:#dfe3ef">That's how I rated</div>
+      <div class="row" style="gap:46px">
+        <img class="logo glowlogo a spinin" style="--d:76.5" src="assets/kling_logo.png" width="250" height="250">
         <div class="col" style="align-items:flex-start">
-          <div class="a zoom" style="--d:77.2;font:700 200px/0.9 SG" ><span class="grad">#1</span></div>
+          <div class="a zoom" style="--d:77.2;font:700 200px/0.9 SG"><span class="grad">#1</span></div>
           <div class="a up" style="--d:77.7;font:700 110px/1 SG;letter-spacing:.06em">KLING</div>
         </div>
       </div>
       <div class="a up row" style="--d:78.4;gap:14px;margin-top:10px;padding:14px 30px;border-radius:999px;background:var(--lime);color:#000;font:800 30px Inter">Test it yourself → kling.ai</div>
-    </div>
+    </div></div>
   </section>
 
   <div id="eq"></div>
   <div id="cap"></div>
-  <div id="chip"><b>#1</b> Best AI video tool under $10</div>
+  <div id="chip"><img src="assets/kling_logo.png"><b>#1</b> Best AI video tool under $10</div>
   <div id="reason">Reason <span id="rnum">01</span></div>
   <div id="progress"></div>
   <div id="vignette"></div>
@@ -443,6 +409,7 @@ svg.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-
 
 <script src="assets/env.js"></script>
 <script src="assets/subs.js"></script>
+<script src="assets/clips.js"></script>
 <script>
 const FPS=30, DUR=80.09;
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -454,43 +421,51 @@ let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
 
 // --- build dynamic bits ---
 "KLING".split("").forEach((c,i)=>{const s=document.createElement('span');s.textContent=c;s.className='a up';s.style.setProperty('--d',1.25+i*.09);$('#klword').appendChild(s)});
-for(let i=0;i<12;i++){const m=document.createElement('div');m.className='a pop';m.style.cssText=`--d:${38.1+i*.13};height:62px;border-radius:12px;display:flex;align-items:center;justify-content:center;font:700 20px Inter;background:rgba(56,225,255,.12);border:1px solid rgba(56,225,255,.35);color:#cfe9f2`;m.textContent=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][i];$('#months').appendChild(m)}
-const feats=[["Text to Video","#ff4fd8,#3a1f9f,#38e1ff"],["Image to Video","#ffb23d,#ff4fd8,#2a1b5c"],["AI Images","#38e1ff,#2a6bff,#0b1440"],["Lip Sync","#c8ff3d,#1f8a5a,#0b2a2a"],["Motion Control","#ff7a59,#a62bff,#1a0b30"],["Video Extend","#2a6bff,#38e1ff,#c8ff3d"],["Camera Moves","#ff4fd8,#ffb23d,#401030"],["Effects","#a62bff,#38e1ff,#0b0b2a"]];
-feats.forEach(([n,g],i)=>{const t=document.createElement('div');t.style.cssText='border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04)';t.innerHTML=`<div class="thumb" style="height:150px;background-image:linear-gradient(${120+i*25}deg,${g});position:relative"><svg width="40" height="40" viewBox="0 0 24 24" style="position:absolute;left:14px;bottom:12px"><circle cx="12" cy="12" r="11" fill="rgba(0,0,0,.45)"/><path d="M10 8l6 4-6 4z" fill="#fff"/></svg></div><div style="padding:16px 18px;font:700 22px SG">${n}</div>`;t.id='tile'+i;$('#tiles').appendChild(t)});
-$('#hero').style.backgroundImage='linear-gradient(110deg,#0b0b2a,#3a1f9f 30%,#ff4fd8 60%,#ffb23d 85%,#0b0b2a)';
 for(let i=0;i<40;i++){const p=document.createElement('div');p.className='particle';p._x=rnd()*1920;p._y=rnd()*1080;p._s=.3+rnd()*1.2;p._z=1+rnd()*3;p.style.width=p.style.height=(p._z*1.6)+'px';$('#particles').appendChild(p)}
 for(let i=0;i<48;i++){const b=document.createElement('i');b._k=rnd();$('#eq').appendChild(b)}
-for(let i=0;i<40;i++){const d=document.createElement('div');d._x=rnd()*420;d._v=300+rnd()*300;d._o=rnd();d.style.cssText='position:absolute;width:2px;height:26px;background:rgba(255,255,255,.55);top:0';$('#rain').appendChild(d)}
-const conf=[];for(let i=0;i<90;i++){const c=document.createElement('div');const col=['#c8ff3d','#38e1ff','#ff4fd8','#ffb23d','#fff'][i%5];c.style.cssText=`position:absolute;width:${10+rnd()*10}px;height:${6+rnd()*8}px;background:${col};border-radius:2px`;c._a=rnd()*Math.PI*2;c._v=500+rnd()*900;c._r=rnd()*720;$('#confetti').appendChild(c);conf.push(c)}
+const conf=[];for(let i=0;i<90;i++){const c=document.createElement('div');const col=['#b8ff3d','#22e6ff','#2a6bff','#ffe14d','#fff'][i%5];c.style.cssText=`position:absolute;width:${10+rnd()*10}px;height:${6+rnd()*8}px;background:${col};border-radius:2px`;c._a=rnd()*Math.PI*2;c._v=500+rnd()*900;c._r=rnd()*720;$('#confetti').appendChild(c);conf.push(c)}
 const bursts=[];for(let i=0;i<16;i++){const c=document.createElement('div');c.style.cssText='position:absolute;width:12px;height:60px;border-radius:6px;background:var(--lime);opacity:0';c._a=i/16*Math.PI*2;$('#burst').appendChild(c);bursts.push(c)}
+// S12 tool panels
+[["PixVerse",72.3],["Pika",72.45],["Vidu",72.6],["Hailuo",72.75],["Kling",72.95]].forEach(([n,d])=>{
+  const k=n==="Kling";const w=document.createElement('div');w.className='col a up';w.style.cssText=`--d:${d};gap:14px;position:relative`;
+  w.innerHTML=`<div class="media" ${k?'id="winner"':''} style="width:${k?380:262}px;height:${k?214:147}px;border:2px solid ${k?'transparent':'rgba(255,255,255,.08)'}">
+    ${k?`<img class="clip" data-clip="p_run" data-t0="72.95" data-src="0" data-rate="1">`:`<div class="ph"></div><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:600 18px Inter;color:#8a90a3;letter-spacing:.12em">GENERATING…</div>`}
+    <div class="scan" style="position:absolute;left:0;right:0;height:4px;background:var(--cyan);box-shadow:0 0 20px var(--cyan);opacity:0"></div></div>
+    <div class="row" style="gap:10px">${k?'<img src="assets/kling_logo.png" width="34" height="34">':''}<div style="font:${k?800:700} ${k?30:24}px SG;color:${k?'var(--lime)':'var(--dim)'}">${n}</div></div>
+    ${k?'<svg class="ic a pop lime" style="--d:75.3;position:absolute;top:-66px" width="60" height="60" viewBox="0 0 24 24"><path d="M2 18h20M3 18l2-11 5 5 2-7 2 7 5-5 2 11" fill="rgba(184,255,61,.3)"/></svg>':''}`;
+  $('#tools').appendChild(w)});
 
-// --- captions: word timing weighted by length ---
+// --- captions ---
 const words=[];
 SUBS.forEach((s,si)=>{const ws=s.text.split(/\s+/).filter(Boolean);const wt=ws.map(w=>w.length+2);const tot=wt.reduce((a,b)=>a+b,0);let acc=s.start;ws.forEach((w,i)=>{const d=(s.end-s.start)*wt[i]/tot;words.push({si,w,t0:acc,t1:acc+d});acc+=d})});
 let curSeg=-1;
 function caption(t){
-  const si=SUBS.findIndex(s=>t>=s.start&&t<s.end);
-  const cap=$('#cap');
+  const si=SUBS.findIndex(s=>t>=s.start&&t<s.end);const cap=$('#cap');
   if(si!==curSeg){curSeg=si;cap.innerHTML=si<0?'':words.filter(w=>w.si===si).map(w=>`<span class="w">${w.w}</span>`).join(' ');}
-  cap.style.opacity=si<0?0:1;
-  if(si<0)return;
-  const ws=words.filter(w=>w.si===si);const els=cap.children;
+  cap.style.opacity=si<0?0:1;if(si<0)return;
+  const ws=words.filter(w=>w.si===si);const els=cap.querySelectorAll('.w');
   ws.forEach((w,i)=>{els[i].className='w'+(t>=w.t1?' past':t>=w.t0?' now':'')});
   const s=SUBS[si];const k=ease((t-s.start)/.18);cap.style.transform=`translateX(-50%) translateY(${(1-k)*14}px)`;
 }
 
-const scenes=$$('.scene').map(el=>({el,a:+el.dataset.in,b:+el.dataset.out}));
+const scenes=$$('.scene').map(el=>({el,a:+el.dataset.in,b:+el.dataset.out,clips:[...el.querySelectorAll('img.clip')]}));
 const counters=$$('[data-count]').map(el=>{const [f,to,st,du,pre='',suf='',dec='0']=el.dataset.count.split(',');return{el,f:+f,to:+to,st:+st,du:+du,pre,suf,dec:+dec}});
 const typers=$$('[data-type]');
-
 function env(t){const i=Math.floor(t*FPS);return ENV[Math.min(ENV.length-1,Math.max(0,i))]||0}
 
-function render(t){
-  // CSS animations seek
+// footage: pick the frame for time t, loop when past the end
+function clipFrame(img,t){
+  const c=CLIPS[img.dataset.clip];
+  let s=+img.dataset.src+Math.max(0,t-+img.dataset.t0)*+img.dataset.rate;
+  let i=Math.floor(s*c.fps);
+  if(i>=c.n){const back=img.dataset.clip==='gen'||img.dataset.clip==='home'||img.dataset.clip==='price';i=back?c.n-1:i%c.n}
+  return `assets/clips/${img.dataset.clip}/${String(i+1).padStart(4,'0')}.jpg`;
+}
+
+async function render(t){
   document.getAnimations().forEach(a=>{a.pause();a.currentTime=t*1000});
   const e=env(t), e2=(env(t-1/FPS)+e+env(t+1/FPS))/3;
 
-  // background
   $('#b1').style.transform=`translate(${-200+Math.sin(t*.21)*260}px,${-250+Math.cos(t*.17)*160}px) scale(${1+e2*.08})`;
   $('#b2').style.transform=`translate(${1200+Math.cos(t*.19)*240}px,${300+Math.sin(t*.23)*200}px)`;
   $('#b3').style.transform=`translate(${700+Math.sin(t*.13+2)*420}px,${-350+Math.cos(t*.11)*240}px)`;
@@ -498,59 +473,49 @@ function render(t){
   $('#grain').style.transform=`translate(${(Math.floor(t*24)*37)%100-50}px,${(Math.floor(t*24)*53)%100-50}px)`;
   $$('#particles .particle').forEach(p=>{const y=((p._y-t*22*p._s)%1080+1080)%1080;p.style.transform=`translate(${p._x+Math.sin(t*.5+p._y)*20}px,${y}px)`;p.style.opacity=.15+.25*p._s});
 
-  // scenes
+  const loads=[];
   scenes.forEach(s=>{
     const vin=smooth((t-s.a+.12)/.3), vout=1-smooth((t-s.b+.18)/.3);
-    const v=Math.min(vin,vout);
-    s.el.style.visibility=v>0.001?'visible':'hidden';
+    const v=Math.min(vin,vout);const vis=v>0.001;
+    s.el.style.visibility=vis?'visible':'hidden';
     s.el.style.opacity=v;
     const sc=t<s.a+.2?lerp(1.06,1,vin):lerp(.94,1,vout);
     s.el.style.transform=`scale(${sc})`;
     s.el.style.filter=v<1?`blur(${(1-v)*10}px)`:'none';
+    if(vis)s.clips.forEach(img=>{const src=clipFrame(img,t);if(img.getAttribute('src')!==src){img.setAttribute('src',src);loads.push(img.decode().catch(()=>{}))}});
   });
 
-  // S1 rings
-  ['#r1','#r2','#r3'].forEach((id,i)=>{const p=((t-.55-i*.35)/1.6);const r=$(id);if(p<0||p>1){r.style.opacity=0;return}r.style.width=r.style.height=(300+p*1100)+'px';r.style.opacity=(1-p)*.7;r.style.left=(960-(150+p*550))+'px';r.style.top=(430-(150+p*550))+'px'});
-  // S3 question mark wobble
+  // S1 rings + slow logo spin
+  ['#r1','#r2','#r3'].forEach((id,i)=>{const p=((t-.6-i*.35)/1.6);const r=$(id);if(p<0||p>1){r.style.opacity=0;return}r.style.width=r.style.height=(300+p*1100)+'px';r.style.opacity=(1-p)*.7;r.style.left=(960-(150+p*550))+'px';r.style.top=(430-(150+p*550))+'px'});
   $('#qmark').style.transform=`rotate(${Math.sin(t*14)*10*clamp(1-(t-9.3))}deg) translateY(${-e*20}px)`;
 
-  // counters
   counters.forEach(c=>{const k=ease((t-c.st)/c.du);const v=lerp(c.f,c.to,k);c.el.textContent=c.pre+(c.dec?v.toFixed(c.dec):Math.round(v))+c.suf});
-  // typers
   typers.forEach(el=>{const n=Math.max(0,Math.floor((t-+el.dataset.ts)*+el.dataset.cps));el.textContent=el.dataset.type.slice(0,n)});
 
-  // S9 burst
+  // S6: push in on the Standard plan ($6.99 · 660 credits)
+  const z=smooth((t-31.4)/1.6);$('#priceimg').style.transform=`scale(${1+z*1.15})`;
+
   bursts.forEach(b=>{const p=clamp((t-53.9)/.7);b.style.opacity=p>0&&p<1?1-p:0;const r=80+p*170;b.style.transform=`rotate(${b._a}rad) translateY(${-r}px)`});
 
-  // S10 two phases + browser
-  const ph=smooth((t-59.6)/.5);
+  // S10 phase switch
+  const ph=smooth((t-59.2)/.5);
   $('#s10a').style.opacity=1-ph;$('#s10a').style.transform=`translateY(${-ph*80}px)`;
   const bb=$('#s10b');bb.style.opacity=ph;bb.style.transform=`perspective(1600px) rotateX(${(1-ph)*18}deg) translateY(${(1-ph)*120}px) scale(${.9+ph*.1})`;
-  const sc=lerp(0,520,smooth((t-62.6)/3.4));$('#scroller').style.transform=`translateY(${-sc}px)`;
-  const path=[[60.0,1100,620],[61.3,1215,96],[62.4,700,400],[63.6,330,560],[64.6,660,560],[65.5,990,520],[66.4,1310,520]];
-  let cx=path[0][1],cy=path[0][2];for(let i=0;i<path.length-1;i++){const[a,x1,y1]=path[i],[b,x2,y2]=path[i+1];if(t>=a&&t<b){const k=smooth((t-a)/(b-a));cx=lerp(x1,x2,k);cy=lerp(y1,y2,k)}else if(t>=b){cx=x2;cy=y2}}
-  $('#cursor').style.transform=`translate(${cx}px,${cy}px)`;
-  const clicks=[61.5,63.8,64.8,65.7];let cf=$('#clickfx');cf.style.opacity=0;clicks.forEach(c=>{const p=(t-c)/.5;if(p>=0&&p<1){cf.style.opacity=1-p;cf.style.transform=`translate(${cx-30+6}px,${cy-30+6}px) scale(${.4+p*1.4})`}});
-  feats.forEach((f,i)=>{const tile=$('#tile'+i);const hov=clicks.slice(1).some((c,j)=>j===i-4&&t>c-.3&&t<c+.9)||(i<4&&false);tile.style.transform=`translateY(0) scale(${hov?1.05:1})`;tile.style.borderColor=hov?'var(--lime)':'rgba(255,255,255,.1)';tile.style.boxShadow=hov?'0 0 40px rgba(200,255,61,.4)':'none'});
 
-  // S12 scan + rain + winner glow
-  $$('.scan').forEach((s,i)=>{const p=((t-73.8-i*.12)/1.2);s.style.opacity=p>0&&p<1?1:0;s.style.top=(clamp(p)*250)+'px'});
-  $$('#rain div').forEach(d=>{d.style.transform=`translate(${d._x}px,${((d._o*300+t*d._v)%300)-30}px) rotate(12deg)`});
-  const w=smooth((t-75.2)/.4);$('#winner').style.boxShadow=`0 0 ${w*70}px rgba(200,255,61,${w*.6})`;$('#winner').style.borderColor=w>.5?'var(--lime)':'';
+  // S12 scans + winner
+  $$('#tools .scan').forEach((s,i)=>{const p=((t-73.8-i*.12)/1.2);s.style.opacity=p>0&&p<1?1:0;s.style.top=(clamp(p)*100)+'%'});
+  const w=smooth((t-75.2)/.4);$('#winner').style.boxShadow=`0 0 ${w*70}px rgba(184,255,61,${w*.6})`;$('#winner').style.borderColor=w>.5?'var(--lime)':'transparent';
 
-  // S13 confetti
   conf.forEach(c=>{const p=t-76.7;if(p<0){c.style.opacity=0;return}c.style.opacity=clamp(1-(p-2.6)/1);const x=960+Math.cos(c._a)*c._v*p*.8;const y=430+Math.sin(c._a)*c._v*p*.6+420*p*p;c.style.transform=`translate(${x}px,${y}px) rotate(${c._r*p}deg)`});
 
-  // HUD
   $('#progress').style.width=(t/DUR*1920)+'px';
   const chipV=smooth((t-3.3)/.5)*(1-smooth((t-76.0)/.4));$('#chip').style.opacity=chipV;$('#chip').style.transform=`translateY(${(1-chipV)*-20}px)`;
-  const rv=(t>10.1&&t<20.3)||(t>27.1&&t<56.5);const rvo=rv?1:0;$('#reason').style.opacity=rvo;$('#rnum').textContent=t<27?'01':'02';
-  // EQ
-  $$('#eq i').forEach((b,i)=>{const mid=Math.abs(i-23.5)/24;const v=env(t-i*.004)*(1-mid*.7)*(.6+.4*Math.sin(t*9+b._k*20));b.style.height=(6+Math.max(0,v)*54)+'px'});
+  $('#reason').style.opacity=((t>10.1&&t<20.3)||(t>27.1&&t<56.5))?1:0;$('#rnum').textContent=t<27?'01':'02';
+  $$('#eq i').forEach((b,i)=>{const mid=Math.abs(i-23.5)/24;const v=env(t-i*.004)*(1-mid*.7)*(.6+.4*Math.sin(t*9+b._k*20));b.style.height=(6+Math.max(0,v)*44)+'px'});
   caption(t);
+  await Promise.all(loads);
 }
 window.render=render;window.DUR=DUR;window.FPS=FPS;
-render(0);
 </script>
 </body>
 </html>
