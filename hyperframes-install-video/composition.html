@@ -5,15 +5,16 @@
 <title>Step 4 - Install HyperFrames</title>
 <style>
   :root {
-    --bg: #0a0d18;
-    --ink: #f4f1ec;
-    --muted: #8f94a8;
-    --orange: #ff7a45;
+    --bg: #ffffff;
+    --ink: #0e0f13;
+    --muted: #8a8d99;
+    --orange: #ff6a2b;
     --claude: #d97757;
-    --violet: #8b6cff;
-    --cyan: #3fd5ff;
-    --glass: rgba(255,255,255,0.06);
-    --line: rgba(255,255,255,0.12);
+    --violet: #7b5cff;
+    --pink: #ffb3cf;
+    --green: #2bd47d;
+    --panel: #f3f3f5;
+    --line: rgba(14,15,19,0.09);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
@@ -21,17 +22,17 @@
   .abs { position: absolute; }
   .mono { font-family: "JetBrains Mono", monospace; }
 
-  /* ---------- background ---------- */
-  #bg { inset: 0; position: absolute; overflow: hidden; }
-  #glowA, #glowB { position: absolute; width: 1400px; height: 1400px; border-radius: 50%; filter: blur(40px); }
-  #glowA { background: radial-gradient(circle, rgba(255,122,69,0.30), rgba(255,122,69,0) 60%); }
-  #glowB { background: radial-gradient(circle, rgba(139,108,255,0.30), rgba(139,108,255,0) 60%); }
-  #grid { position: absolute; inset: -80px; opacity: 0.5;
-    background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
-    background-size: 80px 80px; }
-  #vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.65) 100%); }
-  .particle { position: absolute; border-radius: 50%; background: #fff; }
+  /* ---------- background: white with soft pastel glows ---------- */
+  #bg { inset: 0; position: absolute; overflow: hidden; background: #fff; }
+  #glowA, #glowB, #glowC { position: absolute; width: 1100px; height: 1100px; border-radius: 50%; filter: blur(60px); }
+  #glowA { background: radial-gradient(circle, rgba(160,120,255,0.30), rgba(160,120,255,0) 62%); }
+  #glowB { background: radial-gradient(circle, rgba(120,230,150,0.26), rgba(120,230,150,0) 62%); }
+  #glowC { background: radial-gradient(circle, rgba(255,150,190,0.26), rgba(255,150,190,0) 62%); }
+  #grid { position: absolute; inset: -80px; opacity: 0.6;
+    background-image: radial-gradient(rgba(14,15,19,0.07) 1.6px, transparent 1.6px);
+    background-size: 40px 40px; }
+  #vignette { display: none; }
+  .particle { position: absolute; border-radius: 50%; }
 
   /* ---------- progress ---------- */
   #progress { left: 0; top: 0; height: 6px; background: linear-gradient(90deg, var(--orange), var(--violet)); }
@@ -43,84 +44,100 @@
   #numWrap { height: 420px; overflow: hidden; position: relative; width: 520px; }
   #numStrip { position: absolute; left: 0; top: 0; }
   #numStrip div { height: 420px; line-height: 420px; font-size: 420px; font-weight: 900; font-family: "Inter Display", "Inter"; letter-spacing: -20px;
-    background: linear-gradient(160deg, #ffb48f 0%, var(--orange) 40%, var(--violet) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    background: linear-gradient(160deg, #ff9a6b 0%, var(--orange) 40%, var(--violet) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
   #divider { width: 6px; height: 360px; border-radius: 3px; background: linear-gradient(var(--orange), var(--violet)); transform-origin: top; }
   #titleStack { display: flex; flex-direction: column; gap: 6px; }
   .tline { overflow: hidden; height: 132px; }
   .tline span { display: inline-block; font-size: 116px; font-weight: 800; letter-spacing: -3px; line-height: 132px; }
   #tHF { position: relative; }
-  #tHF span { background: linear-gradient(90deg, #fff, #ffd2bd); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  #tUnder { position: absolute; left: 4px; bottom: 6px; height: 12px; border-radius: 6px; background: var(--orange); transform-origin: left; }
+  #tHF span { position: relative; z-index: 1; padding: 0 14px; }
+  #tUnder { position: absolute; left: 0; top: 14px; height: 108px; border-radius: 18px; background: var(--pink); transform-origin: left; }
 
   /* ---------- scene 2: explainer ---------- */
   #s2 { inset: 0; }
   #s2Head { left: 0; right: 0; top: 96px; text-align: center; }
   #s2Head .k { font-size: 24px; letter-spacing: 10px; color: var(--orange); font-weight: 700; }
   #s2Head .h { font-size: 64px; font-weight: 800; letter-spacing: -1.5px; margin-top: 14px; }
-  .node { width: 300px; height: 300px; border-radius: 36px; background: linear-gradient(160deg, rgba(255,255,255,0.10), rgba(255,255,255,0.03));
-    border: 1.5px solid var(--line); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.12); }
+  .node { width: 300px; height: 300px; border-radius: 36px; background: #fff;
+    border: 1px solid var(--line); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+    box-shadow: 0 30px 70px rgba(40,30,90,0.12), 0 4px 14px rgba(0,0,0,0.04); }
   .node .lbl { font-size: 28px; font-weight: 700; }
   .node .sub { font-size: 18px; color: var(--muted); margin-top: -14px; }
-  #nClaude { border-color: rgba(217,119,87,0.55); box-shadow: 0 0 80px rgba(217,119,87,0.35), 0 30px 80px rgba(0,0,0,0.45); }
-  #doc { width: 380px; padding: 22px 26px; border-radius: 18px; background: rgba(12,15,28,0.92); border: 1.5px solid rgba(255,122,69,0.5);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  #doc { width: 380px; padding: 22px 26px; border-radius: 18px; background: #fff; border: 1.5px solid rgba(255,106,43,0.35);
+    box-shadow: 0 24px 60px rgba(40,30,90,0.14); }
   #doc .dh { font-size: 16px; color: var(--orange); letter-spacing: 3px; font-weight: 700; margin-bottom: 12px; }
-  #doc .dl { font-size: 22px; line-height: 38px; white-space: pre; color: #dfe3f0; }
+  #doc .dl { font-size: 22px; line-height: 38px; white-space: pre; color: #2a2c35; }
   #doc .dl b { color: var(--orange); font-weight: 700; }
   #links { left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
 
   /* ---------- scene 3: screen ---------- */
   #s3 { inset: 0; perspective: 2200px; }
-  #chip { left: 80px; top: 38px; display: flex; align-items: center; gap: 16px; height: 52px; padding: 0 22px 0 8px; border-radius: 26px;
-    background: rgba(255,255,255,0.07); border: 1px solid var(--line); }
-  #chip .n { height: 38px; padding: 0 16px; border-radius: 19px; background: var(--orange); color: #1a0d06; font-weight: 800; font-size: 20px; line-height: 38px; letter-spacing: 1px; }
+  #chip { left: 80px; top: 58px; display: flex; align-items: center; gap: 16px; height: 52px; padding: 0 22px 0 8px; border-radius: 26px;
+    background: #fff; border: 1px solid var(--line); box-shadow: 0 8px 24px rgba(40,30,90,0.08); }
+  #chip .n { height: 38px; padding: 0 16px; border-radius: 19px; background: var(--ink); color: #fff; font-weight: 800; font-size: 20px; line-height: 38px; letter-spacing: 1px; }
   #chip .t { font-size: 22px; font-weight: 600; }
-  #win { left: 80px; top: 110px; width: 1360px; border-radius: 18px; overflow: hidden; background: #1a1d29; border: 1.5px solid rgba(255,255,255,0.14);
-    box-shadow: 0 50px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.4); transform-origin: 50% 60%; }
-  #bar { height: 36px; display: flex; align-items: center; gap: 9px; padding-left: 16px; background: #22263a; }
+  #win { left: 80px; top: 140px; width: 1360px; border-radius: 20px; overflow: hidden; background: #fff; border: 1px solid var(--line);
+    box-shadow: 0 50px 110px rgba(40,30,90,0.18), 0 6px 18px rgba(0,0,0,0.05); transform-origin: 50% 60%; }
+  #bar { height: 36px; display: flex; align-items: center; gap: 9px; padding-left: 16px; background: var(--panel); border-bottom: 1px solid var(--line); }
   #bar i { width: 13px; height: 13px; border-radius: 50%; display: block; }
   #bar .tt { margin-left: 18px; font-size: 15px; color: var(--muted); }
   #vp { position: relative; width: 1360px; height: 765px; overflow: hidden; background: #fff; }
   #vid { position: absolute; left: 0; top: 0; width: 1360px; height: 765px; transform-origin: 0 0; }
   .ring { position: absolute; width: 90px; height: 90px; margin: -45px 0 0 -45px; border-radius: 50%; border: 5px solid var(--orange); }
   .dot { position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 20px var(--orange); }
-  .callout { position: absolute; white-space: nowrap; padding: 10px 18px; border-radius: 12px; background: #11131f; color: #fff; font-size: 24px; font-weight: 700;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.35); border: 2px solid var(--orange); }
-  .callout em { font-style: normal; color: var(--orange); }
-  #rail { left: 1484px; top: 110px; width: 360px; display: flex; flex-direction: column; gap: 14px; }
-  .step { position: relative; height: 128px; border-radius: 18px; padding: 20px 22px 0 92px; background: rgba(255,255,255,0.05); border: 1.5px solid var(--line); }
-  .step .num { position: absolute; left: 22px; top: 32px; width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--line); text-align: center; line-height: 48px; font-weight: 800; font-size: 22px; color: var(--muted); }
+  .callout { position: absolute; white-space: nowrap; padding: 10px 18px; border-radius: 12px; background: var(--ink); color: #fff; font-size: 24px; font-weight: 700;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.22); }
+  .callout em { font-style: normal; color: #ffb08a; }
+  #rail { left: 1484px; top: 140px; width: 360px; display: flex; flex-direction: column; gap: 14px; }
+  .step { position: relative; height: 146px; border-radius: 20px; padding: 28px 22px 0 92px; background: #fff; border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(40,30,90,0.07); }
+  .step .num { position: absolute; left: 22px; top: 44px; width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--line); text-align: center; line-height: 48px; font-weight: 800; font-size: 22px; color: var(--muted); }
   .step .st { font-size: 15px; letter-spacing: 3px; color: var(--muted); font-weight: 700; }
   .step .sd { font-size: 23px; font-weight: 700; margin-top: 8px; line-height: 30px; }
-  .step .glow { position: absolute; inset: -1.5px; border-radius: 18px; border: 2px solid var(--orange); box-shadow: 0 0 40px rgba(255,122,69,0.35); }
-  #installCard { width: 470px; padding: 22px 26px; border-radius: 18px; background: rgba(12,15,28,0.94); border: 1.5px solid var(--line); box-shadow: 0 24px 70px rgba(0,0,0,0.55); }
+  .step .glow { position: absolute; inset: -1px; border-radius: 20px; border: 2px solid var(--orange); box-shadow: 0 0 40px rgba(255,106,43,0.25); }
+  #installCard { width: 470px; padding: 22px 26px; border-radius: 18px; background: #fff; border: 1px solid var(--line); box-shadow: 0 24px 60px rgba(40,30,90,0.2); }
   #installCard .it { font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 12px; }
-  #installCard .pb { height: 12px; border-radius: 6px; background: rgba(255,255,255,0.1); margin-top: 16px; overflow: hidden; }
+  #installCard .pb { height: 12px; border-radius: 6px; background: var(--panel); margin-top: 16px; overflow: hidden; }
   #installCard .pf { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--orange), var(--violet)); }
   #installCard .ip { font-size: 18px; color: var(--muted); margin-top: 10px; }
 
-  /* ---------- captions ---------- */
-  #cap { left: 80px; width: 1360px; top: 956px; height: 90px; display: flex; align-items: center; justify-content: center; }
-  #capInner { padding: 14px 30px; border-radius: 16px; background: rgba(8,10,20,0.78); border: 1px solid var(--line); font-size: 40px; font-weight: 700; letter-spacing: -0.5px; white-space: nowrap; }
-  #capInner span { display: inline-block; margin: 0 6px; }
+  /* ---------- captions: disabled ---------- */
+  #cap { display: none !important; }
 
   /* ---------- scene 4: outro ---------- */
   #s4 { inset: 0; }
   #check { left: 810px; top: 170px; width: 300px; height: 300px; }
   #o1 { left: 0; right: 0; top: 520px; text-align: center; font-size: 104px; font-weight: 900; letter-spacing: -3px; font-family: "Inter Display", "Inter"; }
   #o1 span, #o2 span { display: inline-block; margin: 0 14px; }
-  #o2 { left: 0; right: 0; top: 670px; text-align: center; font-size: 48px; font-weight: 600; color: #d9dcea; }
+  #o2 { left: 0; right: 0; top: 670px; text-align: center; font-size: 48px; font-weight: 600; color: #4a4d58; }
   #o2 .hl { background: linear-gradient(90deg, var(--orange), var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800; }
-  #lockup { left: 0; right: 0; top: 860px; text-align: center; font-size: 26px; letter-spacing: 8px; color: var(--muted); font-weight: 700; }
-  #lockup b { color: var(--ink); }
   .shape { position: absolute; }
-  #fade { inset: 0; background: #000; position: absolute; }
+
+  /* ---------- scene 5: next-step teaser ---------- */
+  #s5 { inset: 0; }
+  #tPanel { left: 330px; top: 250px; width: 1260px; height: 580px; border-radius: 40px; background: var(--panel); overflow: hidden; }
+  #tLeft { position: absolute; left: 90px; top: 110px; }
+  #tPill { display: inline-block; height: 52px; line-height: 52px; padding: 0 26px; border-radius: 26px; background: var(--ink); color: #fff; font-size: 22px; font-weight: 800; letter-spacing: 6px; }
+  #tHead { font-size: 190px; font-weight: 900; letter-spacing: -7px; line-height: 200px; margin-top: 24px; font-family: "Inter Display", "Inter"; white-space: nowrap; }
+  #tHead span { display: inline-block; }
+  #t5box { position: relative; display: inline-block; margin-left: 24px; }
+  #t5bg { position: absolute; left: -6px; right: -6px; top: 26px; bottom: 18px; border-radius: 28px; background: var(--pink); transform-origin: left; }
+  #t5 { position: relative; padding: 0 30px; }
+  #tSub { font-size: 34px; font-weight: 600; color: #5a5d68; margin-top: 18px; }
+  #tCardWrap { position: absolute; left: 820px; top: 120px; width: 340px; height: 340px; }
+  #tGlow { position: absolute; inset: -90px; border-radius: 50%; filter: blur(40px);
+    background: conic-gradient(from 0deg, rgba(160,120,255,0.55), rgba(255,150,190,0.5), rgba(255,190,110,0.5), rgba(120,230,150,0.5), rgba(160,120,255,0.55)); }
+  #tCard { position: absolute; inset: 0; border-radius: 34px; background: #fff; box-shadow: 0 30px 70px rgba(40,30,90,0.18); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; }
+  #tPlay { width: 130px; height: 130px; border-radius: 50%; background: var(--ink); display: flex; align-items: center; justify-content: center; }
+  #tBar { width: 240px; height: 12px; border-radius: 6px; background: var(--panel); overflow: hidden; }
+  #tFill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--orange), var(--violet)); }
+  #cursor { left: 0; top: 0; width: 44px; height: 44px; }
+  #tRing { position: absolute; width: 130px; height: 130px; border-radius: 50%; border: 5px solid var(--orange); }
+  #fade { inset: 0; background: #fff; position: absolute; }
 </style>
 </head>
 <body>
 <div id="bg">
-  <div id="glowA"></div><div id="glowB"></div>
+  <div id="glowA"></div><div id="glowB"></div><div id="glowC"></div>
   <div id="grid"></div>
   <div id="particles"></div>
   <div id="vignette"></div>
@@ -162,8 +179,8 @@
   <div id="nVideo" class="node abs" style="left:1350px;top:450px">
     <svg width="150" height="110" viewBox="0 0 150 110">
       <rect x="3" y="3" width="144" height="84" rx="12" fill="none" stroke="#8b6cff" stroke-width="5"/>
-      <path d="M64 28 L92 45 L64 62 Z" fill="#fff"/>
-      <rect x="3" y="98" width="144" height="8" rx="4" fill="rgba(255,255,255,0.15)"/>
+      <path d="M64 28 L92 45 L64 62 Z" fill="#0e0f13"/>
+      <rect x="3" y="98" width="144" height="8" rx="4" fill="#ececf0"/>
       <rect id="vbar" x="3" y="98" width="60" height="8" rx="4" fill="#ff7a45"/>
     </svg>
     <div class="lbl">HyperFrames</div><div class="sub">Video</div>
@@ -197,12 +214,27 @@
   <svg id="check" class="abs" viewBox="0 0 300 300">
     <circle id="ckC" cx="150" cy="150" r="130" fill="none" stroke="url(#lg2)" stroke-width="14" stroke-linecap="round" transform="rotate(-90 150 150)"/>
     <defs><linearGradient id="lg2" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#ff7a45"/><stop offset="1" stop-color="#8b6cff"/></linearGradient></defs>
-    <path id="ckP" d="M 92 155 L 135 197 L 212 112" fill="none" stroke="#fff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+    <path id="ckP" d="M 92 155 L 135 197 L 212 112" fill="none" stroke="#0e0f13" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
   <div id="o1" class="abs"><span>You're</span><span>good</span><span>to</span><span>go.</span></div>
   <div id="o2" class="abs"><span>Start</span><span>creating</span><span>your</span><span class="hl">motion</span><span class="hl">graphics</span></div>
   <div id="shapes"></div>
-  <div id="lockup" class="abs mono"><b>HYPERFRAMES</b> × <b>CLAUDE</b></div>
+  </div>
+
+<!-- SCENE 5: NEXT STEP TEASER -->
+<div id="s5" class="abs">
+  <div id="tPanel" class="abs">
+    <div id="tLeft">
+      <div id="tPill" class="mono">NEXT</div>
+      <div id="tHead"><span id="tStep">Step</span><span id="t5box"><span id="t5bg"></span><span id="t5">5</span></span></div>
+      <div id="tSub">Coming up next — don't miss it.</div>
+    </div>
+    <div id="tCardWrap"><div id="tGlow"></div><div id="tCard">
+      <div id="tPlay"><svg width="56" height="56" viewBox="0 0 56 56"><path d="M18 10 L46 28 L18 46 Z" fill="#fff"/></svg></div>
+      <div id="tBar"><div id="tFill"></div></div>
+    </div><div id="tRing"></div></div>
+  </div>
+  <svg id="cursor" class="abs" viewBox="0 0 44 44"><path d="M8 4 L8 36 L16 28 L22 41 L28 38 L22 26 L33 26 Z" fill="#0e0f13" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/></svg>
 </div>
 
 <div id="progress" class="abs"></div>
@@ -233,15 +265,16 @@ function kf(t, keys, e = E.inOut) { // keys: [[time, value(s)...]]
   }
   return keys[keys.length - 1].slice(1);
 }
-const DUR = 31;
+const DUR = 34.5;
 
 // ---------------- background ----------------
 const R = rng(7), parts = [];
 for (let i = 0; i < 46; i++) {
   const d = document.createElement('div'); d.className = 'particle';
-  const s = 2 + R() * 4; d.style.width = d.style.height = s + 'px';
+  const s = 4 + R() * 6; d.style.width = d.style.height = s + 'px';
+  d.style.background = ['#b9a4ff', '#9fe8b6', '#ffb3cf', '#ffc79a'][i % 4];
   $('particles').appendChild(d);
-  parts.push({ d, x: R() * 1920, y: R() * 1080, vy: 8 + R() * 22, ph: R() * 6.28, a: 0.15 + R() * 0.45 });
+  parts.push({ d, x: R() * 1920, y: R() * 1080, vy: 8 + R() * 22, ph: R() * 6.28, a: 0.25 + R() * 0.4 });
 }
 
 // ---------------- scene 2 star ----------------
@@ -318,7 +351,8 @@ async function renderAt(t) {
   // progress + background
   $('progress').style.width = (t / DUR * 1920) + 'px';
   $('glowA').style.transform = `translate(${-300 + Math.sin(t * 0.35) * 160}px, ${-500 + Math.cos(t * 0.3) * 120}px)`;
-  $('glowB').style.transform = `translate(${900 + Math.cos(t * 0.28) * 180}px, ${100 + Math.sin(t * 0.33) * 140}px)`;
+  $('glowB').style.transform = `translate(${1000 + Math.cos(t * 0.28) * 180}px, ${300 + Math.sin(t * 0.33) * 140}px)`;
+  $('glowC').style.transform = `translate(${400 + Math.sin(t * 0.22) * 200}px, ${450 + Math.cos(t * 0.27) * 120}px)`;
   $('grid').style.transform = `translate(${(t * 12) % 80}px, ${(t * 8) % 80}px)`;
   parts.forEach(p => {
     const y = ((p.y - t * p.vy) % 1080 + 1080) % 1080;
@@ -379,7 +413,7 @@ async function renderAt(t) {
     const dIn = prog(t, 4.2, 4.6, E.back), fly = prog(t, 5.85, 6.25, E.inOut);
     $('doc').style.opacity = clamp(dIn * 2) * (1 - fly);
     $('doc').style.transform = `translate(${fly * 270}px, ${fly * 260}px) scale(${(0.7 + 0.3 * dIn) * (1 - fly * 0.8)})`;
-    $('nClaude').style.boxShadow = `0 0 ${80 + 120 * Math.max(0, 1 - Math.abs(t - 6.25) * 3)}px rgba(217,119,87,${0.35 + 0.4 * Math.max(0, 1 - Math.abs(t - 6.25) * 3)}), 0 30px 80px rgba(0,0,0,0.45)`;
+    $('nClaude').style.boxShadow = `0 0 ${80 + 120 * Math.max(0, 1 - Math.abs(t - 6.25) * 3)}px rgba(217,119,87,${0.18 + 0.4 * Math.max(0, 1 - Math.abs(t - 6.25) * 3)}), 0 30px 70px rgba(40,30,90,0.12)`;
     $('vbar').setAttribute('width', 10 + 134 * ((t - 6.3) * 0.5 % 1 + (t < 6.3 ? 1 : 0)));
   }
 
@@ -398,13 +432,13 @@ async function renderAt(t) {
       const active = t >= s.a && t < s.b, done = t >= s.b;
       const ga = win(t, s.a, 0.25, s.b - 0.15, 0.25);
       el.querySelector('.glow').style.opacity = ga;
-      el.style.background = active ? 'rgba(255,122,69,0.12)' : 'rgba(255,255,255,0.05)';
+      el.style.background = active ? '#fff4ee' : '#fff';
       const num = el.querySelector('.num');
       num.textContent = done ? '✓' : (i + 1);
       num.style.background = done ? '#2bd47d' : (active ? 'var(--orange)' : 'transparent');
-      num.style.color = done || active ? '#0a0d18' : 'var(--muted)';
+      num.style.color = done || active ? '#fff' : 'var(--muted)';
       num.style.borderColor = done ? '#2bd47d' : (active ? 'var(--orange)' : 'var(--line)');
-      el.querySelector('.sd').style.color = active ? '#fff' : (done ? '#b8bccb' : '#8f94a8');
+      el.querySelector('.sd').style.color = active ? '#0e0f13' : (done ? '#6b6e7a' : '#a3a6b2');
     });
     // video frame
     const st = srcTime(t); const idx = Math.max(1, Math.round((st - SRC0) * 30) + 1);
@@ -478,7 +512,7 @@ async function renderAt(t) {
   } else $('cap').style.opacity = 0;
 
   // ===== SCENE 4 (25.2 - 31) =====
-  const s4v = t > 25.2;
+  const s4v = t > 25.2 && t < 30.2;
   $('s4').style.display = s4v ? 'block' : 'none';
   if (s4v) {
     const cc = prog(t, 25.45, 26.05, E.inOut), cpth = prog(t, 25.85, 26.25, E.out);
@@ -494,11 +528,13 @@ async function renderAt(t) {
     // "Start creating your motion graphics" synced to 27.4 - 28.8
     const o2t = [27.45, 27.7, 28.0, 28.2, 28.45];
     [...$('o2').children].forEach((sp, j) => { const p = prog(t, o2t[j], o2t[j] + 0.4, E.out); sp.style.opacity = p; sp.style.transform = `translateY(${(1 - p) * 30}px)`; sp.style.filter = `blur(${(1 - p) * 6}px)`; });
-    const lk = prog(t, 29.0, 29.6); $('lockup').style.opacity = lk; $('lockup').style.letterSpacing = lerp(20, 8, lk) + 'px';
+    const o4 = prog(t, 29.3, 29.9, E.inC);
+    $('s4').style.opacity = 1 - o4; $('s4').style.transform = `translateY(${-o4 * 120}px) scale(${1 - o4 * 0.08})`;
     // burst + orbiting shapes
     renderShapes(t);
   }
-  $('fade').style.opacity = Math.max(1 - prog(t, 0, 0.35), prog(t, 30.35, 31, E.inOut));
+  renderTeaser(t);
+  $('fade').style.opacity = Math.max(1 - prog(t, 0, 0.35), prog(t, 33.8, 34.5, E.inOut));
 }
 
 // ---------------- outro shapes ----------------
@@ -520,10 +556,44 @@ function renderShapes(t) {
     const a = s.ang + (t - 26) * s.sp;
     const dist = s.dist * p;
     const x = 960 + Math.cos(a) * dist * 1.25, y = 320 + Math.sin(a) * dist * 0.75 + Math.sin(t * 1.5 + s.wob) * 10;
-    const out = prog(t, 30.0, 30.8);
+    const out = 0;
     s.d.style.transform = `translate(${x}px, ${y}px) rotate(${s.rot + t * 60 * s.sp * 2}deg) scale(${p * (1 - out)})`;
     s.d.style.opacity = 0.75 * clamp(p * 3) * (1 - out);
   });
+}
+
+// ---------------- scene 5: "Next: Step 5" teaser (29.6 - 34.5) ----------------
+function renderTeaser(t) {
+  const v = t > 29.5;
+  $('s5').style.display = v ? 'block' : 'none';
+  if (!v) return;
+  const pin = prog(t, 29.6, 30.3, E.expo);
+  $('tPanel').style.opacity = clamp(pin * 1.6);
+  $('tPanel').style.transform = `translateY(${(1 - pin) * 140}px) scale(${0.94 + 0.06 * pin})`;
+  const pp = prog(t, 30.0, 30.4, E.back);
+  $('tPill').style.opacity = clamp(pp * 2); $('tPill').style.transform = `scale(${0.6 + 0.4 * pp})`;
+  const sp = prog(t, 30.15, 30.6, E.expo);
+  $('tStep').style.opacity = sp; $('tStep').style.transform = `translateY(${(1 - sp) * 80}px)`;
+  $('t5bg').style.transform = `scaleX(${prog(t, 30.4, 30.8, E.expo)})`;
+  const fp = prog(t, 30.55, 31.0, E.back);
+  $('t5').style.display = 'inline-block'; $('t5').style.opacity = clamp(fp * 2); $('t5').style.transform = `scale(${0.4 + 0.6 * fp}) rotate(${(1 - fp) * -12}deg)`;
+  const sb = prog(t, 30.8, 31.3);
+  $('tSub').style.opacity = sb; $('tSub').style.transform = `translateY(${(1 - sb) * 24}px)`;
+  const cp = prog(t, 30.3, 30.9, E.back);
+  $('tCardWrap').style.opacity = clamp(cp * 2);
+  $('tCardWrap').style.transform = `translateY(${(1 - cp) * 80 + Math.sin(t * 2.2) * 8}px) rotate(${(1 - cp) * 8}deg)`;
+  $('tGlow').style.transform = `rotate(${t * 40}deg) scale(${1 + 0.05 * Math.sin(t * 3)})`;
+  const press = Math.max(0, 1 - Math.abs(t - 32.9) * 6);
+  $('tPlay').style.transform = `scale(${1 + 0.04 * Math.sin(t * 5) - press * 0.12})`;
+  $('tFill').style.width = (prog(t, 31.0, 33.6, E.inOut) * 100) + '%';
+  // cursor glides in and taps play
+  const panelX = 330, panelY = 250, playX = panelX + 820 + 170, playY = panelY + 120 + 135;
+  const [cx, cy] = kf(t, [[31.6, 1960, 1000], [32.75, playX, playY], [33.8, playX + 10, playY + 6]], E.inOut);
+  $('cursor').style.transform = `translate(${cx - 8}px, ${cy - 4}px) scale(${1 - press * 0.15})`;
+  $('cursor').style.opacity = prog(t, 31.6, 31.8);
+  const rk = clamp((t - 32.9) / 0.6);
+  $('tRing').style.left = (170 - 65) + 'px'; $('tRing').style.top = (135 - 65) + 'px';
+  $('tRing').style.opacity = t >= 32.9 ? 1 - rk : 0; $('tRing').style.transform = `scale(${0.8 + rk * 0.9})`;
 }
 window.renderAt = renderAt;
 window.DUR = DUR;

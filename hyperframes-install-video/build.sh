@@ -24,14 +24,14 @@ ffmpeg -v error -y -f lavfi -i "sine=f=880:d=1.2" -f lavfi -i "sine=f=1318.5:d=1
   -filter_complex "[0][1]amix=inputs=2,afade=t=out:st=0.02:d=1.15,volume=0.5" "$WORK/sfx/chime.wav"
 
 # timestamps (ms) on the output timeline
-WH=(2900 7250 25100); CL=(9350 10900 12600 17200 20600 21600); CH=(25900)
+WH=(2900 7250 25100 29450); CL=(9350 10900 12600 17200 20600 21600 32900); CH=(25900)
 inputs=(-i "$AUDIO"); filters=""; n=1; labels="[0]"
 add() { inputs+=(-i "$WORK/sfx/$1.wav"); filters+="[$n]adelay=$2|$2[s$n];"; labels+="[s$n]"; n=$((n+1)); }
 for t in "${WH[@]}"; do add whoosh "$t"; done
 for t in "${CL[@]}"; do add click "$t"; done
 for t in "${CH[@]}"; do add chime "$t"; done
 ffmpeg -v error -y "${inputs[@]}" \
-  -filter_complex "${filters}${labels}amix=inputs=$n:normalize=0,apad=whole_dur=31,atrim=0:31[a]" \
+  -filter_complex "${filters}${labels}amix=inputs=$n:normalize=0,apad=whole_dur=34.5,atrim=0:34.5[a]" \
   -map "[a]" -ar 48000 "$WORK/mix.wav"
 
 # 4) Encode for YouTube.
