@@ -18,6 +18,7 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#f6f6f9;font-fam
 .dotc{width:10px;height:10px;border-radius:50%;background:#7b5cff;display:inline-block}
 .lbl{font:600 15px 'Inter';letter-spacing:.12em;color:#9a9aa8;text-transform:uppercase}
 .mono{font-family:'DejaVu Sans Mono',monospace}
+.tdot{display:block;width:12px;height:12px;border-radius:50%;background:#fff}
 .tile{position:absolute;width:76px;height:76px;border-radius:22px;background:#fff;box-shadow:0 10px 26px rgba(30,25,80,.10);display:flex;align-items:center;justify-content:center;font:700 30px 'Inter'}
 </style></head><body>
 <div id="stage">
@@ -29,12 +30,7 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#f6f6f9;font-fam
 
   <!-- ============ SCENE 1 : example video + prompt + edit ============ -->
   <div class="scene" id="s1" data-s="0" data-e="6.46">
-    <div class="center" style="top:68px;font-size:64px;font-weight:700;letter-spacing:-.025em">
-      <div id="ph0" class="center" style="top:0" data-in="-1" data-fx="fade" data-out="2.45"></div>
-      <div id="ph1" class="center" style="top:0" data-in="2.5" data-fx="fade" data-d=".01" data-out="5.12"></div>
-      <div id="ph2" class="center" style="top:0" data-in="5.17" data-fx="fade" data-d=".01"></div>
-    </div>
-    <div id="vwrapper" style="position:absolute;top:200px;left:430px;width:1060px;height:690px">
+    <div id="vwrapper" style="position:absolute;top:205px;left:430px;width:1060px;height:690px">
       <div id="vglow" class="glow" style="left:80px;top:120px;width:900px;height:460px;background:linear-gradient(90deg,#9d84ff,#ff9ec4,#ffc48a);opacity:.65"></div>
       <div id="vwin" class="card" style="left:0;top:0;width:1060px;height:640px;overflow:hidden" data-in="0.05" data-fx="pop">
         <div style="height:44px;display:flex;align-items:center;padding:0 18px;gap:8px;border-bottom:1px solid #eee">
@@ -55,7 +51,7 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#f6f6f9;font-fam
       </div>
     </div>
 
-    <div id="panel" class="card" style="left:1270px;top:200px;width:500px;height:668px" data-in="2.45" data-fx="right">
+    <div id="panel" class="card" style="left:1270px;top:205px;width:500px;height:668px" data-in="2.45" data-fx="right">
       <div style="position:absolute;left:28px;top:24px;display:flex;align-items:center;gap:10px;font:700 22px Inter"><span class="dotc"></span>Prompt</div>
       <div style="position:absolute;right:24px;top:26px" class="lbl">plain English</div>
       <div id="bubble" style="position:absolute;left:24px;right:24px;top:72px;background:#15151d;color:#fff;font:500 21px/1.45 Inter;padding:18px 20px;border-radius:20px 20px 6px 20px;min-height:60px" data-in="2.6" data-fx="up"><span id="typed"></span><span id="caret" style="display:inline-block;width:2px;height:22px;background:#fff;vertical-align:-3px;margin-left:2px"></span></div>
@@ -96,7 +92,13 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#f6f6f9;font-fam
   <!-- ============ SCENE 3 : conversation with Claude Code ============ -->
   <div class="scene" id="s3" data-s="10.46" data-e="13.19">
     <div class="glow" style="left:1050px;top:300px;width:760px;height:420px;background:linear-gradient(90deg,#ffb48a,#ff9ec4,#b9a4ff);opacity:.6"></div>
-    <div id="s3text" style="position:absolute;left:140px;top:320px;width:900px;font-size:100px;font-weight:800;letter-spacing:-.035em;line-height:1.05"></div>
+    <div id="s3chat" style="position:absolute;left:140px;top:250px;width:820px;height:600px">
+      <div class="card" style="left:0;top:0;padding:20px 26px;border-radius:24px 24px 24px 8px;font:600 26px/1.4 Inter;color:#2b2b36;max-width:640px" data-in="10.6" data-fx="up">Make the title bounce in ✨</div>
+      <div class="card" style="right:0;top:110px;padding:20px 26px;border-radius:24px 24px 8px 24px;background:#15151d;color:#fff;font:600 26px/1.4 Inter" data-in="11.05" data-fx="up">Done. Want a pink glow too?</div>
+      <div class="card" style="left:0;top:220px;padding:20px 26px;border-radius:24px 24px 24px 8px;font:600 26px/1.4 Inter;color:#2b2b36" data-in="11.5" data-fx="up">Yes, then export at 1080p</div>
+      <div class="card" style="right:0;top:330px;padding:18px 24px;border-radius:24px 24px 8px 24px;background:#15151d;display:flex;gap:9px" data-in="11.9" data-fx="up"><i class="tdot"></i><i class="tdot"></i><i class="tdot"></i></div>
+      <img id="s3logo" src="logo_claude.png" style="position:absolute;left:0;top:470px;width:560px" data-in="0" data-fx="mblur">
+    </div>
     <div id="term" class="card" style="left:1050px;top:250px;width:730px;height:520px;background:#15151d;overflow:hidden" data-in="10.55" data-fx="right">
       <div style="height:48px;display:flex;align-items:center;padding:0 20px;gap:8px;border-bottom:1px solid #26262f">
         <span style="width:13px;height:13px;border-radius:50%;background:#ff5f57"></span><span style="width:13px;height:13px;border-radius:50%;background:#febc2e"></span><span style="width:13px;height:13px;border-radius:50%;background:#28c840"></span>
@@ -117,7 +119,7 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#f6f6f9;font-fam
   <!-- ============ SCENE 4 : tutorial landing page ============ -->
   <div class="scene" id="s4" data-s="13.14" data-e="17.54">
     <div style="position:absolute;left:0;top:0;width:1920px;height:90px;display:flex;align-items:center;padding:0 120px;gap:44px;font:500 19px Inter;color:#3a3a46" data-in="13.2" data-fx="up">
-      <span style="font:800 32px 'Inter Display';letter-spacing:-.03em;color:#0f0f14;margin-right:30px">hyperframes<span style="color:#ff5fa2">.</span></span>
+      <img src="logo_hyperframes.png" style="height:46px;margin-right:30px">
       <span>Tutorial</span><span>Prompts</span><span>Templates</span><span>Export</span><span style="flex:1"></span>
       <span style="border:2px solid #d8d6e2;border-radius:999px;padding:9px 20px">Log in</span>
       <span style="background:#0f0f14;color:#fff;border-radius:999px;padding:11px 22px">Get started</span>
@@ -125,8 +127,11 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#f6f6f9;font-fam
     <div style="position:absolute;left:150px;top:225px;display:flex;align-items:center;gap:16px" data-in="13.25" data-fx="up">
       <span style="color:#ffb020;font-size:26px;letter-spacing:2px">★★★★★</span><span class="eyebrow" style="box-shadow:none;background:#efeaff;color:#5a3fe0">In this tutorial</span>
     </div>
-    <div id="s4small" style="position:absolute;left:152px;top:290px;font:600 34px Inter;color:#6b6b78"></div>
-    <div id="s4head" style="position:absolute;left:146px;top:342px;width:900px;font-size:96px;font-weight:800;letter-spacing:-.035em;line-height:1.04"></div>
+        <div style="position:absolute;left:146px;top:300px;width:900px;font-size:96px;font-weight:800;letter-spacing:-.035em;line-height:1.04">
+      <div data-in="14.45" data-fx="up">Motion graphics,</div>
+      <div data-in="15.3" data-fx="up"><span class="grad">made by prompt.</span></div>
+      <div style="display:flex;align-items:center;gap:26px;margin-top:22px;font:600 34px Inter;letter-spacing:0;color:#6b6b78" data-in="0" data-fx="mblur" id="s4with">with <img src="logo_claude.png" style="height:64px"></div>
+    </div>
     <div style="position:absolute;left:152px;top:678px;width:760px;font:500 25px/1.5 Inter;color:#5a5a68" data-in="17.0" data-fx="up">Describe it in plain English, preview it instantly, tweak anything, and export a finished video.</div>
     <div style="position:absolute;left:152px;top:785px;background:#0f0f14;color:#fff;font:600 22px Inter;border-radius:999px;padding:18px 32px" data-in="17.12" data-fx="pop">Start the tutorial →</div>
     <div class="glow" style="left:1060px;top:300px;width:720px;height:460px;background:linear-gradient(90deg,#9d84ff,#ff9ec4,#ffc48a);opacity:.7"></div>
@@ -146,11 +151,9 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#f6f6f9;font-fam
 
   <!-- ============ SCENE 5 : Hyperframes, step by step ============ -->
   <div class="scene" id="s5" data-s="17.49" data-e="20.48">
-    <div class="center" style="top:250px;font:600 40px Inter;color:#6b6b78"><span id="using" class="word" data-fx="w">using</span></div>
-    <div class="center" style="top:300px;font-size:210px;font-weight:800;letter-spacing:-.05em;line-height:1"><span id="hyper" class="word" data-fx="mblur">Hyperframes<span style="color:#ff5fa2">.</span></span></div>
+        <div class="center" style="top:200px"><img id="hyper" src="logo_hyperframes.png" style="width:1100px" data-fx="mblur"></div>
     <div id="steps" style="position:absolute;left:300px;top:640px;width:1320px;height:120px"></div>
-    <div class="center" style="top:820px;font:600 34px Inter;color:#3a3a46"><span id="sbs"></span></div>
-  </div>
+      </div>
 
   <!-- ============ SCENE 6 : Let's get started ============ -->
   <div class="scene" id="s6" data-s="20.43" data-e="99">
@@ -160,8 +163,11 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#f6f6f9;font-fam
         <circle cx="75" cy="75" r="68" fill="#fff"/><circle cx="75" cy="75" r="68" fill="none" stroke="url(#lg)" stroke-width="6" stroke-dasharray="300 130" stroke-linecap="round"/>
         <path d="M63 50 L102 75 L63 100 Z" fill="#0f0f14" stroke="#0f0f14" stroke-width="6" stroke-linejoin="round"/></svg>
     </div>
-    <div id="s6text" class="center" style="top:450px;font-size:150px;font-weight:800;letter-spacing:-.045em"></div>
-    <div class="center" style="top:680px"><span class="eyebrow" data-in="21.2" data-fx="up"><span style="color:#d9622b">✳</span> Claude Code <span style="color:#b0b0bc">×</span> Hyperframes</span></div>
+    <div class="center" style="top:480px;display:flex;justify-content:center;align-items:center;gap:56px">
+      <img src="logo_claude.png" style="height:100px" data-in="20.75" data-fx="pop">
+      <span style="font:300 80px Inter;color:#b0b0bc" data-in="20.95" data-fx="pop">×</span>
+      <img src="logo_hyperframes.png" style="height:150px" data-in="21.1" data-fx="pop">
+    </div>
   </div>
 
   <!-- cursor -->
@@ -188,15 +194,7 @@ function K(el,parts){parts.forEach(([txt,t,cls],i)=>{if(txt==='\n'){el.appendChi
   const s=document.createElement('span');s.className='word '+(cls||'');s.textContent=txt;s.dataset.in=t;s.dataset.fx='w';el.appendChild(s);
   const nx=parts[i+1]; if(nx&&nx[0]!=='\n') el.appendChild(document.createTextNode(' '));});}
 
-K($('ph0'),[["What",T(0,0)],["if",T(0,1)],["you",T(0,2)],["could",T(0,3)],["create",T(0,4)],["motion graphics",T(0,5),'grad'],["like",T(0,7)],["this",T(0,8)]]);
-K($('ph1'),[["by",T(1,0)],["explaining",T(1,1)],["what",T(1,2)],["you",T(1,3)],["want",T(1,4)],["in",T(1,5)],["plain English,",T(1,6),'pill']]);
-K($('ph2'),[["with",T(2,0)],["the",T(2,1)],["ability",T(2,2)],["of",T(2,3)],["editing",T(2,4),'pillv'],["it?",T(2,5)]]);
-K($('s3text'),[["All",T(5,0)],["built",T(5,1)],["through",T(5,2)],["\n"],["a",T(5,3)],["conversation",T(5,4),'grad'],["\n"],["with",T(5,5)],["Claude Code.",T(5,6),'pillo']]);
-K($('s4small'),[["I",T(7,0)],["will",T(7,1)],["show",T(7,2)],["you",T(7,3)],["how",T(7,4)],["to…",T(7,5)]]);
-K($('s4head'),[["Create",T(7,6)],["these",T(7,7)],["\n"],["motion graphics",T(7,8),'grad'],["\n"],["videos",T(7,10)],["with",T(7,11)],["Claude.",T(7,12),'pill']]);
-$('using').dataset.in=T(8,0); $('hyper').dataset.in=T(8,1);
-K($('sbs'),[["step",T(8,2)],["by",T(8,3)],["step.",T(8,4)]]);
-K($('s6text'),[["So",T(9,0)],["let's",T(9,1)],["get",T(9,2)],["started.",T(9,3),'grad']]);
+$('hyper').dataset.in=T(8,1); $('s3logo').dataset.in=T(5,6)-.1; $('s4with').dataset.in=T(7,12)-.15;
 
 // ---- scene 2 cards ----
 const C2=[["01","Text",T(3,1),"Aa"],["02","Movement",T(3,3),"↝"],["03","Transitions",T(4,1),"◧"],["04","Export",T(4,6),"↓"]];
@@ -316,6 +314,7 @@ function seek(t){
     $('tcar').style.opacity=t>11.65?0:(Math.floor(t*3)%2?.4:1);
     const fl=(id,t0)=>{const k=eo(cl((t-t0)/.3));$(id).style.opacity=k;$(id).style.transform=`translateY(${(1-k)*10}px)`;};
     fl('t2',11.75);fl('t2b',11.9);fl('t3',12.05);fl('t4',12.95);
+    document.querySelectorAll('.tdot').forEach((d,i)=>{d.style.opacity=.35+.65*Math.max(0,Math.sin(t*7-i*.9));});
     $('tbarf').style.width=(200*eio(cl((t-12.1)/.8)))+'px';
   }
   // ---- S4 specifics: floating cards bob ----
