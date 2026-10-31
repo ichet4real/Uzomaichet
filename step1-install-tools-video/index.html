@@ -2,68 +2,68 @@
 <html><head><meta charset="utf-8"><title>Step 1 - Install the tools</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:1920px;height:1080px;overflow:hidden;background:#060a16}
-body{font-family:Inter,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
-#stage{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#0f1a36 0%,#070b18 70%)}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#fff}
+body{font-family:Inter,sans-serif;color:#0b0b0f;-webkit-font-smoothing:antialiased}
+#stage{position:absolute;inset:0;overflow:hidden;background:#fff}
 .a{position:absolute;left:0;top:0;will-change:transform,opacity}
 .glow{position:absolute;width:1500px;height:1500px;border-radius:50%;left:0;top:0;opacity:0}
-#grid{position:absolute;inset:-100px;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:80px 80px;-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%)}
-.dot{position:absolute;left:0;top:0;width:6px;height:6px;border-radius:50%;background:#fff}
+#grid{display:none;position:absolute;inset:-100px;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:80px 80px;-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%)}
+.dot{display:none}
 .scene{position:absolute;left:0;top:0;width:1920px;height:1080px}
 /* text */
-.kicker{font:700 22px Inter;letter-spacing:.32em;color:#8fa0c8;text-transform:uppercase;white-space:nowrap}
+.kicker{font:700 22px Inter;letter-spacing:.32em;color:#8a8f98;text-transform:uppercase;white-space:nowrap}
 .h1{font:800 64px Inter;letter-spacing:-.02em;white-space:nowrap}
-.muted{color:#9aa6c2}
+.muted{color:#6b7280}
 /* cards */
 .wrap{width:520px;height:330px}
-.card{width:520px;height:260px;border-radius:30px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 30px 60px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.08)}
-.card.dark{background:#16202f;box-shadow:0 30px 60px rgba(0,0,0,.45),0 0 0 2px #2c3f57}
+.card{width:520px;height:260px;border-radius:30px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px #ececf0,0 24px 50px -12px rgba(0,0,0,.12),-40px 20px 80px -20px rgba(255,140,200,.35),40px 20px 80px -20px rgba(120,200,255,.35),0 50px 80px -30px rgba(140,240,160,.35)}
+.card.dark{background:#15171c;box-shadow:0 24px 50px -12px rgba(0,0,0,.3),-40px 20px 80px -20px rgba(140,240,160,.4),40px 20px 80px -20px rgba(120,200,255,.3)}
 .card img{max-width:78%;max-height:58%;object-fit:contain}
 .card.dark img{max-height:52%}
 .lbl{text-align:center;font:700 36px Inter;margin-top:20px;white-space:nowrap}
 .badge{position:absolute;top:-20px;right:-16px;padding:10px 18px;border-radius:999px;font:800 18px Inter;letter-spacing:.12em;white-space:nowrap;color:#111;background:linear-gradient(135deg,#ffd27a,#ff9a5b);box-shadow:0 10px 24px rgba(0,0,0,.35)}
 .badge.v{background:linear-gradient(135deg,#8be26e,#3fa34a);color:#06200a;font-size:22px}
-.num{font:800 30px "JetBrains Mono";color:#8fa0c8;white-space:nowrap}
+.num{font:800 30px "JetBrains Mono";color:#9aa0a8;white-space:nowrap}
 /* HUD */
-.pill{display:inline-flex;align-items:center;gap:14px;padding:12px 22px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);font:600 22px Inter;white-space:nowrap}
-.pill b{background:linear-gradient(135deg,#ff9a6b,#d97757);color:#1b0b04;padding:4px 12px;border-radius:999px;font-weight:800;letter-spacing:.08em}
+.pill{display:inline-flex;align-items:center;gap:14px;padding:12px 22px;border-radius:999px;background:#f4f4f6;border:1px solid #e8e8ec;font:600 22px Inter;white-space:nowrap}
+.pill b{background:#0b0b0f;color:#fff;padding:4px 12px;border-radius:999px;font-weight:800;letter-spacing:.08em}
 #tracker{display:flex;gap:10px}
-.tchip{padding:10px 18px;border-radius:999px;font:600 19px Inter;color:#8592b0;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);white-space:nowrap}
+.tchip{padding:10px 18px;border-radius:999px;font:600 19px Inter;color:#9aa0a8;background:#f4f4f6;border:1px solid #e8e8ec;white-space:nowrap}
 #prog{position:absolute;left:0;bottom:0;height:5px;background:linear-gradient(90deg,#d97757,#22e3e8,#4fdc62)}
 /* left column */
-.lcard{width:460px;height:210px;border-radius:28px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 30px 60px rgba(0,0,0,.45)}
+.lcard{width:460px;height:210px;border-radius:28px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px #ececf0,0 24px 50px -12px rgba(0,0,0,.12),-40px 20px 80px -20px rgba(255,140,200,.35),40px 20px 80px -20px rgba(120,200,255,.35),0 50px 80px -30px rgba(140,240,160,.35)}
 .lcard img{max-width:80%;max-height:56%}
-.lcard.dark{background:#16202f;box-shadow:0 30px 60px rgba(0,0,0,.45),0 0 0 2px #2c3f57}
+.lcard.dark{background:#15171c;box-shadow:0 24px 50px -12px rgba(0,0,0,.3),-40px 20px 80px -20px rgba(140,240,160,.4),40px 20px 80px -20px rgba(120,200,255,.3)}
 .ltitle{font:800 72px Inter;letter-spacing:-.02em;white-space:nowrap}
 .tag{display:inline-block;padding:9px 18px;border-radius:10px;font:800 20px Inter;letter-spacing:.16em;white-space:nowrap}
 .bul{display:flex;align-items:center;gap:18px;font:600 31px Inter;white-space:nowrap}
-.bul i{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:900 22px Inter;font-style:normal;color:#0b1020;flex:none}
+.bul i{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:900 22px Inter;font-style:normal;color:#fff;flex:none}
 /* windows */
-.win{width:980px;height:640px;border-radius:22px;background:#0e1424;border:1px solid rgba(255,255,255,.12);box-shadow:0 40px 90px rgba(0,0,0,.55);overflow:hidden}
-.tbar{height:52px;display:flex;align-items:center;gap:10px;padding:0 20px;background:#151d31;border-bottom:1px solid rgba(255,255,255,.07)}
+.win{width:980px;height:640px;border-radius:22px;background:#fff;border:1px solid #e6e6ea;box-shadow:0 40px 90px -20px rgba(0,0,0,.18),-60px 30px 120px -30px rgba(255,140,200,.35),60px 30px 120px -30px rgba(120,200,255,.35);overflow:hidden}
+.tbar{height:52px;display:flex;align-items:center;gap:10px;padding:0 20px;background:#f6f6f8;border-bottom:1px solid #ececf0}
 .tbar span{width:14px;height:14px;border-radius:50%}
-.tbar .tt{margin-left:18px;font:600 18px Inter;color:#8592b0;width:auto;height:auto;border-radius:0}
+.tbar .tt{margin-left:18px;font:600 18px Inter;color:#8a8f98;width:auto;height:auto;border-radius:0}
 .wbody{position:absolute;left:0;top:52px;width:980px;height:588px}
 .mono{font-family:"JetBrains Mono",monospace}
 .frow{display:flex;align-items:center;gap:14px;font:500 24px "JetBrains Mono";padding:10px 16px;border-radius:10px;white-space:nowrap}
 .ftag{font:800 14px Inter;letter-spacing:.12em;padding:5px 10px;border-radius:6px;margin-left:auto}
 .bubble{position:absolute;padding:20px 26px;border-radius:20px;font:500 26px Inter;line-height:1.35}
 /* pipeline */
-.chip{width:240px;height:84px;border-radius:18px;display:flex;align-items:center;gap:16px;padding:0 22px;font:800 28px Inter;background:#121a2d;border:2px solid;white-space:nowrap}
+.chip{width:240px;height:84px;border-radius:18px;display:flex;align-items:center;gap:16px;padding:0 22px;font:800 28px Inter;background:#fff;border:2px solid;box-shadow:0 14px 30px -10px rgba(0,0,0,.15);white-space:nowrap}
 .chip i{font:800 22px "JetBrains Mono";font-style:normal;width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff}
-.term{font:500 28px "JetBrains Mono";line-height:1.6;white-space:pre}
-.thumb{width:200px;height:124px;border-radius:12px;border:3px solid #fff;overflow:hidden;box-shadow:0 14px 30px rgba(0,0,0,.5)}
-.cap{font:700 26px Inter;color:#b9c3dd;white-space:nowrap}
-.bar{width:300px;height:14px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}
+.term{font:500 28px "JetBrains Mono";line-height:1.6;white-space:pre;color:#e6edf3}
+.thumb{width:200px;height:124px;border-radius:12px;border:3px solid #fff;outline:1px solid #e3e5ea;overflow:hidden;box-shadow:0 14px 30px rgba(0,0,0,.5)}
+.cap{font:700 26px Inter;color:#5b616b;white-space:nowrap}
+.bar{width:300px;height:14px;border-radius:99px;background:#ececf0;overflow:hidden}
 .bar div{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#22e3e8,#4fdc62)}
-#cc{font:600 40px Inter;padding:12px 28px;border-radius:14px;background:rgba(0,0,0,.6);white-space:nowrap}
+#cc{font:600 40px Inter;padding:12px 28px;border-radius:14px;color:#fff;background:rgba(11,11,15,.85);white-space:nowrap}
 </style></head>
 <body><div id="stage">
-<div class="glow" id="gBlue" style="background:radial-gradient(circle,rgba(70,110,255,.30),transparent 62%)"></div>
-<div class="glow" id="gClaude" style="background:radial-gradient(circle,rgba(217,119,87,.34),transparent 62%)"></div>
-<div class="glow" id="gHF" style="background:radial-gradient(circle,rgba(34,227,232,.28),transparent 62%)"></div>
-<div class="glow" id="gNode" style="background:radial-gradient(circle,rgba(95,160,78,.34),transparent 62%)"></div>
-<div class="glow" id="gFF" style="background:radial-gradient(circle,rgba(20,150,50,.34),transparent 62%)"></div>
+<div class="glow" id="gBlue" style="background:radial-gradient(circle at 35% 42%,rgba(255,150,210,.30),transparent 32%),radial-gradient(circle at 65% 45%,rgba(130,195,255,.32),transparent 32%),radial-gradient(circle at 50% 66%,rgba(150,235,170,.28),transparent 30%)"></div>
+<div class="glow" id="gClaude" style="background:radial-gradient(circle at 40% 45%,rgba(255,170,130,.32),transparent 34%),radial-gradient(circle at 62% 55%,rgba(255,150,210,.26),transparent 32%)"></div>
+<div class="glow" id="gHF" style="background:radial-gradient(circle at 40% 45%,rgba(90,225,240,.30),transparent 34%),radial-gradient(circle at 62% 55%,rgba(130,240,150,.28),transparent 32%)"></div>
+<div class="glow" id="gNode" style="background:radial-gradient(circle at 40% 45%,rgba(140,230,120,.32),transparent 34%),radial-gradient(circle at 62% 55%,rgba(200,240,140,.26),transparent 32%)"></div>
+<div class="glow" id="gFF" style="background:radial-gradient(circle at 40% 45%,rgba(110,220,130,.30),transparent 34%),radial-gradient(circle at 62% 55%,rgba(255,225,130,.26),transparent 32%)"></div>
 <div id="grid"></div>
 <div id="dots"></div>
 
@@ -71,7 +71,7 @@ body{font-family:Inter,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
 <div class="scene a" id="s1">
   <div class="a kicker" id="s1k" style="font-size:30px">Step</div>
   <div class="a" id="s1n" style="font:900 300px Inter;letter-spacing:-.04em;background:linear-gradient(135deg,#ffb38a,#d97757 45%,#22e3e8);-webkit-background-clip:text;color:transparent;line-height:1">01</div>
-  <div class="a h1" id="s1t" style="font-size:88px"><span id="w1">Install</span> <span id="w2">the tools</span> <span id="w3" style="color:#ff9a6b">needed</span></div>
+  <div class="a h1" id="s1t" style="font-size:88px"><span id="w1">Install</span> <span id="w2">the tools</span> <span id="w3" style="background:#ffc2d6;border-radius:18px;padding:0 18px">needed</span></div>
   <div class="a" id="s1u" style="width:700px;height:8px;border-radius:9px;background:linear-gradient(90deg,#d97757,#22e3e8,#4fdc62)"></div>
 </div>
 
@@ -93,31 +93,31 @@ body{font-family:Inter,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
 <!-- ============ S4 CLAUDE ============ -->
 <div class="scene a" id="s4">
   <div class="a" id="mon" style="width:1010px;height:740px">
-    <div style="position:absolute;left:0;top:0;width:1010px;height:630px;border-radius:26px;background:#1f2638;border:2px solid #39425a;box-shadow:0 40px 90px rgba(0,0,0,.6)"></div>
-    <div style="position:absolute;left:445px;top:630px;width:120px;height:80px;background:linear-gradient(#2a3247,#1a2032)"></div>
-    <div style="position:absolute;left:345px;top:706px;width:320px;height:22px;border-radius:12px;background:#2a3247"></div>
+    <div style="position:absolute;left:0;top:0;width:1010px;height:630px;border-radius:26px;background:#eceef2;border:2px solid #d9dce3;box-shadow:0 40px 90px -20px rgba(0,0,0,.2)"></div>
+    <div style="position:absolute;left:445px;top:630px;width:120px;height:80px;background:linear-gradient(#dfe2e8,#cfd3db)"></div>
+    <div style="position:absolute;left:345px;top:706px;width:320px;height:22px;border-radius:12px;background:#cfd3db"></div>
   </div>
   <div class="a win" id="cwin">
     <div class="tbar"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span><span class="tt" id="cwt">my-video-project</span></div>
     <!-- view 1: project -->
     <div class="wbody a" id="v1" style="left:0;top:0">
       <div style="position:absolute;left:30px;top:30px;width:400px">
-        <div class="frow" id="t0" style="color:#ffd27a">▾ 📁 my-video-project</div>
+        <div class="frow" id="t0" style="color:#b7791f">▾ 📁 my-video-project</div>
         <div class="frow" id="t1" style="padding-left:56px">📄 index.html</div>
         <div class="frow" id="t2" style="padding-left:56px">🎨 styles.css</div>
         <div class="frow" id="t3" style="padding-left:56px">⚙️ scene.js</div>
         <div class="frow" id="t4" style="padding-left:56px">📁 assets</div>
         <div class="frow" id="t5" style="padding-left:56px">🎵 voiceover.mp3</div>
       </div>
-      <div style="position:absolute;left:470px;top:0;width:1px;height:588px;background:rgba(255,255,255,.08)"></div>
+      <div style="position:absolute;left:470px;top:0;width:1px;height:588px;background:#ececf0"></div>
       <div class="a" id="spark" style="width:200px;height:200px"><div style="width:200px;height:200px;overflow:hidden"><img src="assets/claude.webp" style="height:200px;width:auto"></div></div>
-      <div class="a" id="v1t" style="font:700 34px Inter;text-align:center;white-space:nowrap">Working <span style="color:#ff9a6b">inside</span> your project<span id="v1d"></span></div>
+      <div class="a" id="v1t" style="font:700 34px Inter;text-align:center;white-space:nowrap">Working <span style="background:#ffd9c9;border-radius:10px;padding:0 10px">inside</span> your project<span id="v1d"></span></div>
     </div>
     <!-- view 2: instructions -->
     <div class="wbody a" id="v2" style="left:0;top:0">
-      <div class="bubble" id="ub" style="left:30px;top:34px;width:480px;background:#2a3350;border-bottom-right-radius:6px"><div style="font:700 16px Inter;letter-spacing:.14em;color:#8fa0c8;margin-bottom:8px">YOU</div><span id="ubt"></span></div>
-      <div class="bubble" id="cb" style="left:30px;top:270px;width:480px;background:rgba(217,119,87,.16);border:1px solid rgba(217,119,87,.5);border-bottom-left-radius:6px"><div style="font:700 16px Inter;letter-spacing:.14em;color:#ff9a6b;margin-bottom:8px">✻ CLAUDE</div>On it! Creating and editing your files…</div>
-      <div style="position:absolute;left:540px;top:0;width:1px;height:588px;background:rgba(255,255,255,.08)"></div>
+      <div class="bubble" id="ub" style="left:30px;top:34px;width:480px;background:#f1f2f5;border-bottom-right-radius:6px"><div style="font:700 16px Inter;letter-spacing:.14em;color:#8a8f98;margin-bottom:8px">YOU</div><span id="ubt"></span></div>
+      <div class="bubble" id="cb" style="left:30px;top:270px;width:480px;background:#fff1ec;border:1px solid #f6c7b5;border-bottom-left-radius:6px"><div style="font:700 16px Inter;letter-spacing:.14em;color:#c4552f;margin-bottom:8px">✻ CLAUDE</div>On it! Creating and editing your files…</div>
+      <div style="position:absolute;left:540px;top:0;width:1px;height:588px;background:#ececf0"></div>
       <div class="a kicker" id="fk" style="font-size:16px">Files</div>
       <div class="a frow" id="f1" style="width:400px;background:rgba(255,255,255,.04)">index.html<span class="ftag" style="background:#1f6b35;color:#b9ffc8">NEW</span></div>
       <div class="a frow" id="f2" style="width:400px;background:rgba(255,255,255,.04)">styles.css<span class="ftag" style="background:#6b4a12;color:#ffe2a8">EDITED</span></div>
@@ -125,7 +125,7 @@ body{font-family:Inter,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
       <div class="a frow" id="f4" style="width:400px;background:rgba(255,255,255,.04)">captions.srt<span class="ftag" style="background:#6b4a12;color:#ffe2a8">EDITED</span></div>
     </div>
   </div>
-  <div class="a pill" id="dpill" style="font-size:26px;background:linear-gradient(135deg,#ff9a6b,#d97757);color:#1b0b04;font-weight:800;border:none">⬇ Claude Desktop App</div>
+  <div class="a pill" id="dpill" style="font-size:26px;background:linear-gradient(135deg,#ff9a6b,#d97757);color:#fff;font-weight:800;border:none;background:#0b0b0f">⬇ Claude Desktop App</div>
 </div>
 
 <!-- ============ S5 HYPERFRAMES ============ -->
@@ -144,24 +144,24 @@ body{font-family:Inter,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
   <div class="a chip" id="ch3" style="border-color:#a259ff"><i style="background:#a259ff">▣</i>Media</div>
   <div class="a chip" id="ch4" style="border-color:#ff4fa0;font-size:25px"><i style="background:#ff4fa0">≋</i>Animations</div>
   <div class="a" id="fbox" style="width:260px;height:300px;border-radius:28px;padding:3px;background:linear-gradient(160deg,#22e3e8,#4fdc62)">
-    <div style="width:100%;height:100%;border-radius:25px;background:#0e1626;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px">
+    <div style="width:100%;height:100%;border-radius:25px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px">
       <div style="width:150px;height:110px;overflow:hidden;position:relative"><img src="assets/hyperframes.webp" style="position:absolute;height:259px;left:-650px;top:0"></div>
-      <div style="font:800 26px Inter">HyperFrames</div><div class="kicker" style="font-size:15px;color:#4fdc62">Framework</div>
+      <div style="font:800 26px Inter">HyperFrames</div><div class="kicker" style="font-size:15px;color:#1f9d3a">Framework</div>
     </div>
   </div>
   <div class="a" id="vtile" style="width:300px;height:190px;border-radius:20px;background:linear-gradient(135deg,#1c2a48,#0f1a30);border:2px solid #4fdc62;box-shadow:0 0 50px rgba(79,220,98,.35);display:flex;align-items:center;justify-content:center">
     <div style="width:0;height:0;border-left:56px solid #fff;border-top:34px solid transparent;border-bottom:34px solid transparent;margin-left:12px"></div>
     <div style="position:absolute;bottom:14px;left:18px;right:18px;height:6px;border-radius:9px;background:rgba(255,255,255,.2)"><div id="vprog" style="height:100%;width:0;border-radius:9px;background:#4fdc62"></div></div>
   </div>
-  <div class="a cap" id="vcap" style="color:#4fdc62;font-size:30px">VIDEO 🎬</div>
+  <div class="a cap" id="vcap" style="color:#1f9d3a;font-size:30px">VIDEO 🎬</div>
   <div class="a cap" id="icap">Your code &amp; media</div>
 </div>
 
 <!-- ============ S6 NODE ============ -->
 <div class="scene a" id="s6">
   <div class="a" id="big22" style="font:900 520px Inter;color:rgba(95,160,78,.08);letter-spacing:-.05em">22</div>
-  <div class="a win" id="term" style="height:600px;background:#0a0f1b">
-    <div class="tbar"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span><span class="tt">Terminal — my-video-project</span></div>
+  <div class="a win" id="term" style="height:600px;background:#0d1117;border-color:#0d1117">
+    <div class="tbar" style="background:#161b22;border-bottom-color:#22272e"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span><span class="tt">Terminal — my-video-project</span></div>
     <div class="term" style="position:absolute;left:40px;top:84px">
 <div><span style="color:#5FA04E">$ </span><span id="tl1"></span></div><div id="to1" style="color:#8be26e"></div><div>&nbsp;</div><div><span style="color:#5FA04E" id="pr2">$ </span><span id="tl2"></span></div><div id="to2" style="color:#5FA04E"></div><div id="to2b" style="color:#8be26e"></div><div>&nbsp;</div><div><span style="color:#5FA04E" id="pr3">$ </span><span id="tl3"></span></div><div id="to3" style="color:#ffd27a"></div></div>
   </div>
@@ -172,17 +172,17 @@ body{font-family:Inter,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
   <svg class="a" id="fpipe" width="1920" height="1080"><path id="fa1" d="M1015 540 L1120 540" stroke="#2fb34a" stroke-width="6" fill="none"/><path id="fa2" d="M1380 540 L1490 540" stroke="#2fb34a" stroke-width="6" fill="none"/></svg>
   <div class="a" id="proc" style="width:250px;height:250px">
     <div id="ring" style="position:absolute;inset:0;border-radius:50%;border:6px dashed #2fb34a"></div>
-    <div style="position:absolute;inset:26px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(47,179,74,.45)"><div style="width:120px;height:117px;overflow:hidden;position:relative"><img src="assets/ffmpeg.png" style="position:absolute;height:117px;left:0;top:0"></div></div>
+    <div style="position:absolute;inset:26px;border-radius:50%;background:#fff;border:2px solid #e3e5ea;display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(47,179,74,.35)"><div style="width:120px;height:117px;overflow:hidden;position:relative"><img src="assets/ffmpeg.png" style="position:absolute;height:117px;left:0;top:0"></div></div>
   </div>
   <div class="a" id="mp4" style="width:180px;height:220px">
-    <div style="position:absolute;inset:0;border-radius:16px;background:linear-gradient(160deg,#ffffff,#dfe7f2);clip-path:polygon(0 0,70% 0,100% 22%,100% 100%,0 100%)"></div>
+    <div style="position:absolute;inset:0;border-radius:16px;background:linear-gradient(160deg,#f1f3f7,#d9dfe8);clip-path:polygon(0 0,70% 0,100% 22%,100% 100%,0 100%)"></div>
     <div style="position:absolute;right:0;top:0;width:54px;height:48px;background:#aab6c8;clip-path:polygon(0 0,100% 100%,0 100%);border-bottom-left-radius:8px"></div>
     <div style="position:absolute;left:0;right:0;top:92px;text-align:center;font:900 46px Inter;color:#0a8a1f">MP4</div>
     <div style="position:absolute;left:46px;top:160px;width:0;height:0;border-left:30px solid #0a8a1f;border-top:18px solid transparent;border-bottom:18px solid transparent;margin-left:20px"></div>
   </div>
   <div class="a cap" id="fc1">Rendered frames</div>
-  <div class="a cap" id="fc2" style="color:#4fdc62">FFmpeg</div>
-  <div class="a cap" id="fc3">export.mp4 <span style="color:#4fdc62">✓</span></div>
+  <div class="a cap" id="fc2" style="color:#1f9d3a">FFmpeg</div>
+  <div class="a cap" id="fc3">export.mp4 <span style="color:#1f9d3a">✓</span></div>
   <div id="thumbs"></div>
 </div>
 
@@ -191,7 +191,7 @@ body{font-family:Inter,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
   <div class="a kicker" id="h8k">On your computer</div>
   <div class="a h1" id="h8">Download &amp; install them</div>
   <div id="minis"></div>
-  <div class="a" id="desc" style="width:1100px;height:290px;border-radius:24px;background:#0f1628;border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 70px rgba(0,0,0,.5)">
+  <div class="a" id="desc" style="width:1100px;height:290px;border-radius:24px;background:#f4f4f6;border:1px solid #ececf0">
     <div style="position:absolute;left:36px;top:28px;font:800 26px Inter">Video description <span class="muted" style="font-weight:500">· download links</span></div>
     <div id="links"></div>
   </div>
@@ -202,7 +202,7 @@ body{font-family:Inter,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
 <div class="scene a" id="s9">
   <div class="a" id="done" style="display:flex;align-items:center;gap:30px;font:800 90px Inter;white-space:nowrap">Step 01 <span style="width:100px;height:100px;border-radius:50%;background:#4fdc62;color:#06200a;display:flex;align-items:center;justify-content:center;font-size:64px">✓</span></div>
   <div class="a kicker" id="nk" style="font-size:30px">Next up</div>
-  <div class="a" id="nn" style="font:900 230px Inter;letter-spacing:-.04em;background:linear-gradient(135deg,#22e3e8,#4fdc62);-webkit-background-clip:text;color:transparent;white-space:nowrap;line-height:1">Step 02 →</div>
+  <div class="a" id="nn" style="font:900 230px Inter;letter-spacing:-.04em;background:linear-gradient(135deg,#0aa5b4,#1f9d3a);-webkit-background-clip:text;color:transparent;white-space:nowrap;line-height:1">Step 02 →</div>
 </div>
 
 <div id="leftcols"></div>
@@ -247,7 +247,7 @@ for(let i=0;i<34;i++){const d=document.createElement('div');d.className='dot';do
 cbs.push(t=>{
   for(const [id,...ranges] of glows){ let o=0; for(const [a,b] of ranges) o=Math.max(o,Math.min(prog(t,a-.5,a+.5),1-prog(t,b-.5,b+.5)));
     const el=$(id); el.style.opacity=o; const k=id.length;
-    el.style.transform=`translate(${-750+960+Math.sin(t*.3+k)*260}px,${-750+460+Math.cos(t*.25+k)*160}px)`; }
+    el.style.transform=`translate(${-750+960+Math.sin(t*.3+k)*200}px,${-750+520+Math.cos(t*.25+k)*120}px)`; }
   $('grid').style.transform=`translateY(${(t*14)%80}px)`;
   for(const p of DOTS){ const y=((p.y-t*p.sp)%1080+1080)%1080; p.d.style.transform=`translate(${p.x+Math.sin(t*.6+p.ph)*20}px,${y}px) scale(${p.sz})`; p.d.style.opacity=.12+.15*Math.sin(t+p.ph)**2; }
   $('prog').style.width=(t/DUR*1920)+'px';
@@ -281,19 +281,19 @@ cbs.push(t=>{ ['cClaude','cHF','cFF','cNode'].forEach((id,i)=>{ const c=$(id).fi
 
 /* ---------- left columns (S4–S7) ---------- */
 const LC=[
- {id:'L4',img:'assets/claude.webp',dark:false,title:'Claude Code',tag:'AI ASSISTANT',col:'#ff9a6b',tagbg:'rgba(217,119,87,.18)',t0:10.3,t1:20.85,tagT:10.6,
+ {id:'L4',img:'assets/claude.webp',dark:false,title:'Claude Code',tag:'AI ASSISTANT',col:'#e07a52',tc:'#b8492a',tagbg:'rgba(217,119,87,.18)',t0:10.3,t1:20.85,tagT:10.6,
   bul:[['AI assistant in your project',10.9],['Takes your instructions',14.1],['Creates &amp; edits files',15.9],['Desktop app',19.3]]},
- {id:'L5',img:'assets/hyperframes.webp',dark:false,title:'HyperFrames',tag:'OPEN SOURCE',col:'#22e3e8',tagbg:'rgba(34,227,232,.14)',t0:20.85,t1:27.85,tagT:21.9,
+ {id:'L5',img:'assets/hyperframes.webp',dark:false,title:'HyperFrames',tag:'OPEN SOURCE',col:'#16b8c4',tc:'#0b7f88',tagbg:'rgba(34,227,232,.14)',t0:20.85,t1:27.85,tagT:21.9,
   bul:[['Video framework',23.6],['HTML · CSS · media · animation',25.0],['Turns it into a video',27.1]]},
- {id:'L6',img:'assets/node.png',dark:true,title:'Node.js 22',tag:'OPEN SOURCE',col:'#8be26e',tagbg:'rgba(95,160,78,.18)',t0:27.85,t1:33.85,tagT:29.5,
+ {id:'L6',img:'assets/node.png',dark:true,title:'Node.js 22',tag:'OPEN SOURCE',col:'#5FA04E',tc:'#3b7a2c',tagbg:'rgba(95,160,78,.18)',t0:27.85,t1:33.85,tagT:29.5,
   bul:[['Installs framework packages',31.2],['Runs project tools',32.9]]},
- {id:'L7',img:'assets/ffmpeg.png',dark:false,title:'FFmpeg',tag:'OPEN SOURCE',col:'#4fdc62',tagbg:'rgba(47,179,74,.18)',t0:33.85,t1:40.55,tagT:36.0,
+ {id:'L7',img:'assets/ffmpeg.png',dark:false,title:'FFmpeg',tag:'OPEN SOURCE',col:'#2fb34a',tc:'#1b7f32',tagbg:'rgba(47,179,74,.18)',t0:33.85,t1:40.55,tagT:36.0,
   bul:[['Takes rendered frames',37.6],['Exports an MP4 file',39.5]]},
 ];
 let lh=''; for(const c of LC){ lh+=`<div class="scene a" id="${c.id}">
   <div class="a lcard ${c.dark?'dark':''}" id="${c.id}c"><img src="${c.img}"></div>
   <div class="a ltitle" id="${c.id}t">${c.title}</div>
-  <div class="a tag" id="${c.id}g" style="color:${c.col};background:${c.tagbg};border:1px solid ${c.col}">${c.tag}</div>
+  <div class="a tag" id="${c.id}g" style="color:${c.tc};background:${c.tagbg};border:1px solid ${c.col}">${c.tag}</div>
   ${c.bul.map((b,i)=>`<div class="a bul" id="${c.id}b${i}"><i style="background:${c.col}">✓</i>${b[0]}</div>`).join('')}
 </div>`;} $('leftcols').innerHTML=lh;
 for(const c of LC){ scene(c.id,c.t0,c.t1);
@@ -380,11 +380,11 @@ let mh=''; MINI.forEach(([img,n,dk],i)=>{ mh+=`<div class="a" id="mi${i}" style=
 $('minis').innerHTML=mh;
 MINI.forEach((m,i)=>{ const x=330+i*420; K('mi'+i,[{t:0,o:0,x,y:520,s:.85,b:6},{t:40.8+i*.15},{t:41.25+i*.15,o:1,y:470,s:1,b:0,e:'back'},{t:43.4},{t:43.95,y:420,s:.82}]); });
 cbs.push(t=>{ MINI.forEach((m,i)=>{ const a=41.1+i*.25, b=a+1.1+i*.12, p=E.io(prog(t,a,b)); $('pb'+i).style.width=(p*100)+'%';
-  $('pt'+i).textContent=p<=0?'':p<1?('Downloading '+Math.round(p*100)+'%'):'Installed ✓'; $('pt'+i).style.color=p>=1?'#4fdc62':'#9aa6c2';
+  $('pt'+i).textContent=p<=0?'':p<1?('Downloading '+Math.round(p*100)+'%'):'Installed ✓'; $('pt'+i).style.color=p>=1?'#1f9d3a':'#6b7280';
   const q=E.back(prog(t,b,b+.3)); $('ok'+i).style.transform=`scale(${q})`; $('ok'+i).style.opacity=q>0?1:0; }); });
 pop('desc',960,815,43.6,null,{dy:60});
 const LINKS=[['assets/claude.webp','Claude Code (desktop app)'],['assets/hyperframes.webp','HyperFrames'],['assets/node.png','Node.js 22'],['assets/ffmpeg.png','FFmpeg']];
-$('links').innerHTML=LINKS.map((l,i)=>`<div class="a" id="lk${i}" style="display:flex;align-items:center;gap:14px;font:600 26px Inter;white-space:nowrap"><span style="color:#5aa8ff">🔗</span>${l[1]} <span style="color:#5aa8ff;font-weight:500">— download link</span></div>`).join('');
+$('links').innerHTML=LINKS.map((l,i)=>`<div class="a" id="lk${i}" style="display:flex;align-items:center;gap:14px;font:600 26px Inter;white-space:nowrap"><span style="color:#2563eb">🔗</span>${l[1]} <span style="color:#2563eb;font-weight:500">— download link</span></div>`).join('');
 LINKS.forEach((l,i)=>pop('lk'+i,40,105+i*48,44.0+i*.22,null,{a:'l',dx:-20,dy:0}));
 K("arrow",[{t:0,o:0,x:1590,y:790},{t:45.2},{t:45.5,o:1}]);
 cbs.push(t=>{ if(t>45.2) $('arrow').style.marginTop=(Math.abs(Math.sin((t-45.2)*5))*24)+'px'; });
@@ -400,7 +400,7 @@ K('hud',[{t:0,o:0,x:70,y:70},{t:2.2},{t:2.7,o:1,e:'out'},{t:46.2},{t:46.5,o:0}],
 K('tracker',[{t:0,o:0,x:1850,y:70},{t:10.3},{t:10.8,o:1,e:'out'},{t:40.4},{t:40.8,o:0}],'r');
 const TR=[[10.3,20.8,'#d97757'],[20.8,27.8,'#22b8c0'],[27.8,33.8,'#5FA04E'],[33.8,40.6,'#2fb34a']];
 cbs.push(t=>{ TR.forEach(([a,b,c],i)=>{ const el=$('tk'+i); const on=t>=a&&t<b, done=t>=b;
-  el.style.background=on?c:'rgba(255,255,255,.04)'; el.style.color=on?'#fff':done?'#cfd8ea':'#8592b0'; el.style.borderColor=on?c:'rgba(255,255,255,.1)';
+  el.style.background=on?c:'#f4f4f6'; el.style.color=on?'#fff':done?'#3a3f47':'#9aa0a8'; el.style.borderColor=on?c:'#e8e8ec';
   el.textContent=(done?'✓ ':'')+['Claude Code','HyperFrames','Node.js 22','FFmpeg'][i]; }); });
 
 /* ---------- captions (optional) ---------- */
