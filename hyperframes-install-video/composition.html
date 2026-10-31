@@ -1,0 +1,532 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Step 4 - Install HyperFrames</title>
+<style>
+  :root {
+    --bg: #0a0d18;
+    --ink: #f4f1ec;
+    --muted: #8f94a8;
+    --orange: #ff7a45;
+    --claude: #d97757;
+    --violet: #8b6cff;
+    --cyan: #3fd5ff;
+    --glass: rgba(255,255,255,0.06);
+    --line: rgba(255,255,255,0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+  body { font-family: "Inter", sans-serif; color: var(--ink); position: relative; }
+  .abs { position: absolute; }
+  .mono { font-family: "JetBrains Mono", monospace; }
+
+  /* ---------- background ---------- */
+  #bg { inset: 0; position: absolute; overflow: hidden; }
+  #glowA, #glowB { position: absolute; width: 1400px; height: 1400px; border-radius: 50%; filter: blur(40px); }
+  #glowA { background: radial-gradient(circle, rgba(255,122,69,0.30), rgba(255,122,69,0) 60%); }
+  #glowB { background: radial-gradient(circle, rgba(139,108,255,0.30), rgba(139,108,255,0) 60%); }
+  #grid { position: absolute; inset: -80px; opacity: 0.5;
+    background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size: 80px 80px; }
+  #vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.65) 100%); }
+  .particle { position: absolute; border-radius: 50%; background: #fff; }
+
+  /* ---------- progress ---------- */
+  #progress { left: 0; top: 0; height: 6px; background: linear-gradient(90deg, var(--orange), var(--violet)); }
+
+  /* ---------- scene 1: intro ---------- */
+  #s1 { inset: 0; }
+  #s1 .row { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; gap: 70px; }
+  #stepLabel { font-size: 34px; letter-spacing: 18px; color: var(--orange); font-weight: 700; margin-bottom: -10px; }
+  #numWrap { height: 420px; overflow: hidden; position: relative; width: 520px; }
+  #numStrip { position: absolute; left: 0; top: 0; }
+  #numStrip div { height: 420px; line-height: 420px; font-size: 420px; font-weight: 900; font-family: "Inter Display", "Inter"; letter-spacing: -20px;
+    background: linear-gradient(160deg, #ffb48f 0%, var(--orange) 40%, var(--violet) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  #divider { width: 6px; height: 360px; border-radius: 3px; background: linear-gradient(var(--orange), var(--violet)); transform-origin: top; }
+  #titleStack { display: flex; flex-direction: column; gap: 6px; }
+  .tline { overflow: hidden; height: 132px; }
+  .tline span { display: inline-block; font-size: 116px; font-weight: 800; letter-spacing: -3px; line-height: 132px; }
+  #tHF { position: relative; }
+  #tHF span { background: linear-gradient(90deg, #fff, #ffd2bd); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  #tUnder { position: absolute; left: 4px; bottom: 6px; height: 12px; border-radius: 6px; background: var(--orange); transform-origin: left; }
+
+  /* ---------- scene 2: explainer ---------- */
+  #s2 { inset: 0; }
+  #s2Head { left: 0; right: 0; top: 96px; text-align: center; }
+  #s2Head .k { font-size: 24px; letter-spacing: 10px; color: var(--orange); font-weight: 700; }
+  #s2Head .h { font-size: 64px; font-weight: 800; letter-spacing: -1.5px; margin-top: 14px; }
+  .node { width: 300px; height: 300px; border-radius: 36px; background: linear-gradient(160deg, rgba(255,255,255,0.10), rgba(255,255,255,0.03));
+    border: 1.5px solid var(--line); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.12); }
+  .node .lbl { font-size: 28px; font-weight: 700; }
+  .node .sub { font-size: 18px; color: var(--muted); margin-top: -14px; }
+  #nClaude { border-color: rgba(217,119,87,0.55); box-shadow: 0 0 80px rgba(217,119,87,0.35), 0 30px 80px rgba(0,0,0,0.45); }
+  #doc { width: 380px; padding: 22px 26px; border-radius: 18px; background: rgba(12,15,28,0.92); border: 1.5px solid rgba(255,122,69,0.5);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  #doc .dh { font-size: 16px; color: var(--orange); letter-spacing: 3px; font-weight: 700; margin-bottom: 12px; }
+  #doc .dl { font-size: 22px; line-height: 38px; white-space: pre; color: #dfe3f0; }
+  #doc .dl b { color: var(--orange); font-weight: 700; }
+  #links { left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+
+  /* ---------- scene 3: screen ---------- */
+  #s3 { inset: 0; perspective: 2200px; }
+  #chip { left: 80px; top: 38px; display: flex; align-items: center; gap: 16px; height: 52px; padding: 0 22px 0 8px; border-radius: 26px;
+    background: rgba(255,255,255,0.07); border: 1px solid var(--line); }
+  #chip .n { height: 38px; padding: 0 16px; border-radius: 19px; background: var(--orange); color: #1a0d06; font-weight: 800; font-size: 20px; line-height: 38px; letter-spacing: 1px; }
+  #chip .t { font-size: 22px; font-weight: 600; }
+  #win { left: 80px; top: 110px; width: 1360px; border-radius: 18px; overflow: hidden; background: #1a1d29; border: 1.5px solid rgba(255,255,255,0.14);
+    box-shadow: 0 50px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.4); transform-origin: 50% 60%; }
+  #bar { height: 36px; display: flex; align-items: center; gap: 9px; padding-left: 16px; background: #22263a; }
+  #bar i { width: 13px; height: 13px; border-radius: 50%; display: block; }
+  #bar .tt { margin-left: 18px; font-size: 15px; color: var(--muted); }
+  #vp { position: relative; width: 1360px; height: 765px; overflow: hidden; background: #fff; }
+  #vid { position: absolute; left: 0; top: 0; width: 1360px; height: 765px; transform-origin: 0 0; }
+  .ring { position: absolute; width: 90px; height: 90px; margin: -45px 0 0 -45px; border-radius: 50%; border: 5px solid var(--orange); }
+  .dot { position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 20px var(--orange); }
+  .callout { position: absolute; white-space: nowrap; padding: 10px 18px; border-radius: 12px; background: #11131f; color: #fff; font-size: 24px; font-weight: 700;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35); border: 2px solid var(--orange); }
+  .callout em { font-style: normal; color: var(--orange); }
+  #rail { left: 1484px; top: 110px; width: 360px; display: flex; flex-direction: column; gap: 14px; }
+  .step { position: relative; height: 128px; border-radius: 18px; padding: 20px 22px 0 92px; background: rgba(255,255,255,0.05); border: 1.5px solid var(--line); }
+  .step .num { position: absolute; left: 22px; top: 32px; width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--line); text-align: center; line-height: 48px; font-weight: 800; font-size: 22px; color: var(--muted); }
+  .step .st { font-size: 15px; letter-spacing: 3px; color: var(--muted); font-weight: 700; }
+  .step .sd { font-size: 23px; font-weight: 700; margin-top: 8px; line-height: 30px; }
+  .step .glow { position: absolute; inset: -1.5px; border-radius: 18px; border: 2px solid var(--orange); box-shadow: 0 0 40px rgba(255,122,69,0.35); }
+  #installCard { width: 470px; padding: 22px 26px; border-radius: 18px; background: rgba(12,15,28,0.94); border: 1.5px solid var(--line); box-shadow: 0 24px 70px rgba(0,0,0,0.55); }
+  #installCard .it { font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 12px; }
+  #installCard .pb { height: 12px; border-radius: 6px; background: rgba(255,255,255,0.1); margin-top: 16px; overflow: hidden; }
+  #installCard .pf { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--orange), var(--violet)); }
+  #installCard .ip { font-size: 18px; color: var(--muted); margin-top: 10px; }
+
+  /* ---------- captions ---------- */
+  #cap { left: 80px; width: 1360px; top: 956px; height: 90px; display: flex; align-items: center; justify-content: center; }
+  #capInner { padding: 14px 30px; border-radius: 16px; background: rgba(8,10,20,0.78); border: 1px solid var(--line); font-size: 40px; font-weight: 700; letter-spacing: -0.5px; white-space: nowrap; }
+  #capInner span { display: inline-block; margin: 0 6px; }
+
+  /* ---------- scene 4: outro ---------- */
+  #s4 { inset: 0; }
+  #check { left: 810px; top: 170px; width: 300px; height: 300px; }
+  #o1 { left: 0; right: 0; top: 520px; text-align: center; font-size: 104px; font-weight: 900; letter-spacing: -3px; font-family: "Inter Display", "Inter"; }
+  #o1 span, #o2 span { display: inline-block; margin: 0 14px; }
+  #o2 { left: 0; right: 0; top: 670px; text-align: center; font-size: 48px; font-weight: 600; color: #d9dcea; }
+  #o2 .hl { background: linear-gradient(90deg, var(--orange), var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800; }
+  #lockup { left: 0; right: 0; top: 860px; text-align: center; font-size: 26px; letter-spacing: 8px; color: var(--muted); font-weight: 700; }
+  #lockup b { color: var(--ink); }
+  .shape { position: absolute; }
+  #fade { inset: 0; background: #000; position: absolute; }
+</style>
+</head>
+<body>
+<div id="bg">
+  <div id="glowA"></div><div id="glowB"></div>
+  <div id="grid"></div>
+  <div id="particles"></div>
+  <div id="vignette"></div>
+</div>
+
+<!-- SCENE 1 -->
+<div id="s1" class="abs">
+  <div class="row">
+    <div>
+      <div id="stepLabel" class="mono">STEP</div>
+      <div id="numWrap"><div id="numStrip"><div>01</div><div>02</div><div>03</div><div>04</div></div></div>
+    </div>
+    <div id="divider"></div>
+    <div id="titleStack">
+      <div class="tline"><span id="tw1">Install</span></div>
+      <div class="tline" id="tHF"><span id="tw2">HyperFrames</span><div id="tUnder"></div></div>
+      <div class="tline"><span id="tw3">Plugin</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 2 -->
+<div id="s2" class="abs">
+  <div id="s2Head" class="abs"><div class="k mono" id="s2k">WHAT THE PLUGIN DOES</div><div class="h" id="s2h">It teaches Claude to make videos</div></div>
+  <svg id="links" class="abs" viewBox="0 0 1920 1080">
+    <defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#ff7a45"/><stop offset="1" stop-color="#8b6cff"/></linearGradient></defs>
+    <path id="L1" d="M 570 600 L 810 600" stroke="url(#lg)" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path id="L2" d="M 1110 600 L 1350 600" stroke="url(#lg)" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle id="P1" r="9" fill="#fff"/><circle id="P2" r="9" fill="#fff"/>
+  </svg>
+  <div id="nPlugin" class="node abs" style="left:270px;top:450px">
+    <svg width="110" height="110" viewBox="0 0 100 100"><path fill="#ff7a45" d="M38 10a10 10 0 0 1 20 0v8h18a6 6 0 0 1 6 6v18h-8a10 10 0 0 0 0 20h8v18a6 6 0 0 1-6 6H58v-8a10 10 0 0 0-20 0v8H20a6 6 0 0 1-6-6V60h8a10 10 0 0 0 0-20h-8V24a6 6 0 0 1 6-6h18z"/></svg>
+    <div class="lbl">HyperFrames</div><div class="sub">Plugin</div>
+  </div>
+  <div id="nClaude" class="node abs" style="left:810px;top:450px">
+    <svg id="star" width="120" height="120" viewBox="-50 -50 100 100"><g fill="#d97757" id="starG"></g></svg>
+    <div class="lbl">Claude</div><div class="sub">Your AI agent</div>
+  </div>
+  <div id="nVideo" class="node abs" style="left:1350px;top:450px">
+    <svg width="150" height="110" viewBox="0 0 150 110">
+      <rect x="3" y="3" width="144" height="84" rx="12" fill="none" stroke="#8b6cff" stroke-width="5"/>
+      <path d="M64 28 L92 45 L64 62 Z" fill="#fff"/>
+      <rect x="3" y="98" width="144" height="8" rx="4" fill="rgba(255,255,255,0.15)"/>
+      <rect id="vbar" x="3" y="98" width="60" height="8" rx="4" fill="#ff7a45"/>
+    </svg>
+    <div class="lbl">HyperFrames</div><div class="sub">Video</div>
+  </div>
+  <div id="doc" class="abs mono" style="left:500px;top:248px">
+    <div class="dh">SKILL · INSTRUCTIONS</div>
+    <div class="dl" id="d1"></div><div class="dl" id="d2"></div><div class="dl" id="d3"></div>
+  </div>
+</div>
+
+<!-- SCENE 3 -->
+<div id="s3" class="abs">
+  <div id="chip" class="abs"><div class="n mono">STEP 04</div><div class="t">Install the HyperFrames plugin</div></div>
+  <div id="win" class="abs">
+    <div id="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><div class="tt mono">Claude · New session</div></div>
+    <div id="vp">
+      <img id="vid" src="">
+      <div id="ring1" class="ring"></div><div id="ring2" class="ring"></div><div id="cdot" class="dot"></div>
+      <div id="call" class="callout"></div>
+      <div id="installCard" class="abs"><div class="it"><span id="icIcon">⏳</span><span id="icText">Installing HyperFrames…</span></div><div class="pb"><div class="pf" id="icFill"></div></div><div class="ip mono" id="icPct">0%</div></div>
+    </div>
+  </div>
+  <div id="rail" class="abs"></div>
+</div>
+
+<div id="cap" class="abs"><div id="capInner"></div></div>
+
+<!-- SCENE 4 -->
+<div id="s4" class="abs">
+  <div id="burst"></div>
+  <svg id="check" class="abs" viewBox="0 0 300 300">
+    <circle id="ckC" cx="150" cy="150" r="130" fill="none" stroke="url(#lg2)" stroke-width="14" stroke-linecap="round" transform="rotate(-90 150 150)"/>
+    <defs><linearGradient id="lg2" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#ff7a45"/><stop offset="1" stop-color="#8b6cff"/></linearGradient></defs>
+    <path id="ckP" d="M 92 155 L 135 197 L 212 112" fill="none" stroke="#fff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div id="o1" class="abs"><span>You're</span><span>good</span><span>to</span><span>go.</span></div>
+  <div id="o2" class="abs"><span>Start</span><span>creating</span><span>your</span><span class="hl">motion</span><span class="hl">graphics</span></div>
+  <div id="shapes"></div>
+  <div id="lockup" class="abs mono"><b>HYPERFRAMES</b> × <b>CLAUDE</b></div>
+</div>
+
+<div id="progress" class="abs"></div>
+<div id="fade"></div>
+
+<script>
+// ---------------- helpers ----------------
+const $ = id => document.getElementById(id);
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, p) => a + (b - a) * p;
+const E = {
+  lin: p => p,
+  out: p => 1 - Math.pow(1 - p, 3),
+  inOut: p => p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2,
+  expo: p => p === 1 ? 1 : 1 - Math.pow(2, -10 * p),
+  back: p => { const c1 = 1.7, c3 = c1 + 1; return 1 + c3 * Math.pow(p - 1, 3) + c1 * Math.pow(p - 1, 2); },
+  inC: p => p * p * p,
+};
+const prog = (t, a, b, e = E.out) => e(clamp((t - a) / (b - a)));
+// visibility window: fades in over [a, a+di], out over [b, b+do]
+const win = (t, a, di, b, dout) => Math.min(prog(t, a, a + di), 1 - prog(t, b, b + dout, E.inOut));
+function rng(seed) { let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
+function kf(t, keys, e = E.inOut) { // keys: [[time, value(s)...]]
+  if (t <= keys[0][0]) return keys[0].slice(1);
+  for (let i = 0; i < keys.length - 1; i++) {
+    const [ta, ...a] = keys[i], [tb, ...b] = keys[i + 1];
+    if (t <= tb) { const p = e(clamp((t - ta) / (tb - ta))); return a.map((v, j) => lerp(v, b[j], p)); }
+  }
+  return keys[keys.length - 1].slice(1);
+}
+const DUR = 31;
+
+// ---------------- background ----------------
+const R = rng(7), parts = [];
+for (let i = 0; i < 46; i++) {
+  const d = document.createElement('div'); d.className = 'particle';
+  const s = 2 + R() * 4; d.style.width = d.style.height = s + 'px';
+  $('particles').appendChild(d);
+  parts.push({ d, x: R() * 1920, y: R() * 1080, vy: 8 + R() * 22, ph: R() * 6.28, a: 0.15 + R() * 0.45 });
+}
+
+// ---------------- scene 2 star ----------------
+for (let i = 0; i < 12; i++) {
+  const r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  r.setAttribute('x', -4.5); r.setAttribute('y', -46); r.setAttribute('width', 9); r.setAttribute('height', 38); r.setAttribute('rx', 4.5);
+  r.setAttribute('transform', `rotate(${i * 30})`); $('starG').appendChild(r);
+}
+
+// ---------------- scene 3 rail ----------------
+const STEPS = [
+  { t: 'Click the + sign', a: 7.6, b: 10.6 },
+  { t: 'Plugins → Browse Plugins', a: 10.6, b: 13.3 },
+  { t: 'Directory box opens', a: 13.3, b: 15.5 },
+  { t: 'Search “HyperFrames”', a: 15.5, b: 20.6 },
+  { t: 'Click Install', a: 20.6, b: 24.6 },
+];
+STEPS.forEach((s, i) => {
+  const d = document.createElement('div'); d.className = 'step'; d.id = 'st' + i;
+  d.innerHTML = `<div class="glow"></div><div class="num">${i + 1}</div><div class="st mono">STEP 4.${i + 1}</div><div class="sd">${s.t}</div>`;
+  $('rail').appendChild(d);
+});
+
+// ---------------- captions (word timings from narration pauses) ----------------
+const CHUNKS = [
+  [3.19, 5.30, 'The plugin gives Claude the specific instructions'],
+  [5.30, 6.99, 'it needs to create HyperFrames videos.'],
+  [7.58, 8.69, 'Under your new environment,'],
+  [8.81, 9.55, 'click the plus sign.'],
+  [10.45, 11.25, 'Click Plugins'],
+  [11.49, 12.87, 'and select Browse Plugins.'],
+  [13.48, 14.75, 'A directory box will appear.'],
+  [15.61, 16.41, 'Under Anthropic,'],
+  [16.87, 18.12, 'in the search plugin space,'],
+  [18.36, 19.26, 'type HyperFrames,'],
+  [19.66, 20.38, 'and it will show up.'],
+  [20.80, 21.84, 'Click on Install,'],
+  [22.56, 24.99, 'and HyperFrames will begin installing into your Claude.'],
+].map(([a, b, txt], i, arr) => {
+  const words = txt.split(' '); const total = words.reduce((s, w) => s + w.length + 1, 0);
+  let acc = 0; const ws = words.map(w => { const s = a + (acc / total) * (b - a); acc += w.length + 1; return { w, s }; });
+  const next = arr[i + 1] ? arr[i + 1][0] : b + 0.6;
+  return { a, b, end: Math.min(b + 0.6, next - 0.05), ws };
+});
+const KEYWORDS = /^(Claude|HyperFrames|plus|Plugins|Browse|directory|Anthropic,?|search|Install,?|HyperFrames,|instructions|videos\.|environment,|sign\.|Plugins\.)$/;
+let capIdx = -2;
+
+// ---------------- scene 3 video time remap (output time -> source time) ----------------
+const REMAP = [[7.3, 6.6], [9.35, 8.45], [10.9, 9.0], [12.6, 12.6], [13.5, 13.0], [17.2, 15.0], [18.36, 16.0], [19.9, 19.0],
+               [20.6, 21.0], [20.95, 21.5], [21.6, 22.95], [25.8, 27.15]];
+function srcTime(t) { return kf(t, REMAP, E.lin)[0]; }
+const SRC0 = 6.0; // first extracted frame time
+// zoom keyframes: [t, scale, fx, fy] (fx/fy are 0..1 of the source frame)
+const ZOOM = [[7.6, 1.0, 0.5, 0.5], [7.9, 1.0, 0.5, 0.5], [8.6, 1.75, 0.6, 0.4], [8.85, 1.75, 0.6, 0.4], [9.25, 1.75, 0.42, 0.8],
+  [12.7, 1.75, 0.48, 0.82], [13.4, 1.0, 0.5, 0.5], [15.5, 1.0, 0.5, 0.5], [16.1, 1.7, 0.4, 0.22], [16.9, 1.7, 0.4, 0.22],
+  [17.4, 1.8, 0.5, 0.2], [19.6, 1.8, 0.5, 0.25], [20.0, 1.7, 0.45, 0.3], [20.7, 1.7, 0.45, 0.3], [21.05, 1.5, 0.6, 0.24],
+  [24.7, 1.5, 0.6, 0.24], [25.3, 1.0, 0.5, 0.5]];
+// clicks: [t, x, y] on the source frame
+const CLICKS = [[9.35, 0.34, 0.867], [10.9, 0.375, 0.815], [12.6, 0.61, 0.907], [17.2, 0.47, 0.145], [20.6, 0.44, 0.31], [21.6, 0.835, 0.185]];
+const CALLS = [
+  [7.95, 8.8, 0.61, 0.32, 'Your <em>environment</em>', 'up'],
+  [9.3, 10.75, 0.34, 0.867, 'Click the <em>+</em> sign', 'right'],
+  [10.85, 12.4, 0.375, 0.815, '<em>Plugins</em>', 'left'],
+  [12.0, 13.2, 0.61, 0.907, '<em>Browse plugins</em>', 'up'],
+  [16.0, 16.9, 0.34, 0.2, 'Under <em>Anthropic</em>', 'down'],
+  [17.1, 19.2, 0.47, 0.145, 'Type <em>“HyperFrames”</em>', 'down'],
+  [19.7, 20.6, 0.44, 0.31, 'There it is!', 'down'],
+  [20.95, 22.3, 0.835, 0.185, 'Click <em>Install</em>', 'down'],
+];
+const W = 1360, H = 765;
+let lastSrc = '';
+
+async function renderAt(t) {
+  // progress + background
+  $('progress').style.width = (t / DUR * 1920) + 'px';
+  $('glowA').style.transform = `translate(${-300 + Math.sin(t * 0.35) * 160}px, ${-500 + Math.cos(t * 0.3) * 120}px)`;
+  $('glowB').style.transform = `translate(${900 + Math.cos(t * 0.28) * 180}px, ${100 + Math.sin(t * 0.33) * 140}px)`;
+  $('grid').style.transform = `translate(${(t * 12) % 80}px, ${(t * 8) % 80}px)`;
+  parts.forEach(p => {
+    const y = ((p.y - t * p.vy) % 1080 + 1080) % 1080;
+    p.d.style.transform = `translate(${p.x + Math.sin(t * 0.6 + p.ph) * 20}px, ${y}px)`;
+    p.d.style.opacity = p.a * (0.6 + 0.4 * Math.sin(t * 1.3 + p.ph));
+  });
+
+  // ===== SCENE 1 (0 - 3.2) =====
+  const s1v = t < 3.4;
+  $('s1').style.display = s1v ? 'block' : 'none';
+  if (s1v) {
+    const out = prog(t, 2.85, 3.25, E.inC);
+    $('s1').style.opacity = 1 - out;
+    $('s1').style.transform = `scale(${1 + out * 0.12})`;
+    $('s1').style.filter = `blur(${out * 12}px)`;
+    const lab = prog(t, 0.85, 1.25);
+    $('stepLabel').style.opacity = lab; $('stepLabel').style.letterSpacing = lerp(40, 18, lab) + 'px';
+    // number slot roll: 01 -> 04 landing on "four" (~1.35s)
+    const roll = prog(t, 0.3, 1.4, E.expo);
+    $('numStrip').style.transform = `translateY(${-roll * 3 * 420}px)`;
+    $('numWrap').style.opacity = prog(t, 0.2, 0.5);
+    $('divider').style.transform = `scaleY(${prog(t, 0.2, 0.9, E.expo)})`;
+    [['tw1', 1.55], ['tw2', 1.8], ['tw3', 2.15]].forEach(([id, a]) => {
+      const p = prog(t, a, a + 0.45, E.expo);
+      $(id).style.transform = `translateY(${(1 - p) * 140}px)`;
+      $(id).style.filter = `blur(${(1 - p) * 6}px)`;
+    });
+    $('tUnder').style.width = $('tw2').offsetWidth + 'px';
+    $('tUnder').style.transform = `scaleX(${prog(t, 2.2, 2.7, E.expo)})`;
+  }
+
+  // ===== SCENE 2 (3.0 - 7.6) =====
+  const s2v = t > 2.9 && t < 7.7;
+  $('s2').style.display = s2v ? 'block' : 'none';
+  if (s2v) {
+    const ex = prog(t, 7.1, 7.55, E.inC);
+    $('s2').style.opacity = 1 - ex; $('s2').style.transform = `translateY(${-ex * 60}px)`;
+    const hp = prog(t, 3.0, 3.5);
+    $('s2Head').style.opacity = hp; $('s2Head').style.transform = `translateY(${(1 - hp) * 30}px)`;
+    const pop = (id, a) => { const p = prog(t, a, a + 0.55, E.back); $(id).style.opacity = clamp(p * 2); $(id).style.transform = `scale(${0.6 + 0.4 * p}) translateY(${(1 - p) * 40}px)`; };
+    pop('nPlugin', 3.19); pop('nClaude', 3.85); pop('nVideo', 6.2);
+    // links + packets
+    const L1 = $('L1'), L2 = $('L2'), l1 = 240;
+    const d1 = prog(t, 3.65, 4.1), d2 = prog(t, 5.95, 6.35);
+    L1.style.strokeDasharray = l1; L1.style.strokeDashoffset = l1 * (1 - d1);
+    L2.style.strokeDasharray = l1; L2.style.strokeDashoffset = l1 * (1 - d2);
+    const pk1 = ((t - 4.1) * 0.9) % 1, pk2 = ((t - 6.35) * 0.9) % 1;
+    $('P1').setAttribute('cx', 570 + 240 * pk1); $('P1').setAttribute('cy', 600); $('P1').style.opacity = t > 4.1 ? Math.sin(pk1 * Math.PI) : 0;
+    $('P2').setAttribute('cx', 1110 + 240 * pk2); $('P2').setAttribute('cy', 600); $('P2').style.opacity = t > 6.35 ? Math.sin(pk2 * Math.PI) : 0;
+    // claude star spin + pulse
+    $('starG').setAttribute('transform', `rotate(${t * 25}) scale(${1 + 0.06 * Math.sin(t * 6)})`);
+    // instructions doc: appears on "specific instructions", types, then flies into Claude
+    const lines = [['d1', '<b>›</b> compose scenes in HTML', 4.45], ['d2', '<b>›</b> animate with GSAP', 4.95], ['d3', '<b>›</b> render to MP4 video', 5.45]];
+    lines.forEach(([id, txt, a]) => {
+      const plain = txt.replace(/<[^>]+>/g, ''); const n = Math.floor(prog(t, a, a + 0.45, E.lin) * plain.length);
+      $(id).innerHTML = n <= 0 ? '&nbsp;' : (n >= plain.length ? txt : '<b>›</b>' + plain.slice(1, n));
+    });
+    const dIn = prog(t, 4.2, 4.6, E.back), fly = prog(t, 5.85, 6.25, E.inOut);
+    $('doc').style.opacity = clamp(dIn * 2) * (1 - fly);
+    $('doc').style.transform = `translate(${fly * 270}px, ${fly * 260}px) scale(${(0.7 + 0.3 * dIn) * (1 - fly * 0.8)})`;
+    $('nClaude').style.boxShadow = `0 0 ${80 + 120 * Math.max(0, 1 - Math.abs(t - 6.25) * 3)}px rgba(217,119,87,${0.35 + 0.4 * Math.max(0, 1 - Math.abs(t - 6.25) * 3)}), 0 30px 80px rgba(0,0,0,0.45)`;
+    $('vbar').setAttribute('width', 10 + 134 * ((t - 6.3) * 0.5 % 1 + (t < 6.3 ? 1 : 0)));
+  }
+
+  // ===== SCENE 3 (7.3 - 25.6) =====
+  const s3v = t > 7.25 && t < 25.8;
+  $('s3').style.display = s3v ? 'block' : 'none';
+  if (s3v) {
+    const ein = prog(t, 7.3, 8.0, E.expo), eout = prog(t, 25.05, 25.6, E.inC);
+    $('win').style.opacity = clamp(ein * 1.5) * (1 - eout);
+    $('win').style.transform = `translateY(${(1 - ein) * 120 - eout * 40}px) rotateX(${(1 - ein) * 14}deg) scale(${(0.86 + 0.14 * ein) * (1 - eout * 0.25)})`;
+    const cp = prog(t, 7.45, 7.95);
+    $('chip').style.opacity = cp * (1 - eout); $('chip').style.transform = `translateX(${(1 - cp) * -40}px)`;
+    STEPS.forEach((s, i) => {
+      const el = $('st' + i), p = prog(t, 7.6 + i * 0.1, 8.1 + i * 0.1, E.expo);
+      el.style.opacity = p * (1 - eout); el.style.transform = `translateX(${(1 - p) * 80 + eout * 60}px)`;
+      const active = t >= s.a && t < s.b, done = t >= s.b;
+      const ga = win(t, s.a, 0.25, s.b - 0.15, 0.25);
+      el.querySelector('.glow').style.opacity = ga;
+      el.style.background = active ? 'rgba(255,122,69,0.12)' : 'rgba(255,255,255,0.05)';
+      const num = el.querySelector('.num');
+      num.textContent = done ? '✓' : (i + 1);
+      num.style.background = done ? '#2bd47d' : (active ? 'var(--orange)' : 'transparent');
+      num.style.color = done || active ? '#0a0d18' : 'var(--muted)';
+      num.style.borderColor = done ? '#2bd47d' : (active ? 'var(--orange)' : 'var(--line)');
+      el.querySelector('.sd').style.color = active ? '#fff' : (done ? '#b8bccb' : '#8f94a8');
+    });
+    // video frame
+    const st = srcTime(t); const idx = Math.max(1, Math.round((st - SRC0) * 30) + 1);
+    const src = `frames/${String(Math.min(idx, 645)).padStart(5, '0')}.jpg`;
+    if (src !== lastSrc) { $('vid').src = src; lastSrc = src; await $('vid').decode().catch(() => {}); }
+    // zoom
+    const [s, fx, fy] = kf(t, ZOOM);
+    const tx = clamp(W / 2 - fx * W * s, W - W * s, 0), ty = clamp(H / 2 - fy * H * s, H - H * s, 0);
+    $('vid').style.transform = `translate(${tx}px, ${ty}px) scale(${s})`;
+    const P = (x, y) => [tx + x * W * s, ty + y * H * s];
+    // click rings
+    let cl = null; for (const c of CLICKS) if (t >= c[0] - 0.25 && t < c[0] + 0.7) cl = c;
+    if (cl) {
+      const [x, y] = P(cl[1], cl[2]); const k = (t - cl[0]);
+      ['ring1', 'ring2'].forEach((id, j) => {
+        const p = clamp((k - j * 0.15) / 0.6);
+        $(id).style.left = x + 'px'; $(id).style.top = y + 'px';
+        $(id).style.opacity = k < j * 0.15 ? 0 : 1 - p; $(id).style.transform = `scale(${0.3 + p * 1.4})`;
+      });
+      const dp = k < 0 ? prog(t, cl[0] - 0.25, cl[0]) : 1 - prog(t, cl[0] + 0.4, cl[0] + 0.7);
+      $('cdot').style.left = x + 'px'; $('cdot').style.top = y + 'px'; $('cdot').style.opacity = dp;
+      $('cdot').style.transform = `scale(${k < 0 ? 1 : 1 + 0.6 * Math.sin(clamp(k / 0.3) * Math.PI)})`;
+    } else { ['ring1', 'ring2', 'cdot'].forEach(id => $(id).style.opacity = 0); }
+    // callouts
+    let ca = null; for (const c of CALLS) if (t >= c[0] && t < c[1] + 0.25) ca = c;
+    const call = $('call');
+    if (ca) {
+      if (call.dataset.k !== ca[4]) { call.innerHTML = ca[4]; call.dataset.k = ca[4]; }
+      const v = win(t, ca[0], 0.3, ca[1], 0.25), pb = prog(t, ca[0], ca[0] + 0.4, E.back);
+      const [x, y] = P(ca[2], ca[3]); const cw = call.offsetWidth, ch = call.offsetHeight;
+      let lx = x - cw / 2, ly = y - ch / 2;
+      if (ca[5] === 'up') ly = y - ch - 60; if (ca[5] === 'down') ly = y + 50;
+      if (ca[5] === 'right') { lx = x + 60; } if (ca[5] === 'left') { lx = x - cw - 60; }
+      lx = clamp(lx, 16, W - cw - 16); ly = clamp(ly, 16, H - ch - 16);
+      call.style.left = lx + 'px'; call.style.top = ly + 'px'; call.style.opacity = v;
+      call.style.transform = `scale(${0.7 + 0.3 * pb})`;
+    } else call.style.opacity = 0;
+    // install progress card
+    const ic = win(t, 22.0, 0.35, 24.75, 0.3);
+    const ip = prog(t, 22.1, 24.4, E.inOut);
+    $('installCard').style.opacity = ic;
+    $('installCard').style.left = (W - 470 - 40) + 'px'; $('installCard').style.top = (H - 160 + (1 - prog(t, 22.0, 22.4, E.back)) * 60) + 'px';
+    $('icFill').style.width = (ip * 100) + '%';
+    $('icPct').textContent = ip >= 1 ? 'Installed into Claude' : Math.round(ip * 100) + '%';
+    $('icText').textContent = ip >= 1 ? 'HyperFrames installed!' : 'Installing HyperFrames…';
+    $('icIcon').textContent = ip >= 1 ? '✅' : '⏳';
+  }
+
+  // ===== CAPTIONS (3.1 - 25.2) =====
+  let ci = -1; CHUNKS.forEach((c, i) => { if (t >= c.a - 0.12 && t < c.end) ci = i; });
+  const capEl = $('capInner');
+  if (ci !== capIdx) {
+    capIdx = ci;
+    capEl.innerHTML = ci < 0 ? '' : CHUNKS[ci].ws.map(w => `<span>${w.w}</span>`).join('');
+  }
+  if (ci >= 0) {
+    const c = CHUNKS[ci];
+    const v = win(t, c.a - 0.12, 0.15, c.end - 0.15, 0.15);
+    $('cap').style.opacity = v; $('cap').style.transform = `translateY(${(1 - prog(t, c.a - 0.12, c.a + 0.1)) * 14}px)`;
+    // in scene 2 the captions sit centered under the diagram
+    $('cap').style.left = t < 7.4 ? '280px' : '80px';
+    [...capEl.children].forEach((sp, j) => {
+      const w = c.ws[j], nextS = j + 1 < c.ws.length ? c.ws[j + 1].s : c.b;
+      const said = t >= w.s - 0.03, active = t >= w.s - 0.03 && t < nextS;
+      const key = KEYWORDS.test(w.w);
+      sp.style.opacity = said ? 1 : 0.35;
+      sp.style.color = active ? 'var(--orange)' : (key && said ? '#ffd2bd' : '#fff');
+      const pp = prog(t, w.s - 0.03, w.s + 0.15, E.back);
+      sp.style.transform = `translateY(${said ? (1 - pp) * 8 : 0}px) scale(${active ? 1.06 : 1})`;
+    });
+  } else $('cap').style.opacity = 0;
+
+  // ===== SCENE 4 (25.2 - 31) =====
+  const s4v = t > 25.2;
+  $('s4').style.display = s4v ? 'block' : 'none';
+  if (s4v) {
+    const cc = prog(t, 25.45, 26.05, E.inOut), cpth = prog(t, 25.85, 26.25, E.out);
+    const circ = 2 * Math.PI * 130; $('ckC').style.strokeDasharray = circ; $('ckC').style.strokeDashoffset = circ * (1 - cc);
+    $('ckP').style.strokeDasharray = 220; $('ckP').style.strokeDashoffset = 220 * (1 - cpth);
+    const ckS = prog(t, 25.4, 25.9, E.back);
+    $('check').style.transform = `scale(${0.6 + 0.4 * ckS + 0.04 * Math.sin(Math.max(0, t - 26.3) * 3)})`;
+    $('check').style.opacity = clamp(ckS * 2);
+    $('check').style.filter = `drop-shadow(0 0 ${30 + 30 * Math.max(0, 1 - Math.abs(t - 26.2) * 2)}px rgba(255,122,69,0.6))`;
+    // "You're good to go." synced to "you are now good to go" (26.4 - 27.35)
+    const o1t = [26.4, 26.85, 27.05, 27.2];
+    [...$('o1').children].forEach((sp, j) => { const p = prog(t, o1t[j], o1t[j] + 0.4, E.back); sp.style.opacity = clamp(p * 2); sp.style.transform = `translateY(${(1 - p) * 50}px) scale(${0.8 + 0.2 * p})`; });
+    // "Start creating your motion graphics" synced to 27.4 - 28.8
+    const o2t = [27.45, 27.7, 28.0, 28.2, 28.45];
+    [...$('o2').children].forEach((sp, j) => { const p = prog(t, o2t[j], o2t[j] + 0.4, E.out); sp.style.opacity = p; sp.style.transform = `translateY(${(1 - p) * 30}px)`; sp.style.filter = `blur(${(1 - p) * 6}px)`; });
+    const lk = prog(t, 29.0, 29.6); $('lockup').style.opacity = lk; $('lockup').style.letterSpacing = lerp(20, 8, lk) + 'px';
+    // burst + orbiting shapes
+    renderShapes(t);
+  }
+  $('fade').style.opacity = Math.max(1 - prog(t, 0, 0.35), prog(t, 30.35, 31, E.inOut));
+}
+
+// ---------------- outro shapes ----------------
+const SH = [], R2 = rng(42);
+const COLORS = ['#ff7a45', '#8b6cff', '#3fd5ff', '#2bd47d', '#ffd166'];
+for (let i = 0; i < 26; i++) {
+  const d = document.createElement('div'); d.className = 'shape';
+  const kind = i % 3, size = 14 + R2() * 26, col = COLORS[i % COLORS.length];
+  d.style.width = d.style.height = size + 'px';
+  if (kind === 0) { d.style.borderRadius = '50%'; d.style.background = col; }
+  else if (kind === 1) { d.style.borderRadius = '6px'; d.style.border = `4px solid ${col}`; }
+  else { d.style.width = d.style.height = 0; d.style.borderLeft = d.style.borderRight = `${size / 2}px solid transparent`; d.style.borderBottom = `${size}px solid ${col}`; }
+  $('shapes').appendChild(d);
+  SH.push({ d, ang: R2() * 6.28, dist: 260 + R2() * 520, sp: (R2() - 0.5) * 0.5, rot: R2() * 360, delay: R2() * 0.25, wob: R2() * 6.28 });
+}
+function renderShapes(t) {
+  SH.forEach(s => {
+    const p = prog(t, 25.95 + s.delay, 26.9 + s.delay, E.expo);
+    const a = s.ang + (t - 26) * s.sp;
+    const dist = s.dist * p;
+    const x = 960 + Math.cos(a) * dist * 1.25, y = 320 + Math.sin(a) * dist * 0.75 + Math.sin(t * 1.5 + s.wob) * 10;
+    const out = prog(t, 30.0, 30.8);
+    s.d.style.transform = `translate(${x}px, ${y}px) rotate(${s.rot + t * 60 * s.sp * 2}deg) scale(${p * (1 - out)})`;
+    s.d.style.opacity = 0.75 * clamp(p * 3) * (1 - out);
+  });
+}
+window.renderAt = renderAt;
+window.DUR = DUR;
+</script>
+</body>
+</html>
