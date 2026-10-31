@@ -163,11 +163,7 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#f6f6f9;font-fam
         <circle cx="75" cy="75" r="68" fill="#fff"/><circle cx="75" cy="75" r="68" fill="none" stroke="url(#lg)" stroke-width="6" stroke-dasharray="300 130" stroke-linecap="round"/>
         <path d="M63 50 L102 75 L63 100 Z" fill="#0f0f14" stroke="#0f0f14" stroke-width="6" stroke-linejoin="round"/></svg>
     </div>
-    <div class="center" style="top:480px;display:flex;justify-content:center;align-items:center;gap:56px">
-      <img src="logo_claude.png" style="height:100px" data-in="20.75" data-fx="pop">
-      <span style="font:300 80px Inter;color:#b0b0bc" data-in="20.95" data-fx="pop">×</span>
-      <img src="logo_hyperframes.png" style="height:150px" data-in="21.1" data-fx="pop">
-    </div>
+    <div id="s6text" class="center" style="top:450px;font-size:150px;font-weight:800;letter-spacing:-.045em"></div>
   </div>
 
   <!-- cursor -->
@@ -194,6 +190,7 @@ function K(el,parts){parts.forEach(([txt,t,cls],i)=>{if(txt==='\n'){el.appendChi
   const s=document.createElement('span');s.className='word '+(cls||'');s.textContent=txt;s.dataset.in=t;s.dataset.fx='w';el.appendChild(s);
   const nx=parts[i+1]; if(nx&&nx[0]!=='\n') el.appendChild(document.createTextNode(' '));});}
 
+K($('s6text'),[["So",T(9,0)],["let's",T(9,1)],["get",T(9,2)],["started.",T(9,3),'grad']]);
 $('hyper').dataset.in=T(8,1); $('s3logo').dataset.in=T(5,6)-.1; $('s4with').dataset.in=T(7,12)-.15;
 
 // ---- scene 2 cards ----
