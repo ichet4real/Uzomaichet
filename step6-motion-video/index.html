@@ -1,0 +1,478 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Step 6 Motion Graphics</title>
+<style>
+  :root{
+    --navy:#070d24; --navy2:#0d1a44; --cyan:#22d3ee; --cyan2:#67e8f9;
+    --orange:#d97757; --amber:#fbbf24; --white:#f8fafc; --muted:#94a3b8; --green:#34d399;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1920px;height:1080px;overflow:hidden;background:var(--navy)}
+  body{font-family:Inter,sans-serif;color:var(--white);position:relative}
+  .abs{position:absolute}
+  #bg{inset:0;background:radial-gradient(1200px 800px at 30% 20%,#13235c 0%,var(--navy) 60%),var(--navy)}
+  #grid{inset:-80px;background-image:linear-gradient(rgba(34,211,238,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.06) 1px,transparent 1px);background-size:80px 80px}
+  .shape{border:2px solid rgba(34,211,238,.25);}
+  .ring{border-radius:50%}
+  .mono{font-family:'JetBrains Mono',monospace}
+
+  /* window */
+  #win{left:272px;top:112px;width:1376px;height:808px;border-radius:20px;overflow:hidden;
+       background:#0b132e;border:2px solid rgba(34,211,238,.35);
+       box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 60px rgba(34,211,238,.15);transform-origin:50% 50%}
+  #bar{left:0;top:0;width:100%;height:34px;background:#0e1838;display:flex;align-items:center;padding:0 16px;gap:8px;border-bottom:1px solid rgba(34,211,238,.2)}
+  .dot{width:12px;height:12px;border-radius:50%}
+  #barlabel{margin-left:18px;font-size:15px;color:var(--muted);font-weight:500;letter-spacing:.2px}
+  #view{left:0;top:34px;width:1376px;height:774px;overflow:hidden;background:#fff}
+  #scr{left:0;top:0;width:1280px;height:720px;transform-origin:0 0}
+  #scrim{inset:0;background:#070d24;opacity:0}
+  #wipe{top:0;bottom:0;width:260px;background:linear-gradient(90deg,transparent,rgba(34,211,238,.95),#fff,rgba(34,211,238,.95),transparent);opacity:0}
+
+  /* highlight ring in screen space */
+  .hl{border:4px solid var(--cyan);border-radius:14px;box-shadow:0 0 0 6px rgba(34,211,238,.18),0 0 30px rgba(34,211,238,.6);opacity:0}
+  .hl.orange{border-color:var(--orange);box-shadow:0 0 0 6px rgba(217,119,87,.2),0 0 30px rgba(217,119,87,.6)}
+
+  /* header chip */
+  #hdr{left:272px;top:34px;display:flex;align-items:center;gap:14px;opacity:0}
+  .pill{background:var(--cyan);color:#04122b;font-weight:800;font-size:20px;padding:8px 16px;border-radius:999px;letter-spacing:1px}
+  #hdrtxt{font-size:26px;font-weight:700}
+  #stages{right:272px;top:40px;display:flex;gap:10px;opacity:0}
+  .stg{font-size:15px;font-weight:600;padding:7px 14px;border-radius:999px;border:1.5px solid rgba(148,163,184,.4);color:var(--muted);background:rgba(13,26,68,.6)}
+  .stg.on{border-color:var(--cyan);color:#04122b;background:var(--cyan)}
+  .stg.done{border-color:rgba(52,211,153,.6);color:var(--green)}
+
+  /* captions */
+  #cap{left:160px;right:160px;top:948px;height:90px;display:flex;justify-content:center;align-items:center;text-align:center;font-size:40px;font-weight:700;letter-spacing:-.3px;line-height:1.15}
+  #cap span{display:inline-block;margin:0 .14em;transition:none}
+
+  /* cards */
+  .card{background:rgba(9,17,44,.92);border:1.5px solid rgba(34,211,238,.4);border-radius:22px;box-shadow:0 24px 60px rgba(0,0,0,.5);backdrop-filter:blur(6px)}
+  #ff{right:290px;top:160px;font-size:28px;font-weight:800;padding:10px 20px;border-radius:14px;background:rgba(7,13,36,.88);border:2px solid var(--cyan);color:var(--cyan);opacity:0;display:flex;gap:10px;align-items:center}
+  #tag{padding:12px 22px;border-radius:14px;font-weight:800;font-size:28px;background:var(--orange);color:#fff;opacity:0;white-space:nowrap;box-shadow:0 10px 30px rgba(217,119,87,.5)}
+  .ripple{border:5px solid var(--orange);border-radius:50%;opacity:0}
+  #cursorDot{width:26px;height:26px;border-radius:50%;background:rgba(217,119,87,.9);opacity:0;box-shadow:0 0 0 8px rgba(217,119,87,.25)}
+  #planCard{left:120px;top:640px;width:470px;padding:24px 28px;opacity:0}
+  .chk{width:44px;height:44px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;flex:none}
+  #lock{left:930px;top:600px;width:740px;padding:26px 32px;opacity:0}
+  #pipe{left:300px;top:740px;width:1320px;padding:22px 30px;opacity:0;display:flex;align-items:center;justify-content:space-between}
+  .node{display:flex;align-items:center;gap:12px;font-size:24px;font-weight:700;color:var(--muted)}
+  .nodeIc{width:48px;height:48px;border-radius:14px;border:2px solid rgba(148,163,184,.45);display:flex;align-items:center;justify-content:center;font-size:22px}
+  .arrow{flex:1;height:3px;margin:0 18px;background:rgba(148,163,184,.25);position:relative;overflow:hidden;border-radius:2px}
+  .arrow i{position:absolute;left:0;top:0;bottom:0;background:var(--cyan)}
+  #wait{left:1120px;top:250px;width:520px;padding:34px 36px;opacity:0}
+  #note{left:420px;top:150px;width:1080px;padding:22px 30px;opacity:0;border-color:rgba(251,191,36,.7);display:flex;gap:22px;align-items:center}
+  #slash{padding:18px 34px;border-radius:20px;opacity:0;font-size:64px;font-weight:800;color:var(--cyan);background:rgba(7,13,36,.94);border:3px solid var(--cyan);box-shadow:0 0 50px rgba(34,211,238,.45);white-space:nowrap}
+  #first{padding:10px 20px;border-radius:999px;font-size:24px;font-weight:800;background:var(--amber);color:#1d1400;opacity:0;white-space:nowrap}
+  .lbl{padding:12px 20px;border-radius:14px;font-size:26px;font-weight:800;opacity:0;white-space:nowrap;display:flex;align-items:center;gap:12px}
+  .num{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900}
+  .brk{border:4px solid;border-right:none;border-radius:12px 0 0 12px;opacity:0}
+
+  /* intro / outro */
+  #intro{inset:0;opacity:0}
+  #stepWord{left:0;right:0;top:250px;text-align:center;font-size:44px;font-weight:700;letter-spacing:18px;color:var(--cyan)}
+  #stepNum{left:0;right:0;top:300px;text-align:center;font-family:'Inter Display',Inter;font-size:230px;font-weight:900;line-height:1;letter-spacing:-6px}
+  #title{left:0;right:0;top:570px;text-align:center;font-size:84px;font-weight:800;letter-spacing:-2px}
+  #title span{display:inline-block;margin:0 .14em}
+  #crucial{left:50%;top:720px;transform:translateX(-50%);display:flex;align-items:center;gap:16px;padding:16px 34px;border-radius:999px;background:var(--orange);font-size:38px;font-weight:800;white-space:nowrap;opacity:0;box-shadow:0 18px 50px rgba(217,119,87,.45)}
+  #underline{left:50%;top:680px;height:8px;background:var(--cyan);border-radius:4px;transform:translateX(-50%)}
+  #outro{inset:0;opacity:0}
+  #bigchk{left:50%;top:230px;width:220px;height:220px;margin-left:-110px}
+  #doneTxt{left:0;right:0;top:480px;text-align:center;font-size:72px;font-weight:800;letter-spacing:-1.5px}
+  #next{left:50%;top:640px;width:1160px;margin-left:-580px;padding:30px 40px;display:flex;align-items:center;gap:34px;opacity:0}
+  #play{width:120px;height:120px;border-radius:50%;background:var(--cyan);display:flex;align-items:center;justify-content:center;flex:none}
+  #fade{inset:0;background:#000;opacity:0}
+</style>
+</head>
+<body>
+<div id="bg" class="abs"></div>
+<div id="grid" class="abs"></div>
+<div id="shapes"></div>
+
+<!-- screen window -->
+<div id="win" class="abs">
+  <div id="bar" class="abs">
+    <div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#febc2e"></div><div class="dot" style="background:#28c840"></div>
+    <div id="barlabel">Claude Code · HyperFrames</div>
+  </div>
+  <div id="view" class="abs">
+    <img id="scr" class="abs" src="">
+    <div id="hlA" class="abs hl"></div>
+    <div id="hlB" class="abs hl"></div>
+    <div id="cursorDot" class="abs"></div>
+    <div id="rip1" class="abs ripple"></div>
+    <div id="rip2" class="abs ripple"></div>
+    <div id="scrim" class="abs"></div>
+    <div id="wipe" class="abs"></div>
+  </div>
+</div>
+
+<!-- header -->
+<div id="hdr" class="abs"><div class="pill">STEP 06</div><div id="hdrtxt">Generate the motion graphics</div></div>
+<div id="stages" class="abs">
+  <div class="stg" id="st0">① Send</div><div class="stg" id="st1">② Build</div><div class="stg" id="st2">③ Wait</div><div class="stg" id="st3">④ Tip</div>
+</div>
+
+<!-- overlays -->
+<div id="ff" class="abs"><span>▶▶</span><span id="ffx">13×</span><span style="font-size:18px;color:var(--muted);font-weight:600">FAST-FORWARD</span></div>
+<div id="tag" class="abs">Send ↵</div>
+<div id="planCard" class="abs card">
+  <div style="font-size:18px;color:var(--cyan);font-weight:800;letter-spacing:3px;margin-bottom:12px">CHECKPOINT</div>
+  <div style="display:flex;gap:16px;align-items:center">
+    <div class="chk" id="planChk"><svg width="26" height="26" viewBox="0 0 26 26"><path id="planPath" d="M5 13.5 L11 19 L21 7" fill="none" stroke="#04122b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="30" stroke-dashoffset="30"/></svg></div>
+    <div style="font-size:30px;font-weight:800;line-height:1.15">Animation plan<br><span style="color:var(--green)">looks right</span></div>
+  </div>
+</div>
+<div id="lock" class="abs card">
+  <div style="font-size:18px;color:var(--muted);font-weight:700;letter-spacing:3px;margin-bottom:14px">NOW WATCH</div>
+  <div style="display:flex;align-items:center;gap:22px">
+    <div id="lkC" style="display:flex;align-items:center;gap:14px">
+      <svg width="58" height="58" viewBox="0 0 58 58" id="spark"><g fill="#d97757">
+        <rect x="26" y="3" width="6" height="52" rx="3"/><rect x="26" y="3" width="6" height="52" rx="3" transform="rotate(45 29 29)"/><rect x="26" y="3" width="6" height="52" rx="3" transform="rotate(90 29 29)"/><rect x="26" y="3" width="6" height="52" rx="3" transform="rotate(135 29 29)"/></g></svg>
+      <span style="font-size:44px;font-weight:800">Claude</span>
+    </div>
+    <span id="lkX" style="font-size:40px;color:var(--muted);font-weight:300">+</span>
+    <div id="lkH" style="display:flex;align-items:center;gap:12px">
+      <svg width="54" height="54" viewBox="0 0 54 54"><rect x="3" y="3" width="48" height="48" rx="12" fill="none" stroke="#22d3ee" stroke-width="4"/><rect x="13" y="13" width="28" height="28" rx="6" fill="#22d3ee" opacity=".35"/><path d="M22 19 L35 27 L22 35 Z" fill="#22d3ee"/></svg>
+      <span style="font-size:44px;font-weight:800;color:var(--cyan)">HyperFrames</span>
+    </div>
+  </div>
+</div>
+<div id="pipe" class="abs card">
+  <div class="node" id="n0"><div class="nodeIc">✎</div>Your prompt</div>
+  <div class="arrow"><i id="a0"></i></div>
+  <div class="node" id="n1"><div class="nodeIc">☰</div>Plan</div>
+  <div class="arrow"><i id="a1"></i></div>
+  <div class="node" id="n2"><div class="nodeIc">⚙</div>Build</div>
+  <div class="arrow"><i id="a2"></i></div>
+  <div class="node" id="n3"><div class="nodeIc">▶</div>Motion graphics video</div>
+</div>
+<div id="wait" class="abs card">
+  <div style="display:flex;align-items:center;gap:26px">
+    <svg width="130" height="130" viewBox="0 0 130 130">
+      <circle cx="65" cy="65" r="56" fill="none" stroke="rgba(148,163,184,.25)" stroke-width="8"/>
+      <circle id="dialArc" cx="65" cy="65" r="56" fill="none" stroke="#22d3ee" stroke-width="8" stroke-linecap="round" stroke-dasharray="352" stroke-dashoffset="352" transform="rotate(-90 65 65)"/>
+      <line id="hand" x1="65" y1="65" x2="65" y2="20" stroke="#f8fafc" stroke-width="6" stroke-linecap="round"/>
+      <line id="hand2" x1="65" y1="65" x2="65" y2="36" stroke="#d97757" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="65" cy="65" r="7" fill="#f8fafc"/>
+    </svg>
+    <div>
+      <div id="w1" style="font-size:20px;color:var(--cyan);font-weight:800;letter-spacing:3px">IT MAY TAKE</div>
+      <div id="w2" style="font-size:46px;font-weight:800;line-height:1.05">A few<br>minutes</div>
+    </div>
+  </div>
+  <div id="patience" style="margin-top:24px;font-size:30px;font-weight:800;display:flex;align-items:center;gap:12px"><span style="font-size:34px">☕</span> Be patient<span id="dots"></span></div>
+  <div style="margin-top:22px;height:14px;border-radius:7px;background:rgba(148,163,184,.2);overflow:hidden"><div id="prog" style="height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green));border-radius:7px"></div></div>
+  <div style="margin-top:12px;display:flex;justify-content:space-between;font-size:20px;font-weight:700;color:var(--muted)"><span id="progLbl">Prompts → final video</span><span id="pct" class="mono">0%</span></div>
+</div>
+<div id="note" class="abs card">
+  <div style="width:76px;height:76px;border-radius:20px;background:var(--amber);display:flex;align-items:center;justify-content:center;flex:none;font-size:46px;font-weight:900;color:#1d1400">!</div>
+  <div>
+    <div style="font-size:20px;color:var(--amber);font-weight:800;letter-spacing:4px">IMPORTANT NOTE</div>
+    <div style="font-size:36px;font-weight:800;margin-top:4px">Before you start writing your prompt in Claude…</div>
+  </div>
+</div>
+<div id="slash" class="abs mono"><span id="slashTxt"></span><span id="caret" style="color:var(--white)">|</span></div>
+<div id="first" class="abs">★ ALWAYS TYPE THIS FIRST</div>
+<div id="pickLbl" class="abs lbl" style="background:var(--cyan);color:#04122b">Pick “hyperframes”</div>
+<div id="brk1" class="abs brk" style="border-color:var(--cyan)"></div>
+<div id="brk2" class="abs brk" style="border-color:var(--orange)"></div>
+<div id="lbl1" class="abs lbl" style="background:var(--cyan);color:#04122b"><div class="num" style="background:#04122b;color:var(--cyan)">1</div>/hyperframes first</div>
+<div id="lbl2" class="abs lbl" style="background:var(--orange);color:#fff"><div class="num" style="background:#fff;color:var(--orange)">2</div>Then your full prompt</div>
+
+<!-- intro -->
+<div id="intro" class="abs">
+  <div id="stepWord" class="abs">STEP</div>
+  <div id="stepNum" class="abs">06</div>
+  <div id="underline" class="abs"></div>
+  <div id="title" class="abs"><span>Generate</span><span>the</span><span style="color:var(--cyan)">Motion</span><span style="color:var(--cyan)">Graphics</span></div>
+  <div id="crucial" class="abs"><span style="font-size:34px">★</span>The most crucial part</div>
+</div>
+
+<!-- outro -->
+<div id="outro" class="abs">
+  <svg id="bigchk" class="abs" viewBox="0 0 220 220">
+    <circle id="occ" cx="110" cy="110" r="96" fill="none" stroke="#34d399" stroke-width="12" stroke-linecap="round" stroke-dasharray="604" stroke-dashoffset="604" transform="rotate(-90 110 110)"/>
+    <path id="ock" d="M66 114 L98 144 L156 80" fill="none" stroke="#34d399" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="140" stroke-dashoffset="140"/>
+  </svg>
+  <div id="doneTxt" class="abs">Process <span style="color:var(--green)">complete</span></div>
+  <div id="next" class="abs card">
+    <div id="play"><svg width="54" height="54" viewBox="0 0 54 54"><path d="M16 9 L44 27 L16 45 Z" fill="#04122b"/></svg></div>
+    <div>
+      <div style="font-size:22px;color:var(--cyan);font-weight:800;letter-spacing:5px">NEXT STEP · 07</div>
+      <div style="font-size:52px;font-weight:800;letter-spacing:-1px;margin-top:6px">Preview the resulting video</div>
+    </div>
+    <div id="nextArrow" style="margin-left:auto;font-size:60px;color:var(--cyan);font-weight:300">→</div>
+  </div>
+</div>
+
+<div id="cap" class="abs"></div>
+<div id="fade" class="abs"></div>
+
+<script>
+// ---------- helpers ----------
+const $ = id => document.getElementById(id);
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const lerp=(a,b,p)=>a+(b-a)*p;
+const eo=p=>1-Math.pow(1-p,3);                       // ease out cubic
+const eio=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;     // ease in-out cubic
+const back=p=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2);};
+const prog=(t,a,b)=>clamp((t-a)/(b-a));
+// in/out envelope
+const env=(t,a,b,fi=.35,fo=.35)=>Math.min(eo(prog(t,a,a+fi)),1-eo(prog(t,b-fo,b)));
+// keyframe track [[t,v],...] eased in-out
+function kf(t,keys){
+  if(t<=keys[0][0])return keys[0][1];
+  for(let i=0;i<keys.length-1;i++){const [t0,v0]=keys[i],[t1,v1]=keys[i+1];
+    if(t<=t1){const p=eio(prog(t,t0,t1));return Array.isArray(v0)?v0.map((x,j)=>lerp(x,v1[j],p)):lerp(v0,v1,p);}}
+  return keys[keys.length-1][1];
+}
+
+// ---------- background shapes ----------
+const shapesDef=[];
+(function(){
+  const host=$('shapes');
+  const defs=[[120,140,160,'ring'],[1700,120,110,'sq'],[1760,820,200,'ring'],[90,830,120,'sq'],[960,60,60,'ring'],[1500,980,80,'sq'],[420,990,50,'ring']];
+  defs.forEach((d,i)=>{const e=document.createElement('div');e.className='abs shape'+(d[3]==='ring'?' ring':'');
+    e.style.cssText+=`width:${d[2]}px;height:${d[2]}px;left:${d[0]-d[2]/2}px;top:${d[1]-d[2]/2}px;border-radius:${d[3]==='ring'?'50%':'18px'}`;
+    host.appendChild(e);shapesDef.push({e,d,i});});
+})();
+
+// ---------- captions (timed from the real voiceover pauses) ----------
+const KEY=new Set(['claude','hyperframes','send','arrow','button','minutes','patient','final','video','slash','first','preview','plan','right','note','full']);
+const phrases=[
+ [5.46,7.10,"Now, once the animation plan looks right,"],
+ [7.27,9.56,"we ask Claude to build it by clicking the send arrow button,"],
+ [10.06,12.14,"and watch how Claude, alongside Hyperframes,"],
+ [12.50,15.06,"process the prompts into building the motion graphics video."],
+ [15.93,16.95,"It may take a few minutes,"],
+ [16.95,18.18,"but you just have to be patient enough"],
+ [18.61,20.82,"while it processes the prompts into a final video."],
+ [21.52,24.24,"Note that before you start writing your prompt in Claude"],
+ [24.70,27.06,"from the beginning, always write the slash Hyperframes first,"],
+ [27.41,28.56,"as you can see in this video,"],
+ [28.69,30.64,"before writing or pasting your prompt in full."],
+];
+const capEl=$('cap');
+const capData=phrases.map(([a,b,txt])=>{
+  const words=txt.split(' ');const lens=words.map(w=>w.length+1);const tot=lens.reduce((x,y)=>x+y,0);
+  let acc=0;const starts=lens.map(l=>{const s=a+(acc/tot)*(b-a);acc+=l;return s;});
+  return {a,b,words,starts};
+});
+let lastCap=-2;
+function renderCaps(t){
+  let idx=-1;
+  for(let i=0;i<capData.length;i++){const c=capData[i];const nextA=i+1<capData.length?capData[i+1].a:1e9;
+    if(t>=c.a-0.12&&t<Math.min(c.b+0.45,nextA-0.05)){idx=i;break;}}
+  if(idx!==lastCap){capEl.innerHTML=idx<0?'':capData[idx].words.map(w=>`<span>${w}</span>`).join('');lastCap=idx;}
+  if(idx<0)return;
+  const c=capData[idx];const spans=capEl.children;
+  const o=Math.min(eo(prog(t,c.a-0.12,c.a+0.1)),1-eo(prog(t,c.b+0.3,c.b+0.45)));
+  capEl.style.opacity=o;
+  for(let j=0;j<spans.length;j++){
+    const p=eo(prog(t,c.starts[j]-0.04,c.starts[j]+0.14));
+    const clean=c.words[j].toLowerCase().replace(/[^a-z]/g,'');
+    const key=KEY.has(clean);
+    spans[j].style.opacity=0.35+0.65*p;
+    spans[j].style.transform=`translateY(${(1-p)*10}px)`;
+    spans[j].style.color=key&&p>.5?'#22d3ee':'#f8fafc';
+  }
+}
+
+// ---------- camera (source coords 1280x720) ----------
+const VW=1376,VH=774,BASE=VW/1280; // 1.075
+function cam(t){
+  // [time,[cx,cy,zoom]]
+  return kf(t,[
+    [5.3,[640,360,1]],[7.35,[640,360,1]],[8.25,[1050,600,2.6]],[9.45,[1050,600,2.6]],[10.2,[640,360,1]],
+    [10.6,[640,360,1]],[11.6,[690,330,1.18]],[15.4,[690,330,1.18]],[15.9,[640,360,1]],
+    [21.1,[640,360,1]],[24.55,[640,360,1]],[25.2,[560,622,2.3]],[27.15,[560,622,2.3]],
+    [27.55,[560,430,1.55]],[28.75,[560,430,1.55]],[29.3,[775,520,1.38]],[31,[775,520,1.38]]
+  ]);
+}
+let C={cx:640,cy:360,z:1,s:BASE,ox:0,oy:0};
+function applyCam(t){
+  const [cx,cy,z]=cam(t);const s=BASE*z;
+  let ox=VW/2-cx*s, oy=VH/2-cy*s;
+  ox=clamp(ox,VW-1280*s,0); oy=clamp(oy,VH-720*s,0);
+  C={cx,cy,z,s,ox,oy};
+  $('scr').style.transform=`translate(${ox}px,${oy}px) scale(${s})`;
+}
+const S=(x,y)=>[C.ox+x*C.s,C.oy+y*C.s];           // source -> view coords
+const G=(x,y)=>[272+S(x,y)[0],112+34+S(x,y)[1]];   // source -> page coords (when window at rest)
+function box(el,x0,y0,x1,y1,pad=8){const [a,b]=S(x0,y0),[c,d]=S(x1,y1);
+  el.style.left=(a-pad)+'px';el.style.top=(b-pad)+'px';el.style.width=(c-a+2*pad)+'px';el.style.height=(d-b+2*pad)+'px';}
+
+// ---------- screen frames ----------
+const FPS=30, SCR_START=5.3, SCR_FRAMES=771;
+const img=$('scr');
+async function setScreen(t){
+  const i=Math.round((t-SCR_START)*FPS);
+  if(i<0||i>=SCR_FRAMES)return;
+  const src=`scr/${String(i).padStart(5,'0')}.jpg`;
+  if(img.getAttribute('src')!==src){img.setAttribute('src',src);try{await img.decode();}catch(e){}}
+}
+
+// ---------- main render ----------
+async function render(t){
+  // background
+  $('grid').style.transform=`translate(${(t*12)%80}px,${(t*8)%80}px)`;
+  shapesDef.forEach(({e,i})=>{e.style.transform=`rotate(${t*(i%2?14:-10)+i*20}deg) translateY(${Math.sin(t*.8+i)*12}px)`;
+    e.style.opacity=.6+.4*Math.sin(t*.6+i);});
+
+  // ---- INTRO 0 - 5.3 ----
+  const inO=1-eo(prog(t,4.7,5.25));
+  $('intro').style.opacity=inO;
+  const sw=eo(prog(t,0.35,0.95));
+  $('stepWord').style.opacity=sw;$('stepWord').style.letterSpacing=lerp(40,18,sw)+'px';
+  const sn=back(prog(t,0.75,1.35));
+  $('stepNum').style.opacity=clamp(prog(t,0.75,1.0));$('stepNum').style.transform=`scale(${lerp(.4,1,sn)})`;
+  // count up 01 -> 06 during "Step six"
+  const n=Math.max(1,Math.min(6,Math.floor(lerp(1,6.99,prog(t,0.8,1.45)))));$('stepNum').textContent='0'+n;
+  $('underline').style.width=lerp(0,520,eio(prog(t,1.25,1.8)))+'px';
+  [...$('title').children].forEach((sp,j)=>{const p=eo(prog(t,1.45+j*.22,1.85+j*.22));
+    sp.style.opacity=p;sp.style.transform=`translateY(${(1-p)*40}px)`;});
+  const cr=back(prog(t,3.15,3.6));
+  $('crucial').style.opacity=clamp(prog(t,3.15,3.35));
+  $('crucial').style.transform=`translateX(-50%) scale(${lerp(.5,1,cr)*(1+0.03*Math.sin(Math.max(0,t-3.6)*7)*(t<4.6?1:0))})`;
+  if(t>4.7){$('intro').style.transform=`scale(${1+ (t-4.7)*0.25})`;$('intro').style.filter=`blur(${(t-4.7)*10}px)`;}
+  else{$('intro').style.transform='';$('intro').style.filter='';}
+
+  // ---- WINDOW 5.0 - 31.5 ----
+  const winIn=eo(prog(t,4.95,5.6)), winOut=eio(prog(t,30.85,31.45));
+  const winVis=t>4.9&&t<31.5;
+  $('win').style.display=winVis?'block':'none';
+  $('win').style.opacity=Math.min(winIn,1-winOut);
+  $('win').style.transform=`translateY(${(1-winIn)*80}px) scale(${lerp(.86,1,winIn)*lerp(1,.8,winOut)})`;
+  $('win').style.filter=winOut>0?`blur(${winOut*8}px)`:'';
+  if(winVis){applyCam(clamp(t,5.3,31));await setScreen(clamp(t,5.3,31-1/30));}
+  $('barlabel').textContent= t<21.1? 'Recording · Building with Claude + HyperFrames' : 'Recording · Starting your prompt with /hyperframes';
+
+  // header + stages
+  const hO=Math.min(eo(prog(t,5.3,5.9)),1-eo(prog(t,30.8,31.3)));
+  $('hdr').style.opacity=hO;$('hdr').style.transform=`translateX(${(1-hO)*-30}px)`;
+  $('stages').style.opacity=hO;$('stages').style.transform=`translateX(${(1-hO)*30}px)`;
+  const stageT=[5.3,10.0,15.5,21.1,99];
+  for(let k=0;k<4;k++){const el=$('st'+k);el.className='stg'+(t>=stageT[k]&&t<stageT[k+1]?' on':t>=stageT[k+1]?' done':'');}
+
+  // wipe between videos
+  const wp=prog(t,20.85,21.35);
+  $('wipe').style.opacity=wp>0&&wp<1?1:0;$('wipe').style.left=lerp(-300,VW+40,eio(wp))+'px';
+  // brief flash at the swap
+  $('scrim').style.background='#070d24';
+  let scrim=0;
+  scrim=Math.max(scrim,0.55*env(t,15.75,21.0,.4,.3));                // waiting section dim
+  scrim=Math.max(scrim,0.35*env(t,21.5,24.55,.3,.3));                 // note section dim
+  $('scrim').style.opacity=scrim;
+
+  // ---- S2: plan looks right + send ----
+  const pc=env(t,5.5,7.5,.4,.3);
+  $('planCard').style.opacity=pc;$('planCard').style.transform=`translateX(${(1-eo(prog(t,5.5,5.95)))*-60}px)`;
+  $('planPath').setAttribute('stroke-dashoffset',30*(1-eo(prog(t,6.3,6.75))));
+  $('planChk').style.transform=`scale(${lerp(.6,1,back(prog(t,6.2,6.6)))})`;
+  // highlight prompt box in B (before send)
+  const hA=env(t,5.6,7.4,.3,.3);
+  $('hlA').className='abs hl';$('hlA').style.opacity=hA;
+  if(hA>0)box($('hlA'),412,384,1138,648,6);
+  // send button focus
+  const sendX=1081,sendY=625;
+  const cd=env(t,8.1,9.9,.25,.3);
+  const [vx,vy]=S(sendX,sendY);
+  $('cursorDot').style.opacity=cd*(t<9.25?1:0.6);$('cursorDot').style.left=(vx-13)+'px';$('cursorDot').style.top=(vy-13)+'px';
+  $('cursorDot').style.transform=`scale(${t>9.2&&t<9.4?0.7:1})`;
+  ['rip1','rip2'].forEach((id,k)=>{const p=prog(t,9.25+k*.15,9.95+k*.15);const r=lerp(20,150,eo(p));
+    const el=$(id);el.style.opacity=p>0&&p<1?(1-p):0;el.style.left=(vx-r)+'px';el.style.top=(vy-r)+'px';el.style.width=el.style.height=2*r+'px';});
+  // tag "Send ↵" anchored left of the button
+  const tg=env(t,8.55,9.9,.25,.3);
+  const [px,py]=G(sendX,sendY);
+  $('tag').style.opacity=tg;$('tag').style.left=(px-330)+'px';$('tag').style.top=(py-215)+'px';
+  $('tag').style.transform=`scale(${lerp(.6,1,back(prog(t,8.55,8.9)))*(t>9.25&&t<9.45?1.12:1)})`;
+  $('tag').textContent=t<9.25?'Send arrow ↵':'Sent! ✓';
+  $('tag').style.background=t<9.25?'#d97757':'#34d399';
+
+  // ---- S3: watch Claude + HyperFrames process ----
+  const ffO=env(t,10.25,21.0,.3,.3);
+  $('ff').style.opacity=ffO;$('ffx').textContent=t<15.5?'13×':'11×';
+  const lk=env(t,10.06,12.6,.35,.35);
+  $('lock').style.opacity=lk;$('lock').style.transform=`translateY(${(1-eo(prog(t,10.06,10.5)))*40}px)`;
+  $('lkC').style.opacity=eo(prog(t,10.3,10.7));
+  $('spark').style.transform=`rotate(${t*60}deg)`;
+  $('lkX').style.opacity=eo(prog(t,11.0,11.3));
+  const hp=back(prog(t,11.25,11.7));$('lkH').style.opacity=clamp(prog(t,11.25,11.45));$('lkH').style.transform=`scale(${lerp(.6,1,hp)})`;
+  const pp=env(t,12.45,15.55,.35,.35);
+  $('pipe').style.opacity=pp;$('pipe').style.transform=`translateY(${(1-eo(prog(t,12.45,12.85)))*40}px)`;
+  const nodeT=[12.55,13.2,13.95,14.6];
+  for(let k=0;k<4;k++){const on=t>=nodeT[k];const el=$('n'+k);el.style.color=on?'#f8fafc':'#94a3b8';
+    const ic=el.firstElementChild;ic.style.borderColor=on?(k===3?'#34d399':'#22d3ee'):'rgba(148,163,184,.45)';
+    ic.style.background=on?(k===3?'rgba(52,211,153,.2)':'rgba(34,211,238,.18)'):'transparent';
+    ic.style.transform=`scale(${1+0.25*Math.max(0,1-Math.abs(t-nodeT[k]-0.1)/0.2)})`;
+    if(k<3)$('a'+k).style.width=(eio(prog(t,nodeT[k],nodeT[k+1]))*100)+'%';}
+
+  // ---- S4: wait ----
+  const wo=env(t,15.8,21.0,.4,.35);
+  $('wait').style.opacity=wo;$('wait').style.transform=`translateX(${(1-eo(prog(t,15.8,16.3)))*80}px)`;
+  const spin=Math.max(0,t-15.8);
+  $('hand').setAttribute('transform',`rotate(${spin*360*1.6} 65 65)`);
+  $('hand2').setAttribute('transform',`rotate(${spin*360*0.15} 65 65)`);
+  $('dialArc').setAttribute('stroke-dashoffset',352*(1-eio(prog(t,15.9,20.7))));
+  $('patience').style.opacity=eo(prog(t,16.95,17.3));
+  $('patience').style.transform=`translateY(${(1-eo(prog(t,16.95,17.3)))*16}px)`;
+  $('dots').textContent='.'.repeat(1+Math.floor(t*3)%3);
+  const pr=eio(prog(t,18.6,20.75));$('prog').style.width=(pr*100)+'%';$('pct').textContent=Math.round(pr*100)+'%';
+  $('progLbl').textContent=pr>=1?'Final video ready ✓':'Prompts → final video';
+  $('progLbl').style.color=pr>=1?'#34d399':'#94a3b8';
+
+  // ---- S5: /hyperframes tip ----
+  const no=env(t,21.5,24.6,.4,.35);
+  $('note').style.opacity=no;$('note').style.transform=`translateY(${(1-back(prog(t,21.5,21.95)))*-50}px)`;
+  // slash callout (zoomed on the input box)
+  const word='/hyperframes';
+  const typed=Math.round(lerp(0,word.length,prog(t,25.85,26.75)));
+  $('slashTxt').textContent=word.slice(0,typed);
+  $('caret').style.opacity=(Math.floor(t*4)%2===0||t<26.8)?1:0;
+  const so=env(t,25.7,27.25,.3,.3);
+  $('slash').style.opacity=so;$('slash').style.left='560px';$('slash').style.top='300px';
+  $('slash').style.transform=`scale(${lerp(.7,1,back(prog(t,25.7,26.05)))})`;
+  const fo=env(t,26.55,27.25,.25,.3);
+  $('first').style.opacity=fo;$('first').style.left='600px';$('first').style.top='242px';
+  $('first').style.transform=`scale(${lerp(.6,1,back(prog(t,26.55,26.85)))})`;
+  // highlight the input/typed text in screen
+  const hB=Math.max(env(t,25.2,27.2,.3,.3),env(t,27.6,28.7,.3,.25));
+  $('hlB').style.opacity=hB;
+  if(t<27.4) box($('hlB'),445,606,600,644,6); else box($('hlB'),444,252,664,276,5);
+  // "Pick hyperframes" label
+  const pk=env(t,27.65,28.75,.3,.25);
+  const [lx,ly]=G(664,264);
+  $('pickLbl').style.opacity=pk;$('pickLbl').style.left=(lx+40)+'px';$('pickLbl').style.top=(ly-28)+'px';
+  $('pickLbl').style.transform=`translateX(${(1-eo(prog(t,27.65,28)))*-30}px)`;
+  // brackets after paste (prompt box ~ y 400..632 in source)
+  const b1=env(t,29.45,31.0,.3,.3), b2=env(t,29.85,31.0,.3,.3);
+  const [x1,y1]=G(447,398),[x1b,y1b]=G(447,420),[x2,y2]=G(447,420),[x2b,y2b]=G(447,634);
+  const bk1=$('brk1');bk1.style.opacity=b1;bk1.style.left=(x1-26)+'px';bk1.style.top=(y1)+'px';bk1.style.width='18px';bk1.style.height=(y1b-y1)+'px';
+  const bk2=$('brk2');bk2.style.opacity=b2;bk2.style.left=(x2-26)+'px';bk2.style.top=(y2+4)+'px';bk2.style.width='18px';bk2.style.height=(y2b-y2-4)*eo(prog(t,29.85,30.3))+'px';
+  $('lbl1').style.opacity=b1;$('lbl1').style.left=(x1-26-340)+'px';$('lbl1').style.top=(y1-12)+'px';
+  $('lbl1').style.transform=`translateX(${(1-eo(prog(t,29.45,29.8)))*-40}px)`;
+  $('lbl2').style.opacity=b2;$('lbl2').style.left=(x2-26-370)+'px';$('lbl2').style.top=((y2+y2b)/2-28)+'px';
+  $('lbl2').style.transform=`translateX(${(1-eo(prog(t,29.85,30.2)))*-40}px)`;
+
+  // ---- OUTRO 31 - 35.14 ----
+  const oo=eo(prog(t,31.1,31.5));
+  $('outro').style.opacity=oo;
+  $('occ').setAttribute('stroke-dashoffset',604*(1-eio(prog(t,31.25,31.85))));
+  $('ock').setAttribute('stroke-dashoffset',140*(1-eo(prog(t,31.7,32.1))));
+  $('bigchk').style.transform=`scale(${lerp(.7,1,back(prog(t,31.2,31.6)))})`;
+  const dt=eo(prog(t,31.5,31.95));$('doneTxt').style.opacity=dt;$('doneTxt').style.transform=`translateY(${(1-dt)*30}px)`;
+  const nx=back(prog(t,32.7,33.15));
+  $('next').style.opacity=clamp(prog(t,32.7,32.9));$('next').style.transform=`translateY(${(1-nx)*60}px)`;
+  $('play').style.transform=`scale(${1+0.06*Math.sin(Math.max(0,t-33.2)*6)})`;
+  $('play').style.boxShadow=`0 0 0 ${8+10*(0.5+0.5*Math.sin(Math.max(0,t-33.2)*6))}px rgba(34,211,238,.18)`;
+  $('nextArrow').style.transform=`translateX(${10*Math.sin(Math.max(0,t-33.2)*5)}px)`;
+
+  $('fade').style.opacity=eio(prog(t,34.85,35.14));
+  renderCaps(t);
+}
+window.render=render;
+</script>
+</body>
+</html>
