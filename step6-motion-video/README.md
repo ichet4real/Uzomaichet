@@ -4,4 +4,7 @@
 - `index.html` – the motion-graphics timeline; `render(t)` draws any moment in time.
 - `render.js` – renders `index.html` frame by frame with Playwright (`node render.js <buildDir> <outDir>`; buildDir needs `index.html` and `scr/` screen frames).
 
-The screen recordings had their OBS start/end parts removed (clip A kept 1.3–23.8 s, clip B kept 11.5–152.3 s) and were speed-ramped to match the narration.
+White background, no captions. OBS start/end parts removed from every recording and speed-ramped to the narration:
+- hyperframes_start_prompt.mp4: 1.3–23.8 s (typing /hyperframes, pasting the prompt)
+- creating_video_hyperframes1.mp4: 11.5–17.8 s (only the send-arrow click; it's the only recording that shows it)
+- creating_videos_hyperframes2.mp4 (HD): 1.75–50.0 s (Claude processing the prompt, ~4x)
