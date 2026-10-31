@@ -1,0 +1,361 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+:root{--cream:#F4F0E8;--paper:#FFFDF8;--ink:#1F1E1B;--mute:#7A766C;--line:#E4DED2;--orange:#D97757;--orange2:#C2603F;--blue:#6A9BCC;--green:#788C5D;}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--cream);font-family:Inter,"Inter Display",sans-serif;color:var(--ink)}
+#stage{position:absolute;inset:0;overflow:hidden;background:var(--cream)}
+.abs{position:absolute}
+.scene{position:absolute;inset:0;opacity:0}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55}
+.dots{position:absolute;inset:-60px;background-image:radial-gradient(#d8d0c0 1.6px,transparent 1.7px);background-size:44px 44px;opacity:.55}
+.badge{position:absolute;left:48px;top:40px;display:flex;align-items:center;gap:14px;background:var(--ink);color:#fff;border-radius:40px;padding:10px 22px 10px 10px;font-weight:600;font-size:22px;opacity:0}
+.badge .n{width:40px;height:40px;border-radius:50%;background:var(--orange);display:grid;place-items:center;font-weight:800}
+.chip{position:absolute;left:50%;top:44px;transform:translateX(-50%);background:var(--paper);border:2px solid var(--line);border-radius:40px;padding:14px 30px;font-size:30px;font-weight:600;white-space:nowrap;box-shadow:0 10px 30px rgba(60,40,20,.08);display:flex;gap:14px;align-items:center}
+.chip b{color:var(--orange)}
+.chip .dot{width:14px;height:14px;border-radius:50%;background:var(--orange)}
+.win{position:absolute;background:var(--paper);border-radius:22px;box-shadow:0 40px 90px rgba(60,40,20,.22),0 0 0 1px rgba(0,0,0,.06);overflow:hidden}
+.win .bar{height:44px;background:#EDE7DC;display:flex;align-items:center;padding-left:18px;gap:9px;font-size:16px;color:var(--mute);font-weight:500}
+.win .bar i{width:13px;height:13px;border-radius:50%;display:block}
+.vid{position:absolute;left:0;top:44px;width:1440px;height:810px;overflow:hidden;background:#fff}
+.vid img{position:absolute;left:0;top:0;width:1440px;height:810px}
+.ring{position:absolute;border:5px solid var(--orange);border-radius:16px;box-shadow:0 0 0 9999px rgba(20,15,10,0);pointer-events:none}
+.h1{font-weight:800;letter-spacing:-2px}
+.w{display:inline-block;opacity:0;margin-right:.26em}
+.or{color:var(--orange)}
+.card{position:absolute;background:var(--paper);border:2px solid var(--line);border-radius:22px;box-shadow:0 16px 40px rgba(60,40,20,.10);display:flex;align-items:center;gap:22px;padding:0 28px;font-size:34px;font-weight:700}
+.ic{width:66px;height:66px;border-radius:16px;display:grid;place-items:center;flex:none}
+/* mock UI */
+.mock{position:absolute;left:160px;top:110px;width:1600px;height:860px}
+.side{position:absolute;left:0;top:44px;width:300px;bottom:0;background:#F7F4EE;border-right:1px solid var(--line);padding:22px 18px;font-size:21px;color:#45423b}
+.side div{padding:11px 14px;border-radius:10px;display:flex;gap:12px;align-items:center}
+.row{position:absolute;display:flex;align-items:center;gap:14px;font-size:22px;padding:0 20px}
+.input{position:absolute;border:2px solid var(--line);border-radius:12px;background:#fff;display:flex;align-items:center;padding:0 20px;font-size:26px}
+.btn{position:absolute;border-radius:12px;display:grid;place-items:center;font-size:24px;font-weight:600}
+#cursor{position:absolute;left:0;top:0;width:44px;height:44px;opacity:0;z-index:50}
+.ripple{position:absolute;border-radius:50%;border:4px solid var(--orange);opacity:0;z-index:49}
+</style></head>
+<body><div id="stage">
+  <div class="dots" id="dots"></div>
+  <div class="blob" id="b1" style="width:620px;height:620px;background:#F2C3A8"></div>
+  <div class="blob" id="b2" style="width:520px;height:520px;background:#C9DCEB"></div>
+  <div class="blob" id="b3" style="width:460px;height:460px;background:#DCE3C9"></div>
+
+  <!-- A: intro -->
+  <div class="scene" id="sA">
+    <div class="abs" id="aStep" style="left:0;right:0;top:250px;text-align:center;font-size:54px;font-weight:700;letter-spacing:18px;color:var(--mute)">STEP</div>
+    <div class="abs" id="aNum" style="left:810px;top:330px;width:300px;height:300px;border-radius:50%;background:var(--orange);display:grid;place-items:center;color:#fff;font-size:210px;font-weight:800;box-shadow:0 30px 70px rgba(217,119,87,.4)">3</div>
+    <svg class="abs" id="aArc" style="left:780px;top:300px" width="360" height="360"><circle cx="180" cy="180" r="170" fill="none" stroke="#D97757" stroke-width="6" stroke-linecap="round" stroke-dasharray="1068" stroke-dashoffset="1068" transform="rotate(-90 180 180)"/></svg>
+    <div class="abs h1" id="aTitle" style="left:0;right:0;top:700px;text-align:center;font-size:76px"></div>
+  </div>
+
+  <!-- B: clip 1 -->
+  <div class="scene" id="sB">
+    <div class="chip" id="bChip"><span class="dot"></span><span id="bChipT"></span></div>
+    <div class="win" id="bWin" style="left:240px;top:150px;width:1440px;height:854px">
+      <div class="bar"><i style="background:#E9715F"></i><i style="background:#E8B44C"></i><i style="background:#79B866"></i><span style="margin-left:14px">Claude — Desktop app</span></div>
+      <div class="vid" id="bVid"><div id="bZoom" class="abs" style="inset:0"><img id="bImg"><div class="ring" id="bRing"></div></div></div>
+    </div>
+  </div>
+
+  <!-- C/D: environment concept -->
+  <div class="scene" id="sC">
+    <div class="abs h1" id="cHead" style="left:0;right:0;top:120px;text-align:center;font-size:72px"></div>
+    <svg class="abs" id="cUnder" style="left:0;top:215px" width="1920" height="30"><path id="cUnderP" d="M700 15 Q960 0 1220 15" fill="none" stroke="#D97757" stroke-width="8" stroke-linecap="round" stroke-dasharray="560" stroke-dashoffset="560"/></svg>
+    <div class="abs" id="cBox" style="left:610px;top:330px;width:700px;height:520px">
+      <svg class="abs" style="left:0;top:0" width="700" height="520"><rect id="cRect" x="4" y="4" width="692" height="512" rx="34" fill="none" stroke="#D97757" stroke-width="6" stroke-dasharray="24 16" stroke-dashoffset="0"/></svg>
+      <div class="abs" id="cFill" style="inset:4px;border-radius:32px;background:rgba(217,119,87,.08)"></div>
+      <div class="abs" id="cLabel" style="left:0;right:0;top:-30px;text-align:center"><span style="background:var(--orange);color:#fff;border-radius:30px;padding:10px 26px;font-size:28px;font-weight:700">Your Environment</span></div>
+      <div class="abs" id="cIcons" style="left:0;right:0;top:170px;display:flex;justify-content:center;gap:60px">
+        <div class="ic" id="cI1" style="width:150px;height:150px;border-radius:34px;background:#fff;box-shadow:0 14px 30px rgba(60,40,20,.12)"><svg width="80" height="80" viewBox="0 0 24 24"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2h8.5A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z" fill="#E8B44C"/></svg></div>
+        <div class="ic" id="cI2" style="width:150px;height:150px;border-radius:34px;background:#1F1E1B;box-shadow:0 14px 30px rgba(60,40,20,.12);color:#F2C3A8;font-family:'DejaVu Sans Mono',monospace;font-size:54px;font-weight:700">&gt;_</div>
+        <div class="ic" id="cI3" style="width:150px;height:150px;border-radius:34px;background:var(--orange);box-shadow:0 14px 30px rgba(60,40,20,.12)"><svg width="80" height="80" viewBox="0 0 24 24"><path d="M12 2l2.2 6.6L21 9l-5.4 4 2 7-5.6-4.2L6.4 20l2-7L3 9l6.8-.4z" fill="#fff"/></svg></div>
+      </div>
+    </div>
+    <!-- D cards -->
+    <div class="card" id="d1" style="left:200px;top:330px;width:520px;height:120px"><div class="ic" style="background:#1F1E1B;color:#F2C3A8;font-family:'DejaVu Sans Mono',monospace;font-size:30px">&gt;_</div>Command prompts</div>
+    <div class="card" id="d2" style="left:200px;top:480px;width:520px;height:120px"><div class="ic" style="background:#C9DCEB"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1F1E1B" stroke-width="2.4" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></div>Instructions</div>
+    <div class="card" id="d3" style="left:200px;top:630px;width:520px;height:120px"><div class="ic" style="background:#DCE3C9"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1F1E1B" stroke-width="2.4" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></div>Edits</div>
+    <svg class="abs" id="dArrow" style="left:760px;top:470px" width="300" height="160"><path id="dArrowP" d="M10 80 H260 M220 40 L270 80 L220 120" fill="none" stroke="#D97757" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="420" stroke-dashoffset="420"/></svg>
+    <div class="abs" id="dOut" style="left:1110px;top:330px;width:620px;height:420px;border-radius:30px;background:var(--ink);color:#fff;overflow:hidden;box-shadow:0 30px 70px rgba(30,20,10,.3)">
+      <div class="abs" id="dBars" style="left:50px;right:50px;top:60px;height:200px"></div>
+      <div class="abs" style="left:50px;bottom:56px;font-size:46px;font-weight:800">Motion Graphics</div>
+      <div class="abs" id="dPlay" style="right:50px;bottom:50px;width:72px;height:72px;border-radius:50%;background:var(--orange);display:grid;place-items:center"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="#fff"/></svg></div>
+    </div>
+  </div>
+
+  <!-- E: question -->
+  <div class="scene" id="sE">
+    <div class="abs h1" id="eQ" style="left:0;right:0;top:380px;text-align:center;font-size:110px"></div>
+    <div class="abs" id="eMark" style="left:1660px;top:300px;font-size:240px;font-weight:800;color:var(--orange)">?</div>
+    <div class="abs" id="eWatch" style="left:0;right:0;top:420px;text-align:center;font-size:120px;font-weight:800;display:flex;justify-content:center;align-items:center;gap:40px">
+      <div id="eEye" style="width:150px;height:150px;border-radius:50%;background:var(--orange);display:grid;place-items:center"><svg width="70" height="70" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" fill="#fff"/></svg></div><span>Just watch.</span></div>
+  </div>
+  <div class="abs" id="wipe" style="top:0;bottom:0;width:2400px;left:-2400px;background:var(--orange);z-index:40"></div>
+
+  <!-- F/G: mock UI -->
+  <div class="scene" id="sF">
+    <div class="chip" id="fChip" style="z-index:5"><span class="dot"></span><span id="fChipT"></span></div>
+    <div class="mock win" id="mock">
+      <div class="bar"><i style="background:#E9715F"></i><i style="background:#E8B44C"></i><i style="background:#79B866"></i><span style="margin-left:14px">Claude — Code</span></div>
+      <div class="side">
+        <div style="background:#ECE6DB;font-weight:600">＋ New</div><div>⌕ Search</div><div>▢ Artifacts</div><div>⚙ Customize</div><div>⋯ More</div>
+        <div style="margin-top:30px;color:var(--mute);font-size:17px">RECENTS</div>
+        <div style="height:16px;background:#ECE6DB;margin:10px 14px;width:200px"></div>
+        <div style="height:16px;background:#ECE6DB;margin:10px 14px;width:160px"></div>
+        <div style="height:16px;background:#ECE6DB;margin:10px 14px;width:220px"></div>
+      </div>
+      <!-- env card at stage coords: card left 900, top 420 -> mock-relative minus (160,110) -->
+      <svg class="abs" style="left:1050px;top:230px" width="60" height="60" viewBox="0 0 24 24"><path d="M12 1.5l1.6 7.2 6.8-3-4.6 5.8 6.7 2.6-7.3.5 1.5 7.2-4.7-5.6-4.7 5.6 1.5-7.2-7.3-.5 6.7-2.6L3.6 5.7l6.8 3z" fill="#D97757"/></svg>
+      <div class="abs" style="left:740px;top:310px;width:420px;height:106px;background:#fff;border:2px solid var(--line);border-radius:16px;box-shadow:0 10px 26px rgba(0,0,0,.06)">
+        <div class="row" style="left:0;right:0;top:0;height:52px;border-bottom:1px solid var(--line)"><span>☁</span><span id="envName">Default</span><span style="margin-left:auto">✓</span></div>
+        <div class="row" id="chooseRow" style="left:0;right:0;top:52px;height:52px;color:#45423b">Choose environment ⌄</div>
+      </div>
+      <!-- dropdown -->
+      <div class="abs" id="menu" style="left:760px;top:430px;width:380px;background:#fff;border:2px solid var(--line);border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,.12);overflow:hidden;opacity:0">
+        <div style="padding:14px 20px 6px;font-size:15px;color:var(--mute);letter-spacing:2px">ENVIRONMENTS</div>
+        <div class="row" style="position:relative;height:50px">☁ Default</div>
+        <div style="height:1px;background:var(--line)"></div>
+        <div class="row" id="newEnv" style="position:relative;height:56px;font-weight:600">＋ New environment</div>
+      </div>
+      <div class="abs" style="left:400px;top:760px;width:1100px;height:62px;border:2px solid var(--line);border-radius:16px;background:#fff;display:flex;align-items:center;padding:0 22px;font-size:21px;color:#A19C90">＋&nbsp;&nbsp;Describe a task or ask a question</div>
+      <div class="abs" id="dim" style="inset:44px 0 0 0;background:rgba(30,25,20,.35);opacity:0"></div>
+    </div>
+    <!-- modal in stage coords -->
+    <div class="abs" id="modal" style="left:590px;top:230px;width:740px;height:600px;background:#fff;border-radius:24px;box-shadow:0 40px 90px rgba(0,0,0,.3);opacity:0">
+      <div class="abs" style="left:44px;top:36px;font-size:36px;font-weight:800">New environment</div>
+      <div class="abs" style="left:44px;top:104px;display:flex;gap:10px;background:#F2EEE6;border-radius:14px;padding:6px">
+        <div id="tabLocal" style="padding:10px 30px;border-radius:10px;background:#fff;font-size:22px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.08)">🖥 Local</div>
+        <div style="padding:10px 30px;font-size:22px;color:var(--mute)">☁ Cloud</div>
+      </div>
+      <div class="abs" style="left:44px;top:200px;font-size:20px;font-weight:600;color:var(--mute)">Name</div>
+      <div class="input" id="nameIn" style="left:44px;top:232px;width:652px;height:64px"><span id="nameT"></span><span id="caret" style="width:3px;height:32px;background:var(--orange);margin-left:2px"></span></div>
+      <div class="abs" style="left:44px;top:326px;font-size:20px;font-weight:600;color:var(--mute)">Folder</div>
+      <div class="btn" id="addBtn" style="left:44px;top:358px;width:150px;height:60px;border:2px dashed #CFC6B5;color:#45423b">＋ Add</div>
+      <div class="abs" id="folderChip" style="left:214px;top:358px;height:60px;display:flex;align-items:center;gap:12px;background:#FBF3E4;border:2px solid #EBD9B5;border-radius:12px;padding:0 20px;font-size:22px;opacity:0"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2h8.5A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z" fill="#E8B44C"/></svg><b>ai-motion-lab</b><span style="color:var(--mute)">· Desktop</span></div>
+      <div class="btn" style="left:300px;top:500px;width:140px;height:62px;color:var(--mute);border:2px solid var(--line)">Cancel</div>
+      <div class="btn" id="createBtn" style="left:456px;top:500px;width:240px;height:62px;background:var(--orange);color:#fff">Create environment</div>
+    </div>
+    <div class="ring" id="fRing" style="opacity:0;z-index:30"></div>
+    <div class="abs" id="toast" style="left:660px;top:420px;width:600px;height:240px;background:var(--paper);border-radius:30px;box-shadow:0 40px 90px rgba(0,0,0,.25);display:flex;align-items:center;gap:34px;padding:0 50px;opacity:0;z-index:35">
+      <svg width="130" height="130" viewBox="0 0 130 130"><circle cx="65" cy="65" r="60" fill="#788C5D"/><path id="chk" d="M38 67 L57 86 L93 48" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="90" stroke-dashoffset="90"/></svg>
+      <div><div style="font-size:42px;font-weight:800">Environment created</div><div style="font-size:26px;color:var(--mute);margin-top:6px">ai-motion-lab · Local</div></div>
+    </div>
+    <div class="abs" id="burst" style="left:660px;top:420px;width:600px;height:240px;z-index:34"></div>
+  </div>
+
+  <!-- clip 2 windows -->
+  <div class="scene" id="sG">
+    <div class="chip"><span class="dot"></span><span id="gChipT"></span></div>
+    <div class="win" id="gWin" style="left:240px;top:150px;width:1440px;height:854px">
+      <div class="bar"><i style="background:#E9715F"></i><i style="background:#E8B44C"></i><i style="background:#79B866"></i><span id="gBar" style="margin-left:14px"></span></div>
+      <div class="vid"><div id="gZoom" class="abs" style="inset:0"><img id="gImg"><div class="ring" id="gRing"></div></div></div>
+    </div>
+  </div>
+
+  <!-- I: outro -->
+  <div class="scene" id="sI">
+    <div class="abs" id="iSmall" style="left:0;right:0;top:330px;text-align:center;font-size:48px;font-weight:600;color:var(--mute)">Let's move to</div>
+    <div class="abs" id="iBig" style="left:0;right:0;top:420px;display:flex;justify-content:center;align-items:center;gap:40px">
+      <span class="h1" style="font-size:170px">STEP</span>
+      <div style="width:220px;height:220px;border-radius:50%;background:var(--orange);display:grid;place-items:center;color:#fff;font-size:150px;font-weight:800">4</div>
+      <svg id="iArrow" width="180" height="120" viewBox="0 0 180 120"><path d="M10 60 H150 M110 20 L160 60 L110 100" fill="none" stroke="#1F1E1B" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+
+  <div class="badge" id="badge"><div class="n">3</div>Create your environment</div>
+  <svg id="cursor" viewBox="0 0 24 24"><path d="M4 2l15 11-6.5 1.2 3.8 7.3-3 1.5-3.7-7.4L4 20z" fill="#1F1E1B" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+  <div class="ripple" id="ripple"></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const FPS=30;
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const P=(t,a,b)=>clamp((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);
+const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const back=x=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+const lerp=(a,b,x)=>a+(b-a)*x;
+function words(el,html){el.innerHTML=html.split('|').map(w=>`<span class="w">${w}</span>`).join('');return [...el.children]}
+function wordsIn(ws,t,start,gap=0.07,dur=0.45){ws.forEach((w,i)=>{const x=eo(P(t,start+i*gap,start+i*gap+dur));w.style.opacity=x;w.style.transform=`translateY(${(1-x)*40}px)`;w.style.filter=`blur(${(1-x)*8}px)`})}
+// scene envelope: fade in [a,a+fi], out [b-fo,b]
+function env(t,a,b,fi=.35,fo=.3){if(t<a||t>b)return 0;return Math.min(eo(P(t,a,a+fi)),1-P(t,b-fo,b))}
+
+const aW=words($('aTitle'),'Create|your|environment|inside|<span class="or">Claude</span>|<span class="or">Code</span>');
+const cW=words($('cHead'),'Create|your|<span class="or">environment</span>');
+const eW=words($('eQ'),'So,|how|do|we|create|one');
+
+// segment timings (seconds, from transcript)
+const T={A:[0,3.43],B:[3.43,11.28],C:[11.28,19.40],E:[19.40,22.49],F:[22.49,35.40],G1:[35.40,39.58],F2:[39.58,42.66],G2:[42.66,48.55],I:[48.55,50.24]};
+
+function show(id,o){$(id).style.opacity=o;$(id).style.display=o>0.001?'block':'none'}
+
+// cursor keyframes: [t,x,y] in stage coords
+const CK=[[22.49,1500,980],[23.1,1500,980],[23.9,1010,500],[24.6,1010,500],[25.1,1000,657],[25.9,1000,657],[26.4,1000,657],[27.3,1350,900],[33.9,1350,900],[34.7,705,615],[35.4,705,615],
+          [39.58,705,615],[40.0,705,615],[40.8,1160,758],[41.4,1160,758],[42.0,1500,980]];
+const CLICKS=[24.0,26.05,34.85,41.0];
+function cursorAt(t){
+  let p=CK[0];for(let i=0;i<CK.length-1;i++){const a=CK[i],b=CK[i+1];if(t>=a[0]&&t<=b[0]){const x=eio(P(t,a[0],b[0]));return [lerp(a[1],b[1],x),lerp(a[2],b[2],x)]}}
+  return t<CK[0][0]?[CK[0][1],CK[0][2]]:[CK[CK.length-1][1],CK[CK.length-1][2]];
+}
+function ring(el,x,y,w,h,t0,t,pad=10){ // x,y,w,h in px of parent
+  const k=eo(P(t,t0,t0+.4)); const pulse=1+0.04*Math.sin((t-t0)*6);
+  el.style.opacity=k; el.style.left=(x-pad)+'px';el.style.top=(y-pad)+'px';el.style.width=(w+2*pad)+'px';el.style.height=(h+2*pad)+'px';
+  el.style.transform=`scale(${lerp(1.5,1,k)*pulse})`;
+}
+
+let imgCache={};
+async function setImg(img,dir,n,total){
+  n=Math.max(1,Math.min(total,n)); const src=`frames/${dir}/${String(n).padStart(4,'0')}.jpg`;
+  if(img.getAttribute('src')!==src){img.src=src; try{await img.decode()}catch(e){}}
+}
+
+async function render(t){
+  // background drift
+  $('b1').style.transform=`translate(${-120+80*Math.sin(t*.25)}px,${-160+60*Math.cos(t*.2)}px)`;
+  $('b2').style.transform=`translate(${1500+70*Math.cos(t*.22)}px,${650+60*Math.sin(t*.3)}px)`;
+  $('b3').style.transform=`translate(${1300+90*Math.sin(t*.18)}px,${-120+50*Math.cos(t*.27)}px)`;
+  $('dots').style.transform=`translate(${(t*6)%44}px,${(t*4)%44}px)`;
+
+  // badge (steps C..G2)
+  const bo=Math.min(eo(P(t,11.4,11.9)),1-P(t,48.2,48.5)); $('badge').style.opacity=bo; $('badge').style.transform=`translateX(${(1-bo)*-40}px)`;
+
+  // ---- A intro
+  let o=env(t,...T.A,.01,.3); show('sA',o);
+  if(o>0){
+    const s=back(P(t,.25,.85)); $('aNum').style.transform=`scale(${s}) rotate(${(1-s)*-30}deg)`;
+    const st=eo(P(t,.1,.6)); $('aStep').style.opacity=st; $('aStep').style.letterSpacing=lerp(60,18,st)+'px';
+    $('aArc').querySelector('circle').style.strokeDashoffset=1068*(1-eio(P(t,.5,1.6)));
+    $('aArc').style.transform=`rotate(${t*40}deg)`;
+    wordsIn(aW,t,1.75,.09);
+    const ex=eio(P(t,3.1,3.43)); $('sA').style.transform=`translateY(${-ex*60}px) scale(${1-ex*.05})`;
+  }
+
+  // ---- B clip1
+  o=env(t,...T.B,.4,.3); show('sB',o);
+  if(o>0){
+    const k=back(P(t,3.43,3.95)); $('bWin').style.transform=`translateY(${(1-k)*80}px) scale(${lerp(.92,1,k)})`;
+    $('bChipT').innerHTML = t<6.2?'Install &amp; open the <b>Claude desktop app</b>':'Select the <b>Code</b> section';
+    const cs=t<6.2?eo(P(t,3.6,4.0)):back(P(t,6.2,6.6)); $('bChip').style.transform=`translateX(-50%) scale(${lerp(.8,1,cs)})`; $('bChip').style.opacity=cs;
+    await setImg($('bImg'),'c1',Math.floor((t-3.43)*FPS)+1,236);
+    // zoom into Code icon at (0.19,0.024) of 1440x810
+    const fx=0.1914*1440, fy=0.024*810;
+    const z=eio(P(t,6.5,7.3))*(1-eio(P(t,9.9,10.6)));
+    $('bZoom').style.transformOrigin=`${fx}px 0px`; $('bZoom').style.transform=`scale(${1+1.6*z})`;
+    if(t>7.1&&t<10.0){ring($('bRing'),fx-40,fy-15,80,32,7.1,t,3);$('bRing').style.borderWidth='3px';$('bRing').style.borderRadius='10px'} else $('bRing').style.opacity=0;
+  }
+
+  // ---- C/D environment concept
+  o=env(t,...T.C,.35,.35); show('sC',o);
+  if(o>0){
+    wordsIn(cW,t,11.4,.12);
+    $('cUnderP').style.strokeDashoffset=560*(1-eio(P(t,12.0,12.6)));
+    const hu=eio(P(t,14.6,15.1)); $('cHead').style.transform=`translateY(${-hu*30}px)`; $('cHead').style.opacity=1-hu; $('cUnder').style.opacity=1-hu;
+    // box draw
+    const bd=eio(P(t,12.4,13.4)); $('cRect').style.strokeDasharray=bd<1?`${2400*bd} 2400`:'24 16'; $('cRect').style.strokeDashoffset= bd<1?0:-(t*30);
+    $('cFill').style.opacity=eo(P(t,13.2,13.7)); $('cLabel').style.opacity=eo(P(t,13.3,13.7)); $('cLabel').style.transform=`translateY(${(1-eo(P(t,13.3,13.7)))*20}px)`;
+    ['cI1','cI2','cI3'].forEach((id,i)=>{const k=back(P(t,13.5+i*.18,13.95+i*.18));$(id).style.transform=`scale(${k}) translateY(${Math.sin(t*2+i)*6}px)`;});
+    // box moves out & fades as cards come in
+    const mv=eio(P(t,14.65,15.3)); $('cBox').style.transform=`translateX(${-mv*700}px) scale(${1-mv*.3})`; $('cBox').style.opacity=1-mv;
+    // D cards
+    [[15.55,'d1'],[16.95,'d2'],[17.6,'d3']].forEach(([s,id])=>{const k=back(P(t,s,s+.45));$(id).style.opacity=clamp(k);$(id).style.transform=`translateX(${(1-k)*-120}px)`;});
+    $('dArrowP').style.strokeDashoffset=420*(1-eio(P(t,18.0,18.5)));
+    const ok=back(P(t,18.35,18.85)); $('dOut').style.opacity=clamp(ok*1.2); $('dOut').style.transform=`scale(${lerp(.6,1,ok)})`;
+    // animated bars inside output tile
+    let bars='';for(let i=0;i<9;i++){const h=40+70*(0.5+0.5*Math.sin(t*4+i*.9));bars+=`<div style="position:absolute;bottom:0;left:${i*58}px;width:38px;height:${h*eo(P(t,18.6,19.0))}px;border-radius:10px;background:${['#D97757','#6A9BCC','#788C5D'][i%3]}"></div>`}
+    $('dBars').innerHTML=bars;
+  }
+
+  // ---- E question
+  o=env(t,...T.E,.3,.01); show('sE',o);
+  if(o>0){
+    wordsIn(eW,t,19.45,.08);
+    const q=back(P(t,19.9,20.4)); $('eMark').style.transform=`scale(${q}) rotate(${(1-q)*40+Math.sin(t*5)*6}deg)`;
+    const qo=1-eio(P(t,20.85,21.15)); $('eQ').style.opacity=qo; $('eMark').style.opacity=qo*clamp(q); $('eQ').style.transform=`translateY(${-(1-qo)*80}px)`;
+    const w=back(P(t,21.1,21.55)); $('eWatch').style.opacity=clamp(w); $('eWatch').style.transform=`scale(${lerp(.7,1,w)})`;
+    $('eEye').style.transform=`scale(${1+0.06*Math.sin(t*9)})`;
+  }
+  // wipe transition 22.15->22.85
+  const wp=eio(P(t,22.15,22.85)); $('wipe').style.left=(wp<=0||wp>=1)?'-2400px':`${lerp(-2400,1920,wp)}px`;
+
+  // ---- F/F2 mock UI
+  const fOn = t>=T.F[0]&&t<T.F[1] || t>=T.F2[0]&&t<T.F2[1];
+  o=fOn?1:0; show('sF',o);
+  if(o>0){
+    const inF=t<T.F[1];
+    const m=inF?eo(P(t,22.45,22.9)):1; $('mock').style.transform=`scale(${lerp(.94,1,m)})`;
+    // chip text
+    let ct='Click <b>Choose environment</b>';
+    if(t>=25.85)ct='Choose <b>New environment</b>'; if(t>=27.25)ct='A new box shows under <b>Local</b>'; if(t>=32.3)ct='Name it after your <b>project folder</b>'; if(t>=34.54)ct='Under Folder, click <b>+ Add</b>';
+    if(t>=39.58)ct='Click <b>Create environment</b>';
+    $('fChipT').innerHTML=ct;
+    // menu
+    const mo=eo(P(t,24.1,24.4))*(1-P(t,26.2,26.4)); $('menu').style.opacity=inF?mo:0; $('menu').style.transform=`translateY(${(1-mo)*-12}px)`;
+    $('newEnv').style.background=(t>25.6&&t<26.4)?'#FBEDE6':'transparent'; $('newEnv').style.color=(t>25.6&&t<26.4)?'#C2603F':'';
+    $('chooseRow').style.background=(t>23.7&&t<24.5)?'#F7F1E8':'transparent';
+    // modal
+    const mdIn=back(P(t,26.3,26.75)); const mdOut=inF?0:eio(P(t,41.25,41.6));
+    const mdo=clamp(mdIn)*(1-mdOut); $('modal').style.opacity=mdo; $('modal').style.transform=`translateY(${(1-clamp(mdIn))*40}px) scale(${lerp(.85,1,mdIn)*(1-mdOut*.15)})`;
+    $('dim').style.opacity=mdo;
+    // name typing
+    let name=''; const n1='My App Space', n2='ai-motion-lab';
+    if(t>=27.5&&t<32.4) name=n1.slice(0,Math.floor(P(t,27.5,28.4)*n1.length));
+    else if(t>=32.4){ if(t<32.9) name=n1.slice(0,Math.ceil((1-P(t,32.4,32.9))*n1.length)); else name=n2.slice(0,Math.floor(P(t,32.9,33.8)*n2.length));}
+    $('nameT').textContent=name; $('caret').style.opacity=(t>27.3&&t<34.2&&Math.floor(t*2.5)%2==0)?1:0;
+    $('nameIn').style.borderColor=(t>27.3&&t<34.2)?'#D97757':'';
+    $('envName').textContent=(!inF&&t>41.3)?'ai-motion-lab':'Default';
+    // add btn press & folder chip
+    $('addBtn').style.background=(t>34.75&&t<35.1)?'#FBEDE6':'';
+    const fc=inF?0:back(P(t,39.62,40.0)); $('folderChip').style.opacity=clamp(fc); $('folderChip').style.transform=`scale(${lerp(.6,1,fc)})`;
+    const cb=(t>40.95&&t<41.15)?.94:1; $('createBtn').style.transform=`scale(${cb})`;
+    $('createBtn').style.boxShadow=(t>40.6&&t<41.3)?'0 0 0 6px rgba(217,119,87,.3)':'none';
+    // rings
+    const R=$('fRing'); R.style.opacity=0;
+    if(t>27.3&&t<30.9) ring(R,640,340,165,50,27.3,t,8);           // Local tab (stage coords: modal 590+44, 230+104)
+    else if(t>30.9&&t<32.3) ring(R,634,462,652,64,30.9,t,8);      // name field
+    // toast
+    const to=inF?0:back(P(t,41.55,42.0))*(1-eio(P(t,42.4,42.66))); $('toast').style.opacity=clamp(to); $('toast').style.transform=`scale(${lerp(.7,1,to)})`;
+    $('chk').style.strokeDashoffset=90*(1-eio(P(t,41.8,42.2)));
+    let bs=''; if(!inF&&t>41.7){const b=eo(P(t,41.7,42.4));for(let i=0;i<14;i++){const a=i/14*Math.PI*2;const r=150+260*b;bs+=`<div style="position:absolute;left:${300+Math.cos(a)*r*1.4}px;top:${120+Math.sin(a)*r*.8}px;width:${18*(1-b)+2}px;height:${18*(1-b)+2}px;border-radius:50%;background:${['#D97757','#E8B44C','#788C5D','#6A9BCC'][i%4]};opacity:${1-b}"></div>`}}
+    $('burst').innerHTML=bs;
+  }
+
+  // ---- G clip2 windows
+  const g1=t>=T.G1[0]&&t<T.G1[1], g2=t>=T.G2[0]&&t<T.G2[1];
+  show('sG', g1?1: g2?env(t,...T.G2,.01,.3):0);
+  if(g1||g2){
+    const t0=g1?T.G1[0]:T.G2[0];
+    const k=back(P(t,t0,t0+.45)); $('gWin').style.transform=`translateY(${(1-k)*60}px) scale(${lerp(.9,1,k)})`;
+    if(g1){
+      $('gChipT').innerHTML='Select the project folder you created on your <b>desktop</b>'; $('gBar').textContent='Your computer desktop';
+      await setImg($('gImg'),'c2a',Math.floor((t-t0)*FPS)+1,125);
+      $('gZoom').style.transform='none'; $('gRing').style.opacity=0;
+    } else {
+      $('gChipT').innerHTML = t<46.87?'It now shows in your <b>Claude desktop</b>':'If not selected, <b>select it</b> ✓';
+      $('gBar').textContent='Claude — Code';
+      await setImg($('gImg'),'c2b',Math.floor((t-t0)*FPS)+1,177);
+      const fx=0.604*1440, fy=0.40*810; const z=eio(P(t,43.3,44.2));
+      $('gZoom').style.transformOrigin=`${fx}px ${fy}px`; $('gZoom').style.transform=`scale(${1+1.1*z})`;
+      if(t>44.0) ring($('gRing'),0.49*1440,0.335*810,0.235*1440,0.055*810,44.0,t,8); else $('gRing').style.opacity=0;
+      $('gRing').style.borderWidth='3px';
+    }
+  }
+
+  // ---- I outro
+  o=env(t,T.I[0],T.I[1]+1,.3,.01); show('sI',o);
+  if(o>0){
+    const s=eo(P(t,48.6,49.0)); $('iSmall').style.opacity=s; $('iSmall').style.transform=`translateY(${(1-s)*30}px)`;
+    const b=back(P(t,48.8,49.3)); $('iBig').style.opacity=clamp(b); $('iBig').style.transform=`scale(${lerp(.7,1,b)})`;
+    $('iArrow').style.transform=`translateX(${12*Math.sin(t*7)}px)`;
+  }
+
+  // cursor (F segments)
+  const cOn=(t>=23.0&&t<35.4)||(t>=39.6&&t<42.0);
+  const [cx,cy]=cursorAt(t); const C=$('cursor'); C.style.opacity=cOn?1:0;
+  let press=0; CLICKS.forEach(c=>{if(t>=c&&t<c+.18)press=1}); C.style.transform=`translate(${cx}px,${cy}px) scale(${press?0.85:1})`;
+  const Rp=$('ripple'); Rp.style.opacity=0;
+  CLICKS.forEach(c=>{if(t>=c&&t<c+.5&&cOn){const x=P(t,c,c+.5);const r=10+60*eo(x);Rp.style.opacity=1-x;Rp.style.left=(cx+6-r)+'px';Rp.style.top=(cy+4-r)+'px';Rp.style.width=Rp.style.height=(2*r)+'px'}});
+  return true;
+}
+window.render=render;
+</script></body></html>

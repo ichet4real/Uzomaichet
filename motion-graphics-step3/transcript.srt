@@ -1,0 +1,87 @@
+1
+00:00:00,350 --> 00:00:01,751
+Step three.
+
+2
+00:00:01,751 --> 00:00:03,432
+Create your environment inside Claude Code.
+
+3
+00:00:03,432 --> 00:00:06,235
+Note that after installing and opening your Claude desktop app,
+
+4
+00:00:06,235 --> 00:00:09,878
+note that you have to select the Code section of the Claude desktop
+
+5
+00:00:09,878 --> 00:00:11,279
+app.
+
+6
+00:00:11,279 --> 00:00:14,642
+Now, on the Claude Code interface, you need to create your environment.
+
+7
+00:00:14,642 --> 00:00:17,164
+Such environment is where you will run command prompts,
+
+8
+00:00:17,164 --> 00:00:19,405
+instructions, and edits for creating your motion graphics.
+
+9
+00:00:19,405 --> 00:00:21,087
+So, how do we create one?
+
+10
+00:00:21,087 --> 00:00:22,488
+Just watch.
+
+11
+00:00:22,488 --> 00:00:25,851
+On the Claude interface, you click Choose Environment in the drop-down menu.
+
+12
+00:00:25,851 --> 00:00:27,252
+Choose New Environment.
+
+13
+00:00:27,252 --> 00:00:30,895
+A new environment box shows up under Local and the name My App
+
+14
+00:00:30,895 --> 00:00:32,296
+Space.
+
+15
+00:00:32,296 --> 00:00:34,538
+You can name it the project folder name.
+
+16
+00:00:34,538 --> 00:00:38,181
+Under Folder, click Plus Add and select the project folder you created on
+
+17
+00:00:38,181 --> 00:00:39,582
+your computer desktop.
+
+18
+00:00:39,582 --> 00:00:42,664
+After that, click Create Environment to finally create your own environment.
+
+19
+00:00:42,664 --> 00:00:45,466
+Once done, it will reflect on your Claude desktop area,
+
+20
+00:00:45,466 --> 00:00:46,868
+as you can see here.
+
+21
+00:00:46,868 --> 00:00:48,549
+If not selected, please select it.
+
+22
+00:00:48,549 --> 00:00:49,950
+Let's move to step four.
