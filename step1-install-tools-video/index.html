@@ -1,0 +1,424 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Step 1 - Install the tools</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#060a16}
+body{font-family:Inter,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+#stage{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#0f1a36 0%,#070b18 70%)}
+.a{position:absolute;left:0;top:0;will-change:transform,opacity}
+.glow{position:absolute;width:1500px;height:1500px;border-radius:50%;left:0;top:0;opacity:0}
+#grid{position:absolute;inset:-100px;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:80px 80px;-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%)}
+.dot{position:absolute;left:0;top:0;width:6px;height:6px;border-radius:50%;background:#fff}
+.scene{position:absolute;left:0;top:0;width:1920px;height:1080px}
+/* text */
+.kicker{font:700 22px Inter;letter-spacing:.32em;color:#8fa0c8;text-transform:uppercase;white-space:nowrap}
+.h1{font:800 64px Inter;letter-spacing:-.02em;white-space:nowrap}
+.muted{color:#9aa6c2}
+/* cards */
+.wrap{width:520px;height:330px}
+.card{width:520px;height:260px;border-radius:30px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 30px 60px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.08)}
+.card.dark{background:#16202f;box-shadow:0 30px 60px rgba(0,0,0,.45),0 0 0 2px #2c3f57}
+.card img{max-width:78%;max-height:58%;object-fit:contain}
+.card.dark img{max-height:52%}
+.lbl{text-align:center;font:700 36px Inter;margin-top:20px;white-space:nowrap}
+.badge{position:absolute;top:-20px;right:-16px;padding:10px 18px;border-radius:999px;font:800 18px Inter;letter-spacing:.12em;white-space:nowrap;color:#111;background:linear-gradient(135deg,#ffd27a,#ff9a5b);box-shadow:0 10px 24px rgba(0,0,0,.35)}
+.badge.v{background:linear-gradient(135deg,#8be26e,#3fa34a);color:#06200a;font-size:22px}
+.num{font:800 30px "JetBrains Mono";color:#8fa0c8;white-space:nowrap}
+/* HUD */
+.pill{display:inline-flex;align-items:center;gap:14px;padding:12px 22px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);font:600 22px Inter;white-space:nowrap}
+.pill b{background:linear-gradient(135deg,#ff9a6b,#d97757);color:#1b0b04;padding:4px 12px;border-radius:999px;font-weight:800;letter-spacing:.08em}
+#tracker{display:flex;gap:10px}
+.tchip{padding:10px 18px;border-radius:999px;font:600 19px Inter;color:#8592b0;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);white-space:nowrap}
+#prog{position:absolute;left:0;bottom:0;height:5px;background:linear-gradient(90deg,#d97757,#22e3e8,#4fdc62)}
+/* left column */
+.lcard{width:460px;height:210px;border-radius:28px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 30px 60px rgba(0,0,0,.45)}
+.lcard img{max-width:80%;max-height:56%}
+.lcard.dark{background:#16202f;box-shadow:0 30px 60px rgba(0,0,0,.45),0 0 0 2px #2c3f57}
+.ltitle{font:800 72px Inter;letter-spacing:-.02em;white-space:nowrap}
+.tag{display:inline-block;padding:9px 18px;border-radius:10px;font:800 20px Inter;letter-spacing:.16em;white-space:nowrap}
+.bul{display:flex;align-items:center;gap:18px;font:600 31px Inter;white-space:nowrap}
+.bul i{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:900 22px Inter;font-style:normal;color:#0b1020;flex:none}
+/* windows */
+.win{width:980px;height:640px;border-radius:22px;background:#0e1424;border:1px solid rgba(255,255,255,.12);box-shadow:0 40px 90px rgba(0,0,0,.55);overflow:hidden}
+.tbar{height:52px;display:flex;align-items:center;gap:10px;padding:0 20px;background:#151d31;border-bottom:1px solid rgba(255,255,255,.07)}
+.tbar span{width:14px;height:14px;border-radius:50%}
+.tbar .tt{margin-left:18px;font:600 18px Inter;color:#8592b0;width:auto;height:auto;border-radius:0}
+.wbody{position:absolute;left:0;top:52px;width:980px;height:588px}
+.mono{font-family:"JetBrains Mono",monospace}
+.frow{display:flex;align-items:center;gap:14px;font:500 24px "JetBrains Mono";padding:10px 16px;border-radius:10px;white-space:nowrap}
+.ftag{font:800 14px Inter;letter-spacing:.12em;padding:5px 10px;border-radius:6px;margin-left:auto}
+.bubble{position:absolute;padding:20px 26px;border-radius:20px;font:500 26px Inter;line-height:1.35}
+/* pipeline */
+.chip{width:240px;height:84px;border-radius:18px;display:flex;align-items:center;gap:16px;padding:0 22px;font:800 28px Inter;background:#121a2d;border:2px solid;white-space:nowrap}
+.chip i{font:800 22px "JetBrains Mono";font-style:normal;width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff}
+.term{font:500 28px "JetBrains Mono";line-height:1.6;white-space:pre}
+.thumb{width:200px;height:124px;border-radius:12px;border:3px solid #fff;overflow:hidden;box-shadow:0 14px 30px rgba(0,0,0,.5)}
+.cap{font:700 26px Inter;color:#b9c3dd;white-space:nowrap}
+.bar{width:300px;height:14px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}
+.bar div{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#22e3e8,#4fdc62)}
+#cc{font:600 40px Inter;padding:12px 28px;border-radius:14px;background:rgba(0,0,0,.6);white-space:nowrap}
+</style></head>
+<body><div id="stage">
+<div class="glow" id="gBlue" style="background:radial-gradient(circle,rgba(70,110,255,.30),transparent 62%)"></div>
+<div class="glow" id="gClaude" style="background:radial-gradient(circle,rgba(217,119,87,.34),transparent 62%)"></div>
+<div class="glow" id="gHF" style="background:radial-gradient(circle,rgba(34,227,232,.28),transparent 62%)"></div>
+<div class="glow" id="gNode" style="background:radial-gradient(circle,rgba(95,160,78,.34),transparent 62%)"></div>
+<div class="glow" id="gFF" style="background:radial-gradient(circle,rgba(20,150,50,.34),transparent 62%)"></div>
+<div id="grid"></div>
+<div id="dots"></div>
+
+<!-- ============ S1 INTRO ============ -->
+<div class="scene a" id="s1">
+  <div class="a kicker" id="s1k" style="font-size:30px">Step</div>
+  <div class="a" id="s1n" style="font:900 300px Inter;letter-spacing:-.04em;background:linear-gradient(135deg,#ffb38a,#d97757 45%,#22e3e8);-webkit-background-clip:text;color:transparent;line-height:1">01</div>
+  <div class="a h1" id="s1t" style="font-size:88px"><span id="w1">Install</span> <span id="w2">the tools</span> <span id="w3" style="color:#ff9a6b">needed</span></div>
+  <div class="a" id="s1u" style="width:700px;height:8px;border-radius:9px;background:linear-gradient(90deg,#d97757,#22e3e8,#4fdc62)"></div>
+</div>
+
+<!-- ============ S2 TOOLKIT ============ -->
+<div class="scene a" id="s2">
+  <div class="a kicker" id="h2ak">The essentials</div>
+  <div class="a h1" id="h2a">The 2 most important tools</div>
+  <div class="a kicker" id="h2bk">Supporting tools</div>
+  <div class="a h1" id="h2b">Plus FFmpeg &amp; Node.js 22</div>
+  <div class="a kicker" id="h2ck">Breakdown</div>
+  <div class="a h1" id="h2c">What each tool contributes</div>
+  <div class="a num" id="n1">01</div><div class="a num" id="n2">02</div><div class="a num" id="n3">03</div><div class="a num" id="n4">04</div>
+  <div class="a wrap" id="cClaude"><div class="card"><img src="assets/claude.webp"></div><div class="lbl">Claude Code</div><div class="badge" id="bC">★ ESSENTIAL</div></div>
+  <div class="a wrap" id="cHF"><div class="card"><img src="assets/hyperframes.webp"></div><div class="lbl">HyperFrames</div><div class="badge" id="bH">★ ESSENTIAL</div></div>
+  <div class="a wrap" id="cFF"><div class="card"><img src="assets/ffmpeg.png"></div><div class="lbl">FFmpeg</div></div>
+  <div class="a wrap" id="cNode"><div class="card dark"><img src="assets/node.png"></div><div class="lbl">Node.js</div><div class="badge v" id="bN">v22</div></div>
+</div>
+
+<!-- ============ S4 CLAUDE ============ -->
+<div class="scene a" id="s4">
+  <div class="a" id="mon" style="width:1010px;height:740px">
+    <div style="position:absolute;left:0;top:0;width:1010px;height:630px;border-radius:26px;background:#1f2638;border:2px solid #39425a;box-shadow:0 40px 90px rgba(0,0,0,.6)"></div>
+    <div style="position:absolute;left:445px;top:630px;width:120px;height:80px;background:linear-gradient(#2a3247,#1a2032)"></div>
+    <div style="position:absolute;left:345px;top:706px;width:320px;height:22px;border-radius:12px;background:#2a3247"></div>
+  </div>
+  <div class="a win" id="cwin">
+    <div class="tbar"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span><span class="tt" id="cwt">my-video-project</span></div>
+    <!-- view 1: project -->
+    <div class="wbody a" id="v1" style="left:0;top:0">
+      <div style="position:absolute;left:30px;top:30px;width:400px">
+        <div class="frow" id="t0" style="color:#ffd27a">▾ 📁 my-video-project</div>
+        <div class="frow" id="t1" style="padding-left:56px">📄 index.html</div>
+        <div class="frow" id="t2" style="padding-left:56px">🎨 styles.css</div>
+        <div class="frow" id="t3" style="padding-left:56px">⚙️ scene.js</div>
+        <div class="frow" id="t4" style="padding-left:56px">📁 assets</div>
+        <div class="frow" id="t5" style="padding-left:56px">🎵 voiceover.mp3</div>
+      </div>
+      <div style="position:absolute;left:470px;top:0;width:1px;height:588px;background:rgba(255,255,255,.08)"></div>
+      <div class="a" id="spark" style="width:200px;height:200px"><div style="width:200px;height:200px;overflow:hidden"><img src="assets/claude.webp" style="height:200px;width:auto"></div></div>
+      <div class="a" id="v1t" style="font:700 34px Inter;text-align:center;white-space:nowrap">Working <span style="color:#ff9a6b">inside</span> your project<span id="v1d"></span></div>
+    </div>
+    <!-- view 2: instructions -->
+    <div class="wbody a" id="v2" style="left:0;top:0">
+      <div class="bubble" id="ub" style="left:30px;top:34px;width:480px;background:#2a3350;border-bottom-right-radius:6px"><div style="font:700 16px Inter;letter-spacing:.14em;color:#8fa0c8;margin-bottom:8px">YOU</div><span id="ubt"></span></div>
+      <div class="bubble" id="cb" style="left:30px;top:270px;width:480px;background:rgba(217,119,87,.16);border:1px solid rgba(217,119,87,.5);border-bottom-left-radius:6px"><div style="font:700 16px Inter;letter-spacing:.14em;color:#ff9a6b;margin-bottom:8px">✻ CLAUDE</div>On it! Creating and editing your files…</div>
+      <div style="position:absolute;left:540px;top:0;width:1px;height:588px;background:rgba(255,255,255,.08)"></div>
+      <div class="a kicker" id="fk" style="font-size:16px">Files</div>
+      <div class="a frow" id="f1" style="width:400px;background:rgba(255,255,255,.04)">index.html<span class="ftag" style="background:#1f6b35;color:#b9ffc8">NEW</span></div>
+      <div class="a frow" id="f2" style="width:400px;background:rgba(255,255,255,.04)">styles.css<span class="ftag" style="background:#6b4a12;color:#ffe2a8">EDITED</span></div>
+      <div class="a frow" id="f3" style="width:400px;background:rgba(255,255,255,.04)">scene.js<span class="ftag" style="background:#1f6b35;color:#b9ffc8">NEW</span></div>
+      <div class="a frow" id="f4" style="width:400px;background:rgba(255,255,255,.04)">captions.srt<span class="ftag" style="background:#6b4a12;color:#ffe2a8">EDITED</span></div>
+    </div>
+  </div>
+  <div class="a pill" id="dpill" style="font-size:26px;background:linear-gradient(135deg,#ff9a6b,#d97757);color:#1b0b04;font-weight:800;border:none">⬇ Claude Desktop App</div>
+</div>
+
+<!-- ============ S5 HYPERFRAMES ============ -->
+<div class="scene a" id="s5">
+  <svg class="a" id="pipe" width="1920" height="1080" style="overflow:visible">
+    <defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#22e3e8"/><stop offset="1" stop-color="#4fdc62"/></linearGradient></defs>
+    <path id="p1" d="M940 360 C1010 360 1010 525 1080 525" stroke="url(#lg)" stroke-width="4" fill="none"/>
+    <path id="p2" d="M940 470 C1010 470 1010 525 1080 525" stroke="url(#lg)" stroke-width="4" fill="none"/>
+    <path id="p3" d="M940 580 C1010 580 1010 525 1080 525" stroke="url(#lg)" stroke-width="4" fill="none"/>
+    <path id="p4" d="M940 690 C1010 690 1010 525 1080 525" stroke="url(#lg)" stroke-width="4" fill="none"/>
+    <path id="p5" d="M1340 525 L1440 525" stroke="url(#lg)" stroke-width="6" fill="none"/>
+    <g id="flow"></g>
+  </svg>
+  <div class="a chip" id="ch1" style="border-color:#e44d26"><i style="background:#e44d26">&lt;/&gt;</i>HTML</div>
+  <div class="a chip" id="ch2" style="border-color:#3b6cf0"><i style="background:#3b6cf0">#</i>CSS</div>
+  <div class="a chip" id="ch3" style="border-color:#a259ff"><i style="background:#a259ff">▣</i>Media</div>
+  <div class="a chip" id="ch4" style="border-color:#ff4fa0;font-size:25px"><i style="background:#ff4fa0">≋</i>Animations</div>
+  <div class="a" id="fbox" style="width:260px;height:300px;border-radius:28px;padding:3px;background:linear-gradient(160deg,#22e3e8,#4fdc62)">
+    <div style="width:100%;height:100%;border-radius:25px;background:#0e1626;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px">
+      <div style="width:150px;height:110px;overflow:hidden;position:relative"><img src="assets/hyperframes.webp" style="position:absolute;height:259px;left:-650px;top:0"></div>
+      <div style="font:800 26px Inter">HyperFrames</div><div class="kicker" style="font-size:15px;color:#4fdc62">Framework</div>
+    </div>
+  </div>
+  <div class="a" id="vtile" style="width:300px;height:190px;border-radius:20px;background:linear-gradient(135deg,#1c2a48,#0f1a30);border:2px solid #4fdc62;box-shadow:0 0 50px rgba(79,220,98,.35);display:flex;align-items:center;justify-content:center">
+    <div style="width:0;height:0;border-left:56px solid #fff;border-top:34px solid transparent;border-bottom:34px solid transparent;margin-left:12px"></div>
+    <div style="position:absolute;bottom:14px;left:18px;right:18px;height:6px;border-radius:9px;background:rgba(255,255,255,.2)"><div id="vprog" style="height:100%;width:0;border-radius:9px;background:#4fdc62"></div></div>
+  </div>
+  <div class="a cap" id="vcap" style="color:#4fdc62;font-size:30px">VIDEO 🎬</div>
+  <div class="a cap" id="icap">Your code &amp; media</div>
+</div>
+
+<!-- ============ S6 NODE ============ -->
+<div class="scene a" id="s6">
+  <div class="a" id="big22" style="font:900 520px Inter;color:rgba(95,160,78,.08);letter-spacing:-.05em">22</div>
+  <div class="a win" id="term" style="height:600px;background:#0a0f1b">
+    <div class="tbar"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span><span class="tt">Terminal — my-video-project</span></div>
+    <div class="term" style="position:absolute;left:40px;top:84px">
+<div><span style="color:#5FA04E">$ </span><span id="tl1"></span></div><div id="to1" style="color:#8be26e"></div><div>&nbsp;</div><div><span style="color:#5FA04E" id="pr2">$ </span><span id="tl2"></span></div><div id="to2" style="color:#5FA04E"></div><div id="to2b" style="color:#8be26e"></div><div>&nbsp;</div><div><span style="color:#5FA04E" id="pr3">$ </span><span id="tl3"></span></div><div id="to3" style="color:#ffd27a"></div></div>
+  </div>
+</div>
+
+<!-- ============ S7 FFMPEG ============ -->
+<div class="scene a" id="s7">
+  <svg class="a" id="fpipe" width="1920" height="1080"><path id="fa1" d="M1015 540 L1120 540" stroke="#2fb34a" stroke-width="6" fill="none"/><path id="fa2" d="M1380 540 L1490 540" stroke="#2fb34a" stroke-width="6" fill="none"/></svg>
+  <div class="a" id="proc" style="width:250px;height:250px">
+    <div id="ring" style="position:absolute;inset:0;border-radius:50%;border:6px dashed #2fb34a"></div>
+    <div style="position:absolute;inset:26px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(47,179,74,.45)"><div style="width:120px;height:117px;overflow:hidden;position:relative"><img src="assets/ffmpeg.png" style="position:absolute;height:117px;left:0;top:0"></div></div>
+  </div>
+  <div class="a" id="mp4" style="width:180px;height:220px">
+    <div style="position:absolute;inset:0;border-radius:16px;background:linear-gradient(160deg,#ffffff,#dfe7f2);clip-path:polygon(0 0,70% 0,100% 22%,100% 100%,0 100%)"></div>
+    <div style="position:absolute;right:0;top:0;width:54px;height:48px;background:#aab6c8;clip-path:polygon(0 0,100% 100%,0 100%);border-bottom-left-radius:8px"></div>
+    <div style="position:absolute;left:0;right:0;top:92px;text-align:center;font:900 46px Inter;color:#0a8a1f">MP4</div>
+    <div style="position:absolute;left:46px;top:160px;width:0;height:0;border-left:30px solid #0a8a1f;border-top:18px solid transparent;border-bottom:18px solid transparent;margin-left:20px"></div>
+  </div>
+  <div class="a cap" id="fc1">Rendered frames</div>
+  <div class="a cap" id="fc2" style="color:#4fdc62">FFmpeg</div>
+  <div class="a cap" id="fc3">export.mp4 <span style="color:#4fdc62">✓</span></div>
+  <div id="thumbs"></div>
+</div>
+
+<!-- ============ S8 DOWNLOAD ============ -->
+<div class="scene a" id="s8">
+  <div class="a kicker" id="h8k">On your computer</div>
+  <div class="a h1" id="h8">Download &amp; install them</div>
+  <div id="minis"></div>
+  <div class="a" id="desc" style="width:1100px;height:290px;border-radius:24px;background:#0f1628;border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 70px rgba(0,0,0,.5)">
+    <div style="position:absolute;left:36px;top:28px;font:800 26px Inter">Video description <span class="muted" style="font-weight:500">· download links</span></div>
+    <div id="links"></div>
+  </div>
+  <div class="a" id="arrow" style="font:900 70px Inter;color:#ff9a6b">↓</div>
+</div>
+
+<!-- ============ S9 NEXT ============ -->
+<div class="scene a" id="s9">
+  <div class="a" id="done" style="display:flex;align-items:center;gap:30px;font:800 90px Inter;white-space:nowrap">Step 01 <span style="width:100px;height:100px;border-radius:50%;background:#4fdc62;color:#06200a;display:flex;align-items:center;justify-content:center;font-size:64px">✓</span></div>
+  <div class="a kicker" id="nk" style="font-size:30px">Next up</div>
+  <div class="a" id="nn" style="font:900 230px Inter;letter-spacing:-.04em;background:linear-gradient(135deg,#22e3e8,#4fdc62);-webkit-background-clip:text;color:transparent;white-space:nowrap;line-height:1">Step 02 →</div>
+</div>
+
+<div id="leftcols"></div>
+
+<!-- HUD -->
+<div class="a pill" id="hud"><b>STEP 01</b>Install the tools</div>
+<div class="a" id="tracker"><div class="tchip" id="tk0">Claude Code</div><div class="tchip" id="tk1">HyperFrames</div><div class="tchip" id="tk2">Node.js 22</div><div class="tchip" id="tk3">FFmpeg</div></div>
+<div class="a" id="cc"></div>
+<div id="prog"></div>
+</div>
+
+<script>
+const FPS=30, DUR=48.624;
+const CC = new URLSearchParams(location.search).get('cc')==='1';
+const E={lin:x=>x,io:x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2,out:x=>1-Math.pow(1-x,3),
+ back:x=>{const c1=1.6,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)},in:x=>x*x*x};
+const tracks=[], cbs=[];
+const $=id=>document.getElementById(id);
+function K(el,frames,anchor){ if(typeof el==='string') el=$(el);
+  let prev={o:1,x:0,y:0,s:1,r:0,b:0}; const fs=frames.map(f=>{const n={...prev,e:undefined,...f};prev=n;return n;});
+  tracks.push({el,fs,anchor:anchor||'c'}); }
+function sample(fs,t){ if(t<=fs[0].t) return fs[0];
+  for(let i=1;i<fs.length;i++){ if(t<fs[i].t){const a=fs[i-1],b=fs[i];const e=E[b.e||'io']((t-a.t)/(b.t-a.t));const o={};
+    for(const k of ['o','x','y','s','r','b']) o[k]=a[k]+(b[k]-a[k])*e; return o;} }
+  return fs[fs.length-1]; }
+const AN={c:'-50%,-50%',l:'0,-50%',r:'-100%,-50%',tl:'0,0'};
+// pop: appear at t0 (from below, faded), optional out at t1
+function pop(el,x,y,t0,t1,opt={}){ const d=opt.d||.45, dy=opt.dy??40, s0=opt.s0??.92;
+  const f=[{t:0,o:0,x:x+(opt.dx||0),y:y+dy,s:s0,b:opt.b??6},{t:t0,o:0},{t:t0+d,o:1,x,y,s:1,b:0,e:opt.e||'out'}];
+  if(t1!=null) f.push({t:t1},{t:t1+(opt.od||.35),o:0,y:y-(opt.oy??20),b:4,e:'in'});
+  K(el,f,opt.a); }
+function scene(el,t0,t1){ K(el,[{t:0,o:0,x:960,y:540,s:1.04,b:8},{t:t0},{t:t0+.45,o:1,s:1,b:0,e:'out'},{t:t1-.35},{t:t1,o:0,s:.96,b:8,e:'in'}]); }
+function clamp(x,a=0,b=1){return Math.max(a,Math.min(b,x));}
+function prog(t,a,b){return clamp((t-a)/(b-a));}
+function type(el,txt,t,a,b){ const n=Math.round(txt.length*prog(t,a,b)); el.textContent=txt.slice(0,n)+((t>a-.3&&t<b+.6&&Math.floor(t*3)%2===0)?'▌':''); }
+
+/* ---------- background ---------- */
+const glows=[['gBlue',[0,10.3],[40.5,48.7]],['gClaude',[10.3,20.8]],['gHF',[20.8,27.8]],['gNode',[27.8,33.8]],['gFF',[33.8,40.5]]];
+const dotsEl=$('dots'); const DOTS=[];
+for(let i=0;i<34;i++){const d=document.createElement('div');d.className='dot';dotsEl.appendChild(d);
+  const r=Math.sin(i*99.13)*.5+.5, r2=Math.sin(i*41.7)*.5+.5; DOTS.push({d,x:r*1920,y:r2*1080,sp:8+r*22,sz:.4+r2,ph:i});}
+cbs.push(t=>{
+  for(const [id,...ranges] of glows){ let o=0; for(const [a,b] of ranges) o=Math.max(o,Math.min(prog(t,a-.5,a+.5),1-prog(t,b-.5,b+.5)));
+    const el=$(id); el.style.opacity=o; const k=id.length;
+    el.style.transform=`translate(${-750+960+Math.sin(t*.3+k)*260}px,${-750+460+Math.cos(t*.25+k)*160}px)`; }
+  $('grid').style.transform=`translateY(${(t*14)%80}px)`;
+  for(const p of DOTS){ const y=((p.y-t*p.sp)%1080+1080)%1080; p.d.style.transform=`translate(${p.x+Math.sin(t*.6+p.ph)*20}px,${y}px) scale(${p.sz})`; p.d.style.opacity=.12+.15*Math.sin(t+p.ph)**2; }
+  $('prog').style.width=(t/DUR*1920)+'px';
+});
+
+/* ---------- S1 intro (0–2.1) ---------- */
+K('s1',[{t:0,o:1,x:960,y:540,s:1},{t:1.85},{t:2.2,o:0,s:1.12,b:10,e:'in'}]);
+pop('s1k',960,300,0.05,null,{dy:20});
+K('s1n',[{t:0,o:0,x:960,y:470,s:.5,b:10},{t:.1},{t:.65,o:1,s:1,b:0,e:'back'}]);
+pop('s1t',960,690,0.5,null,{dy:0,s0:1,b:0,d:.1});
+pop('w1',0,0,0.6,null,{dy:30}); pop('w2',0,0,0.95,null,{dy:30}); pop('w3',0,0,1.35,null,{dy:30,e:'back'});
+for(const w of ['w1','w2','w3']) $(w).style.display='inline-block';
+tracks.filter(k=>['w1','w2','w3'].includes(k.el.id)).forEach(k=>k.anchor='none');
+cbs.push(t=>{ const p=E.out(prog(t,1.45,1.85)); $('s1u').style.transform=`translate(${960-350}px,780px) scaleX(${p})`; $('s1u').style.transformOrigin='0 0'; $('s1u').style.opacity=p>0?1:0; });
+
+/* ---------- S2 toolkit (2.0–10.4) ---------- */
+scene('s2',2.0,10.4);
+pop('h2ak',960,150,2.1,5.55); pop('h2a',960,215,2.2,5.55);
+pop('h2bk',960,150,5.75,8.2); pop('h2b',960,215,5.85,8.2);
+pop('h2ck',960,300,8.35,null); pop('h2c',960,365,8.45,null);
+K('cClaude',[{t:0,o:0,x:640,y:640,s:.8,b:8},{t:3.75},{t:4.25,o:1,y:590,s:1,b:0,e:'back'},{t:5.65},{t:6.2,y:420,s:.8},{t:8.3},{t:8.9,x:300,y:640,s:.62}]);
+K('cHF',[{t:0,o:0,x:1280,y:640,s:.8,b:8},{t:4.55},{t:5.05,o:1,y:590,s:1,b:0,e:'back'},{t:5.65},{t:6.2,y:420,s:.8},{t:8.3},{t:8.9,x:740,y:640,s:.62}]);
+K('cFF',[{t:0,o:0,x:760,y:860,s:.4,b:8},{t:6.35},{t:6.8,o:1,y:800,s:.56,b:0,e:'back'},{t:8.3},{t:8.9,x:1180,y:640,s:.62}]);
+K('cNode',[{t:0,o:0,x:1160,y:860,s:.4,b:8},{t:7.05},{t:7.5,o:1,y:800,s:.56,b:0,e:'back'},{t:8.3},{t:8.9,x:1620,y:640,s:.62}]);
+pop('bC',0,0,4.4,8.2,{dy:10,s0:.5,e:'back'}); pop('bH',0,0,5.2,8.2,{dy:10,s0:.5,e:'back'}); pop('bN',0,0,7.8,null,{dy:10,s0:.5,e:'back'});
+['bC','bH','bN'].forEach(id=>tracks.find(k=>k.el.id===id).anchor='none');
+[['n1',300],['n2',740],['n3',1180],['n4',1620]].forEach(([id,x],i)=>pop(id,x,500,8.75+i*.15,null,{dy:20}));
+// highlight pulse in breakdown
+cbs.push(t=>{ ['cClaude','cHF','cFF','cNode'].forEach((id,i)=>{ const c=$(id).firstElementChild; const p=Math.max(0,1-Math.abs(t-(9.1+i*.28))/.25);
+  c.style.outline=p>0?`${Math.round(6*p)}px solid rgba(255,154,107,${p})`:'none'; c.style.outlineOffset='6px'; }); });
+
+/* ---------- left columns (S4–S7) ---------- */
+const LC=[
+ {id:'L4',img:'assets/claude.webp',dark:false,title:'Claude Code',tag:'AI ASSISTANT',col:'#ff9a6b',tagbg:'rgba(217,119,87,.18)',t0:10.3,t1:20.85,tagT:10.6,
+  bul:[['AI assistant in your project',10.9],['Takes your instructions',14.1],['Creates &amp; edits files',15.9],['Desktop app',19.3]]},
+ {id:'L5',img:'assets/hyperframes.webp',dark:false,title:'HyperFrames',tag:'OPEN SOURCE',col:'#22e3e8',tagbg:'rgba(34,227,232,.14)',t0:20.85,t1:27.85,tagT:21.9,
+  bul:[['Video framework',23.6],['HTML · CSS · media · animation',25.0],['Turns it into a video',27.1]]},
+ {id:'L6',img:'assets/node.png',dark:true,title:'Node.js 22',tag:'OPEN SOURCE',col:'#8be26e',tagbg:'rgba(95,160,78,.18)',t0:27.85,t1:33.85,tagT:29.5,
+  bul:[['Installs framework packages',31.2],['Runs project tools',32.9]]},
+ {id:'L7',img:'assets/ffmpeg.png',dark:false,title:'FFmpeg',tag:'OPEN SOURCE',col:'#4fdc62',tagbg:'rgba(47,179,74,.18)',t0:33.85,t1:40.55,tagT:36.0,
+  bul:[['Takes rendered frames',37.6],['Exports an MP4 file',39.5]]},
+];
+let lh=''; for(const c of LC){ lh+=`<div class="scene a" id="${c.id}">
+  <div class="a lcard ${c.dark?'dark':''}" id="${c.id}c"><img src="${c.img}"></div>
+  <div class="a ltitle" id="${c.id}t">${c.title}</div>
+  <div class="a tag" id="${c.id}g" style="color:${c.col};background:${c.tagbg};border:1px solid ${c.col}">${c.tag}</div>
+  ${c.bul.map((b,i)=>`<div class="a bul" id="${c.id}b${i}"><i style="background:${c.col}">✓</i>${b[0]}</div>`).join('')}
+</div>`;} $('leftcols').innerHTML=lh;
+for(const c of LC){ scene(c.id,c.t0,c.t1);
+  pop(c.id+'c',350,320,c.t0+.05,null,{dx:-80,dy:0,s0:.85,e:'back'});
+  pop(c.id+'t',120,480,c.t0+.2,null,{dx:-60,dy:0,a:'l'});
+  pop(c.id+'g',120,555,c.tagT,null,{dx:-40,dy:0,a:'l',e:'back'});
+  c.bul.forEach((b,i)=>pop(`${c.id}b${i}`,120,650+i*72,b[1],null,{dx:-50,dy:0,a:'l'})); }
+
+/* ---------- S4 Claude visuals (10.3–20.85) ---------- */
+scene('s4',10.3,20.85);
+K('cwin',[{t:0,o:0,x:1250,y:560,s:.9,b:8},{t:10.45},{t:10.95,o:1,s:1,b:0,e:'out'},{t:17.5},{t:18.3,y:503,s:.87}]);
+K('mon',[{t:0,o:0,x:1250,y:560,s:.95},{t:17.55},{t:18.2,o:1,s:1,e:'out'}]);
+pop('dpill',1250,955,19.3,null,{e:'back'});
+K('v1',[{t:0,o:1,x:490,y:346},{t:13.8},{t:14.1,o:0,x:440}]);
+K('v2',[{t:0,o:0,x:540,y:346},{t:13.9},{t:14.25,o:1,x:490}]);
+['t0','t1','t2','t3','t4','t5'].forEach((id,i)=>{ K(id,[{t:0,o:0,x:-30},{t:10.75+i*.12},{t:11.1+i*.12,o:1,x:0,e:'out'}],'none'); });
+K('spark',[{t:0,o:0,x:725,y:240,s:.3,r:-90},{t:11.2},{t:11.8,o:1,s:1,r:0,e:'back'}]);
+pop('v1t',725,450,11.6,null);
+cbs.push(t=>{ $('spark').firstElementChild.style.transform=`rotate(${t*40}deg)`; $('spark').style.filter=`drop-shadow(0 0 ${20+10*Math.sin(t*4)}px rgba(217,119,87,.8))`;
+  $('v1d').textContent='...'.slice(0,Math.floor(t*3)%4);
+  // highlight rows as claude "works" through them
+  for(let i=1;i<=5;i++){ const on=t>11.8 && t<13.9 && Math.floor((t-11.8)/.4)%5===i-1; $('t'+i).style.background=on?'rgba(217,119,87,.22)':'transparent'; }
+  type($('ubt'),'Create a 16:9 animated intro for my video, and update the styles.',t,14.15,15.35);
+  $('cwt').textContent = t<13.9?'my-video-project':'Claude — my-video-project';
+});
+K('ub',[{t:0,o:0,y:20},{t:14.0},{t:14.3,o:1,y:0,e:'out'}],'none');
+K('cb',[{t:0,o:0,y:20},{t:15.45},{t:15.8,o:1,y:0,e:'back'}],'none');
+pop('fk',570,40,15.5,null,{a:'l',dy:10});
+['f1','f2','f3','f4'].forEach((id,i)=>pop(id,570,100+i*70,15.85+i*.45,null,{a:'tl',dx:40,dy:0,e:'back'}));
+
+/* ---------- S5 HyperFrames (20.85–27.85) ---------- */
+scene('s5',20.85,27.85);
+pop('fbox',1210,525,23.6,null,{s0:.6,e:'back',dy:0});
+[['ch1',360,24.95],['ch2',470,25.4],['ch3',580,25.85],['ch4',690,26.35]].forEach(([id,y,t0])=>pop(id,820,y,t0,null,{dx:-60,dy:0,e:'back'}));
+pop('icap',820,780,26.6,null,{dy:15});
+pop('vtile',1600,525,27.05,null,{s0:.5,dy:0,e:'back'});
+pop('vcap',1600,665,27.25,null,{dy:15});
+const PL={}; ['p1','p2','p3','p4','p5'].forEach(id=>{const p=$(id);PL[id]=p.getTotalLength();p.style.strokeDasharray=PL[id];});
+const flowG=$('flow'); const FD=[]; for(let i=0;i<12;i++){const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('r',7);c.setAttribute('fill','#fff');flowG.appendChild(c);FD.push(c);}
+cbs.push(t=>{ [['p1',25.1],['p2',25.55],['p3',26.0],['p4',26.5],['p5',26.85]].forEach(([id,a])=>{ $(id).style.strokeDashoffset=PL[id]*(1-E.out(prog(t,a,a+.4))); });
+  FD.forEach((c,i)=>{ const pid='p'+(1+i%4); const st=[25.3,25.75,26.2,26.7][i%4]; const ph=((t-st)*.9+Math.floor(i/4)*.33)%1;
+    if(t<st){c.style.opacity=0;return;} const pt=$(pid).getPointAtLength(PL[pid]*ph); c.setAttribute('cx',pt.x);c.setAttribute('cy',pt.y);c.style.opacity=Math.sin(ph*Math.PI); });
+  const g=Math.max(0,Math.sin(prog(t,26.3,27.6)*Math.PI)); $('fbox').style.boxShadow=`0 0 ${30+70*g}px rgba(34,227,232,${.25+.5*g})`;
+  $('vprog').style.width=(100*prog(t,27.3,28.5))+'%';
+});
+
+/* ---------- S6 Node (27.85–33.85) ---------- */
+scene('s6',27.85,33.85);
+K('big22',[{t:0,o:0,x:1500,y:560,s:.8},{t:28.0},{t:28.8,o:1,s:1,e:'out'},{t:33.85,x:1440}]);
+pop('term',1250,545,28.0,null,{s0:.92,dy:30});
+cbs.push(t=>{
+  type($('tl1'),'node -v',t,28.4,28.9); $('to1').textContent=t>29.05?'v22.x.x   ✓ Node.js 22 ready':'';
+  $('pr2').style.opacity=$('tl2').style.opacity=t>30.6?1:0; type($('tl2'),'npm install',t,30.7,31.2);
+  const p=prog(t,31.3,32.3); const n=Math.round(p*22);
+  $('to2').textContent=t>31.25?('['+'█'.repeat(n)+'░'.repeat(22-n)+'] '+Math.round(p*100)+'%'):'';
+  $('to2b').textContent=t>32.35?'✓ framework packages installed':'';
+  $('pr3').style.opacity=$('tl3').style.opacity=t>32.5?1:0; type($('tl3'),'npm run preview',t,32.6,33.1);
+  $('to3').textContent=t>33.2?'▶ running project tools...':'';
+});
+
+/* ---------- S7 FFmpeg (33.85–40.55) ---------- */
+scene('s7',33.85,40.55);
+pop('proc',1250,540,34.2,null,{s0:.4,dy:0,e:'back'}); pop('fc2',1250,720,34.4,null,{dy:15});
+pop('mp4',1640,540,39.35,null,{s0:.3,dy:0,e:'back'}); pop('fc3',1640,720,39.7,null,{dy:15});
+pop('fc1',840,720,37.6,38.7,{dy:15});
+let th=''; for(let i=0;i<5;i++){ th+=`<div class="a thumb" id="th${i}" style="background:linear-gradient(135deg,#1c2a48,#2a1f3d)"><div style="position:absolute;left:${20+i*30}px;top:${30+Math.sin(i)*20}px;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#22e3e8,#4fdc62)"></div><div style="position:absolute;left:8px;bottom:6px;font:600 13px 'JetBrains Mono';color:#cfd8ea">frame_00${i+1}.png</div></div>`; }
+$('thumbs').innerHTML=th;
+for(let i=0;i<5;i++){ const x=840+(i-2)*26, y=560+(i-2)*-30;
+  K('th'+i,[{t:0,o:0,x,y:y+50,s:.8,r:-6+i*3},{t:37.25+i*.13},{t:37.65+i*.13,o:1,y,s:1,e:'back'},{t:38.55+(4-i)*.14},{t:39.05+(4-i)*.14,o:0,x:1250,y:540,s:.2,r:30,e:'in'}]); }
+cbs.push(t=>{ const sp=t<38.5?40:t<39.4?260:60; $('ring').style.transform=`rotate(${t*sp}deg)`;
+  $('fa1').style.strokeDasharray=$('fa2').style.strokeDasharray=110;
+  $('fa1').style.strokeDashoffset=110*(1-prog(t,38.4,38.7)); $('fa2').style.strokeDashoffset=110*(1-prog(t,39.1,39.4)); });
+
+/* ---------- S8 download (40.55–46.45) ---------- */
+scene('s8',40.55,46.45);
+pop('h8k',960,140,40.65,null); pop('h8',960,205,40.75,null);
+const MINI=[['assets/claude.webp','Claude Code',0],['assets/hyperframes.webp','HyperFrames',0],['assets/node.png','Node.js 22',1],['assets/ffmpeg.png','FFmpeg',0]];
+let mh=''; MINI.forEach(([img,n,dk],i)=>{ mh+=`<div class="a" id="mi${i}" style="width:380px;height:300px">
+  <div class="card ${dk?'dark':''}" style="width:360px;height:170px;margin:0 10px;border-radius:24px"><img src="${img}"></div>
+  <div style="text-align:center;font:700 28px Inter;margin-top:14px">${n}</div>
+  <div class="bar" style="margin:14px auto 0"><div id="pb${i}"></div></div>
+  <div id="pt${i}" class="mono" style="text-align:center;font-size:20px;margin-top:10px;color:#9aa6c2"></div>
+  <div id="ok${i}" style="position:absolute;top:-16px;right:0;width:56px;height:56px;border-radius:50%;background:#4fdc62;color:#06200a;font:900 30px Inter;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,.4)">✓</div></div>`;});
+$('minis').innerHTML=mh;
+MINI.forEach((m,i)=>{ const x=330+i*420; K('mi'+i,[{t:0,o:0,x,y:520,s:.85,b:6},{t:40.8+i*.15},{t:41.25+i*.15,o:1,y:470,s:1,b:0,e:'back'},{t:43.4},{t:43.95,y:420,s:.82}]); });
+cbs.push(t=>{ MINI.forEach((m,i)=>{ const a=41.1+i*.25, b=a+1.1+i*.12, p=E.io(prog(t,a,b)); $('pb'+i).style.width=(p*100)+'%';
+  $('pt'+i).textContent=p<=0?'':p<1?('Downloading '+Math.round(p*100)+'%'):'Installed ✓'; $('pt'+i).style.color=p>=1?'#4fdc62':'#9aa6c2';
+  const q=E.back(prog(t,b,b+.3)); $('ok'+i).style.transform=`scale(${q})`; $('ok'+i).style.opacity=q>0?1:0; }); });
+pop('desc',960,815,43.6,null,{dy:60});
+const LINKS=[['assets/claude.webp','Claude Code (desktop app)'],['assets/hyperframes.webp','HyperFrames'],['assets/node.png','Node.js 22'],['assets/ffmpeg.png','FFmpeg']];
+$('links').innerHTML=LINKS.map((l,i)=>`<div class="a" id="lk${i}" style="display:flex;align-items:center;gap:14px;font:600 26px Inter;white-space:nowrap"><span style="color:#5aa8ff">🔗</span>${l[1]} <span style="color:#5aa8ff;font-weight:500">— download link</span></div>`).join('');
+LINKS.forEach((l,i)=>pop('lk'+i,40,105+i*48,44.0+i*.22,null,{a:'l',dx:-20,dy:0}));
+K("arrow",[{t:0,o:0,x:1590,y:790},{t:45.2},{t:45.5,o:1}]);
+cbs.push(t=>{ if(t>45.2) $('arrow').style.marginTop=(Math.abs(Math.sin((t-45.2)*5))*24)+'px'; });
+
+/* ---------- S9 next (46.45–end) ---------- */
+K('s9',[{t:0,o:0,x:960,y:540},{t:46.4},{t:46.7,o:1}]);
+K('done',[{t:0,o:0,x:960,y:540,s:.7,b:8},{t:46.5},{t:46.95,o:1,s:1,b:0,e:'back'},{t:47.4},{t:47.85,x:-300,o:0,b:10,e:'in'}]);
+K('nk',[{t:0,o:0,x:960,y:330},{t:47.6},{t:48.0,o:1,e:'out'}]);
+K('nn',[{t:0,o:0,x:1700,y:520,s:.9,b:10},{t:47.55},{t:48.15,o:1,x:960,s:1,b:0,e:'back'}]);
+
+/* ---------- HUD ---------- */
+K('hud',[{t:0,o:0,x:70,y:70},{t:2.2},{t:2.7,o:1,e:'out'},{t:46.2},{t:46.5,o:0}],'l');
+K('tracker',[{t:0,o:0,x:1850,y:70},{t:10.3},{t:10.8,o:1,e:'out'},{t:40.4},{t:40.8,o:0}],'r');
+const TR=[[10.3,20.8,'#d97757'],[20.8,27.8,'#22b8c0'],[27.8,33.8,'#5FA04E'],[33.8,40.6,'#2fb34a']];
+cbs.push(t=>{ TR.forEach(([a,b,c],i)=>{ const el=$('tk'+i); const on=t>=a&&t<b, done=t>=b;
+  el.style.background=on?c:'rgba(255,255,255,.04)'; el.style.color=on?'#fff':done?'#cfd8ea':'#8592b0'; el.style.borderColor=on?c:'rgba(255,255,255,.1)';
+  el.textContent=(done?'✓ ':'')+['Claude Code','HyperFrames','Node.js 22','FFmpeg'][i]; }); });
+
+/* ---------- captions (optional) ---------- */
+const SUBS=[[0,1.905,"Step one. Install the tools needed."],[2.025,5.518,"The two most important tools needed are Claude Code and Hyperframes."],[5.638,8.178,"Others are FFmpeg and Node.js version 22."],[8.298,10.204,"Here is what each tool contributes."],[10.324,13.816,"The Claude Code is the AI assistant working inside our project."],[13.936,17.429,"We give it instructions, and it creates and edits the files."],[17.549,20.725,"In this case, we make use of its desktop app."],[20.845,23.067,"The Hyperframes is an open-source tool"],[23.187,25.728,"that provides the framework for turning HTML, CSS,"],[25.848,27.753,"media, and animations into a video."],[27.873,30.731,"The Node.js 22 is an open-source app"],[30.851,33.708,"that installs the framework packages and run project tools."],[33.828,35.099,"And the last, FFmpeg."],[35.219,38.712,"It's also an open-source app that turns rendered frames"],[38.832,40.419,"into an export MP4 file."],[40.539,43.397,"Simply download and install them into your computer system."],[43.517,46.375,"The download links are in the video description below."],[46.495,48.4,"Let's move to step two."]];
+cbs.push(t=>{ const el=$('cc'); const s=CC&&SUBS.find(s=>t>=s[0]&&t<s[1]+.1);
+  if(!s){el.style.opacity=0;return;} el.textContent=s[2]; el.style.opacity=1; el.style.transform=`translate(${960}px,1018px) translate(-50%,-50%)`; });
+
+/* ---------- render ---------- */
+function render(t){
+  for(const k of tracks){ const v=sample(k.fs,t); const el=k.el;
+    if(el.dataset.d===undefined) el.dataset.d=el.style.display||''; if(v.o<.002){ el.style.display='none'; continue; } el.style.display=el.dataset.d;
+    el.style.opacity=v.o;
+    const an=k.anchor==='none'?'':` translate(${AN[k.anchor]})`;
+    el.style.transform=(k.anchor==='none'?`translate(${v.x}px,${v.y}px)`:`translate(${v.x}px,${v.y}px)${an}`)+` scale(${v.s}) rotate(${v.r}deg)`;
+    el.style.filter=v.b>.05?`blur(${v.b}px)`:'none'; }
+  for(const f of cbs) f(t);
+}
+window.render=render; window.DUR=DUR; window.FPS=FPS;
+render(+(new URLSearchParams(location.search).get('t')||0));
+</script>
+</body></html>

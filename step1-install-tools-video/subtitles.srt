@@ -1,0 +1,71 @@
+1
+00:00:00,000 --> 00:00:01,905
+Step one. Install the tools needed.
+
+2
+00:00:02,025 --> 00:00:05,518
+The two most important tools needed are Claude Code and Hyperframes.
+
+3
+00:00:05,638 --> 00:00:08,178
+Others are FFmpeg and Node.js version 22.
+
+4
+00:00:08,298 --> 00:00:10,204
+Here is what each tool contributes.
+
+5
+00:00:10,324 --> 00:00:13,816
+The Claude Code is the AI assistant working inside our project.
+
+6
+00:00:13,936 --> 00:00:17,429
+We give it instructions, and it creates and edits the files.
+
+7
+00:00:17,549 --> 00:00:20,725
+In this case, we make use of its desktop app.
+
+8
+00:00:20,845 --> 00:00:23,067
+The Hyperframes is an open-source tool
+
+9
+00:00:23,187 --> 00:00:25,728
+that provides the framework for turning HTML, CSS,
+
+10
+00:00:25,848 --> 00:00:27,753
+media, and animations into a video.
+
+11
+00:00:27,873 --> 00:00:30,731
+The Node.js 22 is an open-source app
+
+12
+00:00:30,851 --> 00:00:33,708
+that installs the framework packages and run project tools.
+
+13
+00:00:33,828 --> 00:00:35,099
+And the last, FFmpeg.
+
+14
+00:00:35,219 --> 00:00:38,712
+It's also an open-source app that turns rendered frames
+
+15
+00:00:38,832 --> 00:00:40,419
+into an export MP4 file.
+
+16
+00:00:40,539 --> 00:00:43,397
+Simply download and install them into your computer system.
+
+17
+00:00:43,517 --> 00:00:46,375
+The download links are in the video description below.
+
+18
+00:00:46,495 --> 00:00:48,400
+Let's move to step two.
