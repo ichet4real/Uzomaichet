@@ -1,6 +1,6 @@
 # Step 8 – Render & Export (motion graphics video)
 
-Final video: `step8_render_export.mp4` (1920x1080, 16:9, 30 fps, 52 s, no captions).
+Final video: `step8_render_export.mp4` (1920x1080, 16:9, 30 fps, 52 s, no captions). White background, styled to match the series (Step 7).
 
 Built with Remotion. To re-render:
 
