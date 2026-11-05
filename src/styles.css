@@ -1,0 +1,40 @@
+:root {
+  --w: 1920px;  /* video width  */
+  --h: 1080px;  /* video height */
+  --bg: #0f1115;
+  --fg: #f4f4f5;
+  --accent: #6c5ce7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #000; color: var(--fg); font-family: system-ui, sans-serif; }
+
+#stage {
+  position: relative;
+  width: var(--w);
+  height: var(--h);
+  overflow: hidden;
+  background: var(--bg);
+  transform-origin: top left;
+}
+
+/* Capture mode: stage fills the viewport exactly, no controls */
+body.capture #controls { display: none; }
+
+#controls {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  display: flex; gap: 12px; align-items: center;
+  padding: 10px 16px; background: rgba(0,0,0,.8);
+}
+#controls input { flex: 1; }
+#controls button { padding: 4px 12px; }
+
+/* PLACEHOLDER styles */
+.box {
+  position: absolute; left: 50%; top: 40%;
+  width: 160px; height: 160px; margin: -80px 0 0 -80px;
+  border-radius: 24px; background: var(--accent);
+}
+.title {
+  position: absolute; left: 0; right: 0; top: 62%;
+  text-align: center; font-size: 72px; font-weight: 700;
+}

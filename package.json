@@ -1,0 +1,22 @@
+{
+  "name": "uzomaichet-motion",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HTML, CSS and GSAP motion graphics with browser preview and frame-by-frame H.264 MP4 export",
+  "type": "module",
+  "scripts": {
+    "check": "node scripts/check-env.mjs",
+    "preview": "node scripts/serve.mjs",
+    "capture": "node scripts/capture.mjs",
+    "capture:test": "node scripts/capture.mjs --duration 2 --out output/test.mp4"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "gsap": "^3.15.1"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}
