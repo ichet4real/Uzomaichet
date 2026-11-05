@@ -7,8 +7,9 @@
   "scripts": {
     "check": "node scripts/check-env.mjs",
     "preview": "node scripts/serve.mjs",
+    "render": "node scripts/capture.mjs --out output/flow-gsap.mp4 --poster output/flow-gsap-poster.png",
     "capture": "node scripts/capture.mjs",
-    "capture:test": "node scripts/capture.mjs --duration 2 --out output/test.mp4"
+    "verify": "node scripts/verify.mjs"
   },
   "engines": {
     "node": ">=18"

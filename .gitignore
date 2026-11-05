@@ -1,2 +1,5 @@
 node_modules/
-output/
+output/frames/
+output/*
+!output/flow-gsap.mp4
+!output/flow-gsap-poster.png

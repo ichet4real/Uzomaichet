@@ -3,22 +3,99 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Motion Graphic</title>
+  <title>Flow — Promo</title>
+  <link rel="preload" href="fonts/inter-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/inter-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/inter-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- The stage is the video frame. Everything inside it is captured. -->
-  <div id="stage">
-    <!-- PLACEHOLDER: replace with the real animation -->
-    <div class="box"></div>
-    <h1 class="title">Ready to animate</h1>
+  <div id="viewport">
+    <!-- #stage is the 1920×1080 video frame. Only this element is captured. -->
+    <div id="stage">
+
+      <!-- Wordmark -->
+      <div class="wordmark">
+        <svg class="wordmark__mark" viewBox="0 0 40 40" aria-hidden="true">
+          <rect width="40" height="40" rx="11" fill="#7C3AED"/>
+          <path d="M11 24.5c4-6 8.5-6 12 0s6.5 4.5 6.5 4.5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
+          <path d="M11 15.5c3.2-3.5 6.6-3.5 9.6 0" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" opacity=".55"/>
+        </svg>
+        <span class="wordmark__text">Flow</span>
+      </div>
+
+      <!-- Headline: each word sits in a clipping mask -->
+      <h1 class="headline">
+        <span class="mask"><span class="word">Turn</span></span>
+        <span class="mask"><span class="word">ideas</span></span>
+        <span class="mask"><span class="word">into</span></span>
+        <span class="mask"><span class="word word--accent">videos</span></span>
+      </h1>
+
+      <!-- Connectors: behind the cards, only visible in the gaps -->
+      <svg class="connectors" viewBox="0 0 1920 1080" aria-hidden="true">
+        <g class="connector" id="c1">
+          <line class="connector__line" x1="612" y1="708" x2="748" y2="708"/>
+          <circle class="connector__halo" cx="680" cy="708" r="15"/>
+          <circle class="connector__node" cx="680" cy="708" r="6"/>
+        </g>
+        <g class="connector" id="c2">
+          <line class="connector__line" x1="1172" y1="708" x2="1308" y2="708"/>
+          <circle class="connector__halo" cx="1240" cy="708" r="15"/>
+          <circle class="connector__node" cx="1240" cy="708" r="6"/>
+        </g>
+      </svg>
+
+      <!-- Cards -->
+      <div class="cards">
+        <article class="card" id="card-write">
+          <div class="card__icon">
+            <svg viewBox="0 0 80 80" aria-hidden="true">
+              <path class="ink" d="M22 12h26l14 14v40a4 4 0 0 1-4 4H22a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4z"/>
+              <path class="ink" d="M48 12v10a4 4 0 0 0 4 4h10"/>
+              <line class="ink" x1="28" y1="38" x2="52" y2="38"/>
+              <line class="ink" x1="28" y1="48" x2="46" y2="48"/>
+              <line class="accent-stroke" id="write-line" x1="28" y1="58" x2="50" y2="58"/>
+            </svg>
+          </div>
+          <h2 class="card__label">Write</h2>
+        </article>
+
+        <article class="card" id="card-animate">
+          <div class="card__icon">
+            <svg viewBox="0 0 80 80" aria-hidden="true">
+              <circle class="accent-fill" id="anim-circle" cx="27" cy="27" r="11"/>
+              <rect class="ink" id="anim-square" x="44" y="16" width="22" height="22" rx="3"/>
+              <path class="ink" d="M40 44l14 24H26z" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h2 class="card__label">Animate</h2>
+        </article>
+
+        <article class="card" id="card-export">
+          <div class="card__icon">
+            <svg viewBox="0 0 80 80" aria-hidden="true">
+              <path class="ink" d="M16 50v10a6 6 0 0 0 6 6h36a6 6 0 0 0 6-6V50"/>
+              <g id="export-arrow">
+                <line class="accent-stroke" x1="40" y1="14" x2="40" y2="50"/>
+                <path class="accent-stroke" d="M28 38l12 12 12-12"/>
+              </g>
+            </svg>
+          </div>
+          <h2 class="card__label">Export</h2>
+        </article>
+      </div>
+
+    </div>
   </div>
 
-  <!-- Preview controls (hidden during capture) -->
+  <!-- Preview controls: outside #stage, never captured -->
   <div id="controls">
-    <button id="play">Pause</button>
-    <input id="scrub" type="range" min="0" max="1" step="0.001" value="0">
-    <span id="time">0.00s</span>
+    <button id="btn-play" type="button">Play</button>
+    <button id="btn-pause" type="button">Pause</button>
+    <button id="btn-restart" type="button">Restart</button>
+    <input id="scrub" type="range" min="0" max="240" step="1" value="0" aria-label="Scrub">
+    <span id="time">0.00s · f0</span>
   </div>
 
   <script src="/vendor/gsap/gsap.min.js"></script>
