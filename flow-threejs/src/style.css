@@ -1,0 +1,132 @@
+@font-face {
+  font-family: 'Inter Flow';
+  src: url('/fonts/Inter-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'Inter Flow';
+  src: url('/fonts/Inter-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+:root {
+  --bg: #ffffff;
+  --ink: #171717;
+  --ui-bg: #f4f4f5;
+  --ui-ink: #3f3f46;
+  --scale: 1;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: #e9e9ec;
+  color: var(--ui-ink);
+  font-family: system-ui, sans-serif;
+}
+
+.viewport {
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px 0;
+}
+
+/* The stage is always laid out at 1920×1080 and scaled visually for preview. */
+.stage-frame {
+  width: calc(1920px * var(--scale));
+  height: calc(1080px * var(--scale));
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.12);
+}
+
+.stage {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--bg);
+  transform: scale(var(--scale));
+  transform-origin: 0 0;
+}
+
+.stage canvas {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  display: block;
+}
+
+/* 2D overlay: independent of the 3D camera. Right of the tile, inside 100 px safe margins. */
+.overlay {
+  position: absolute;
+  left: 1072px;
+  top: 0;
+  bottom: 0;
+  right: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--ink);
+  font-family: 'Inter Flow', sans-serif;
+  pointer-events: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+.title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 176px;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.tagline {
+  margin: 30px 0 0 6px;
+  font-weight: 400;
+  font-size: 46px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  max-width: 960px;
+  margin: 16px auto 32px;
+  padding: 10px 14px;
+  background: var(--ui-bg);
+  border-radius: 10px;
+}
+.controls button {
+  font: inherit;
+  padding: 6px 14px;
+  border: 1px solid #d4d4d8;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+.controls input[type='range'] { flex: 1; min-width: 0; }
+.controls output { font-variant-numeric: tabular-nums; min-width: 9.5em; text-align: right; }
+
+/* Capture mode: only the stage, at 1:1, pinned to the page origin. */
+body.capture { background: var(--bg); }
+body.capture .viewport { padding: 0; display: block; }
+body.capture .stage-frame { box-shadow: none; }
+body.capture .controls { display: none !important; }
+
+@media (max-width: 600px) {
+  .controls { flex-wrap: wrap; }
+  .controls input[type='range'] { flex-basis: 100%; order: 3; }
+}

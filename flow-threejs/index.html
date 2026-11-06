@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Flow — brand reveal</title>
+    <link rel="preload" href="/fonts/Inter-SemiBold.otf" as="font" type="font/otf" crossorigin />
+    <link rel="preload" href="/fonts/Inter-Regular.otf" as="font" type="font/otf" crossorigin />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <main class="viewport">
+      <!-- Capture area: exactly 1920×1080. Everything inside is recorded. -->
+      <div class="stage-frame">
+      <div id="stage" class="stage">
+        <canvas id="scene" width="1920" height="1080"></canvas>
+        <div class="overlay" aria-label="Flow. Bring ideas to life.">
+          <h1 id="title" class="title">Flow</h1>
+          <p id="tagline" class="tagline">Bring ideas to life.</p>
+        </div>
+      </div>
+      </div>
+    </main>
+
+    <!-- Preview controls: outside the stage, hidden in capture mode. -->
+    <section id="controls" class="controls" aria-label="Playback controls">
+      <button id="play" type="button">Play</button>
+      <button id="restart" type="button">Restart</button>
+      <input id="scrub" type="range" min="0" max="179" step="1" value="0" aria-label="Timeline frame" />
+      <output id="readout">0.00 s · frame 0</output>
+    </section>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

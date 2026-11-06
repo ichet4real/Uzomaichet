@@ -1,0 +1,4 @@
+node_modules/
+output/frames/
+output/*-draft.mp4
+dist/
